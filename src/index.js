@@ -3,21 +3,23 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 
 const root = document.getElementById('root')
 
-const render = Component => {
+const render = () => {
   return ReactDOM.render(
     <BrowserRouter>
-      <Component />
+      <Switch>
+        <Route path='/' exact component={App} />
+      </Switch>
     </BrowserRouter>,
     root
   )
 }
 
-render(App)
+render()
 
 registerServiceWorker()
 
@@ -25,6 +27,6 @@ registerServiceWorker()
 if (module.hot) {
   module.hot.accept('./App', () => {
     const NextApp = require('./App').default;
-    render(NextApp);
+    render(NextApp)
   });
 }

@@ -5,14 +5,26 @@ import App from './App'
 import signUp from './Components/signUp'
 import registerServiceWorker from './registerServiceWorker'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import CssBaseline from '@material-ui/core/CssBaseline';
+import CssBaseline from '@material-ui/core/CssBaseline'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#fff'
+    },
+    secondary: {
+      main: '#03a87c',
+    },
+  },
+})
 
 const root = document.getElementById('root')
 
 const render = () => {
   return ReactDOM.render(
-    <React.Fragment>
-
+    <MuiThemeProvider theme={theme}>
+    
       <CssBaseline />
 
       <BrowserRouter>
@@ -22,7 +34,7 @@ const render = () => {
         </Switch>
       </BrowserRouter>
       
-    </React.Fragment>,
+    </MuiThemeProvider>,
     root
   )
 }

@@ -5,6 +5,8 @@ import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { Link } from 'react-router-dom'
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
+
 
 const styles = (theme) => ({
   paper: {
@@ -42,6 +44,14 @@ class signUp extends React.Component {
     e.preventDefault()
   }
 
+  componentDidMount() {
+    ValidatorForm.addValidationRule('isPasswordMatch', 
+      value => value === this.state.password)
+
+    ValidatorForm.addValidationRule('isName', 
+      value => value.length <= 24)
+  }
+
   onChange = input => e => this.setState({ [input]: e.target.value })
 
   render() {
@@ -49,50 +59,70 @@ class signUp extends React.Component {
     return (
       <React.Fragment>
         <Paper className={classes.paper} elevation={1}>
-          <form onSubmit={this.onSubmit}>
+        <ValidatorForm
+          ref="form"
+          onSubmit={this.onSubmit}
+          onError={errors => console.log(errors)}
+        >
 
             <Typography 
               variant="headline" 
               align="center" 
               component="h1"
             >
-              Sign up to Time Line or <Link to='/app'>log in</Link>
+              Sign up to TimeLine or <Link to='/app'>log in</Link>
             </Typography>
 
-            <TextField
+            <TextValidator
               label="Name"
               placeholder="e.g., Landi Carl"
               margin="normal"
-              autoFocus	
-              onChange={this.onChange('name')}
               className={classes.textField}
+              autoFocus	
+              name="name"
+              onChange={this.onChange('name')}
+              name="name"
+              validators={['required', 'isName']}
+              errorMessages={['this field is required', 'name must be less then 24 characters']}
+              value={this.state.name}
             />
 
-            <TextField
+            <TextValidator
               label="Email"
+              name="email"
               placeholder="e.g., carl@cloud.ci"
-              margin="normal"
-              type="email"
               onChange={this.onChange('email')}
               className={classes.textField}
+              margin="normal"
+              value={this.state.email}
+              validators={['required', 'isEmail']}
+              errorMessages={['this field is required', 'email is not valid']}
             />
 
-            <TextField
+            <TextValidator
               label="Password"
-              placeholder="e.g., *******"
-              margin="normal"
               type="password"
+              placeholder="e.g., *******"
               onChange={this.onChange('password')}
               className={classes.textField}
+              margin="normal"
+              value={this.state.password}
+              name="password"
+              validators={['required', 'minStringLength:6', 'maxStringLength:16']}
+              errorMessages={['this field is required', 'password must contain at least 6 characters', 'password must contain no more then 16 characters']}
             />
 
-            <TextField
+            <TextValidator
               label="Confirm password"
+              type="password"
               placeholder="e.g., *******"
               margin="normal"
-              type="password"
+              name="confirmPassword"
               onChange={this.onChange('confirmPassword')}
               className={classes.textField}
+              validators={['isPasswordMatch', 'required']}
+              errorMessages={['password mismatch', 'this field is required']}
+              value={this.state.confirmPassword}
             />
 
             <Button 
@@ -105,7 +135,7 @@ class signUp extends React.Component {
               Create New Account
             </Button>
 
-          </form>
+          </ValidatorForm>
         </Paper>
       </React.Fragment>
     )

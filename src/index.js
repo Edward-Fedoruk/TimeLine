@@ -21,30 +21,32 @@ const theme = createMuiTheme({
 
 const root = document.getElementById('root')
 
-ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-  
-    <CssBaseline />
-
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <Switch>
-        <Route path='/' exact component={signUp} />
-        <Route path='/login' exact component={LogIn} />
-      </Switch>
-    </BrowserRouter>
+const render = () => {
+  return ReactDOM.render(
+    <MuiThemeProvider theme={theme}>
     
-  </MuiThemeProvider>,
-  root
-)
+      <CssBaseline />
 
-// render()
+      <BrowserRouter>
+        <Switch>
+          <Route path='/' exact component={signUp} />
+          <Route path='/login' exact component={LogIn} />
+        </Switch>
+      </BrowserRouter>
+      
+    </MuiThemeProvider>,
+    root
+  )
+}
+
+render()
 
 registerServiceWorker()
 
 
-// if (module.hot) {
-//   module.hot.accept('./Components/signUp', () => {
-//     const NextApp = require('./Components/signUp').default;
-//     render(NextApp)
-//   });
-// }
+if (module.hot) {
+  module.hot.accept('./Components/signUp', () => {
+    const NextApp = require('./Components/signUp').default;
+    render(NextApp)
+  });
+}

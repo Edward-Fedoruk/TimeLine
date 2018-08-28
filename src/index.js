@@ -33,7 +33,7 @@ registerServiceWorker()
 
 
 if (module.hot) {
-  module.hot.accept('./Components/LogIn', () => {
+  module.hot.accept('./Components/signUp', () => {
     const NextApp = require('./Components/signUp').default;
     render(NextApp)
   });

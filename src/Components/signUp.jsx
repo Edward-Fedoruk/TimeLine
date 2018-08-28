@@ -1,43 +1,20 @@
 import React from 'react'
-import TextField from '@material-ui/core/TextField'
 import Paper from '@material-ui/core/Paper'
 import { withStyles } from '@material-ui/core/styles'
+import formStyles  from './formStyles'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { Link } from 'react-router-dom'
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 
 
-const styles = (theme) => ({
-  paper: {
-    width: '500px',
-    minHeight: '400px',
-    top: '40%',
-    left: '50%',
-    position: 'absolute',
-    transform: 'translate(-50%, -50%)',
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    padding: '20px 20px 0 20px'
-  },
-
-  textField: {
-    width: '100%'
-  },
-
-  signIn: {
-    margin: '20px 0',
-
-  }
-})
-
 class signUp extends React.Component {
   state = {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    disabled: true
   }
 
   onSubmit = e => {
@@ -59,18 +36,18 @@ class signUp extends React.Component {
     return (
       <React.Fragment>
         <Paper className={classes.paper} elevation={1}>
-        <ValidatorForm
-          ref="form"
-          onSubmit={this.onSubmit}
-          onError={errors => console.log(errors)}
-        >
+          <ValidatorForm
+            ref="form"
+            onSubmit={this.onSubmit}
+            onError={errors => console.log(errors)}
+          >
 
             <Typography 
               variant="headline" 
               align="center" 
               component="h1"
             >
-              Sign up to TimeLine or <Link to='/app'>log in</Link>
+              Sign up to TimeLine or <Link to='/login'>log in</Link>
             </Typography>
 
             <TextValidator
@@ -81,7 +58,6 @@ class signUp extends React.Component {
               autoFocus	
               name="name"
               onChange={this.onChange('name')}
-              name="name"
               validators={['required', 'isName']}
               errorMessages={['this field is required', 'name must be less then 24 characters']}
               value={this.state.name}
@@ -142,4 +118,4 @@ class signUp extends React.Component {
   }
 }
 
-export default withStyles(styles)(signUp)
+export default withStyles(formStyles)(signUp)

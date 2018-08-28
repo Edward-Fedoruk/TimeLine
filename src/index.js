@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './App'
+import LogIn from './Components/LogIn'
 import signUp from './Components/signUp'
 import registerServiceWorker from './registerServiceWorker'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
@@ -30,7 +30,7 @@ const render = () => {
       <BrowserRouter>
         <Switch>
           <Route path='/' exact component={signUp} />
-          <Route path='/app' exact component={App} />
+          <Route path='/login' exact component={LogIn} />
         </Switch>
       </BrowserRouter>
       

@@ -107,6 +107,7 @@ class signUp extends React.Component {
               color="primary" 
               type="submit"
               className={classes.signIn}
+              component={Link} to="/app"
             >
               Create New Account
             </Button>

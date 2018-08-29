@@ -2,11 +2,9 @@ import React from 'react'
 import Paper from '@material-ui/core/Paper'
 import { withStyles } from '@material-ui/core/styles'
 import formStyles  from './formStyles'
-
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { Link } from 'react-router-dom'
-
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 
 
@@ -44,6 +42,7 @@ class LogIn extends React.Component {
             <TextValidator
               label="Email"
               name="email"
+              autoFocus
               placeholder="e.g., carl@cloud.ci"
               onChange={this.onChange('email')}
               className={classes.textField}
@@ -72,6 +71,7 @@ class LogIn extends React.Component {
               color="primary" 
               type="submit"
               className={classes.signIn}
+              component={Link} to="/app"
             >
               Log in 
             </Button>

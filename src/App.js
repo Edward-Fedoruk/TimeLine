@@ -16,7 +16,7 @@ const styles = (theme) => ({
   toolBar: {
     display: 'flex',
     justifyContent: 'space-between',
-    borderBottom: '1px solid #000'
+    borderBottom: '1px solid #000',
   },
 })
 
@@ -32,7 +32,7 @@ class App extends React.Component {
     const { value } = this.state
     return (
       <React.Fragment>
-        <AppBar className={classes.appBar} position="static">
+        <AppBar position="fixed">
 
           <Toolbar className={classes.toolBar} variant="dense">
 

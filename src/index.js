@@ -46,7 +46,7 @@ render()
 registerServiceWorker()
 
 if (module.hot) {
-  module.hot.accept('./Components/signUp', () => {
+  module.hot.accept('./Components/Authentication/signUp', () => {
     const NextApp = require('./Components/Authentication/signUp').default;
     render(NextApp)
   })

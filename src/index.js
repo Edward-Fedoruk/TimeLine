@@ -28,7 +28,7 @@ const render = () => {
     
       <CssBaseline />
 
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route path='/' exact component={signUp} />
           <Route path='/app' exact component={App} />

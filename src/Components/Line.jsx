@@ -13,26 +13,60 @@ const styles = (theme) => ({
     height: '110vh',
     backgroundColor: '#a2a2a2',
     margin: '0 0 0 60%',
-    transform: 'translateX(-50%)'
+    position: 'relative',
+    cursor: 'pointer'
+  },
+
+  task: {
+    width: '40px',
+    height: '40px',
+    backgroundColor: 'green',
+    position: 'absolute',
+    left: '0',
+    transform: 'translateX(-15%)',
+    borderRadius: '50%',
+    zIndex: '1'
   }
 })
 
 class Line extends React.Component {
   state = {
-    lines: []
+    lines: [
+      {
+        id: 0,
+        task: false,
+        tasksPos: []
+      }
+    ]
   }
 
   makeLine = e => {
     const windowHeight = document.documentElement.clientHeight
     if(window.scrollY <= 1) {
-      this.state.lines.unshift('item')
+      this.state.lines.push(
+        {
+          id: 1 + this.state.lines[this.state.lines.length - 1].id,
+          task: false,
+          tasksPos: []
+        }
+      )
       this.setState({ lines: this.state.lines })
       window.scrollBy(0, windowHeight)
     }
   }
 
-  makeTask = (e) => {
-    console.log(e.nativeEvent.offsetY)
+  makeTask = e => {
+    const id = parseInt(e.target.dataset.id)
+    const taskPos = e.nativeEvent.offsetY
+
+    this.state.lines[id].tasksPos.push(taskPos)
+    this.state.lines[id].task = true
+
+    this.setState({ lines: this.state.lines })
+  }
+
+  taskClick = e => {
+    e.stopPropagation()
   }
 
   componentDidMount() {
@@ -50,21 +84,24 @@ class Line extends React.Component {
     return (
       <div className={classes.lineWrap}>
 
-        {lines.map((line, i) => 
+        {[...lines].reverse().map((line, i) => 
           <div 
             key={i} 
+            data-id={`${line.id}`}
             onClick={this.makeTask} 
             className={classes.fullHeightLine}
           >
-            line
-          </div>)}
-
-        <div 
-          onClick={this.makeTask} 
-          className={classes.fullHeightLine}
-        >
-          hello
-        </div>
+            {line.task &&
+              line.tasksPos.map((pos, i) =>            
+                <div 
+                  key={i} 
+                  className={classes.task} 
+                  style={{top: `${pos}px`}}
+                  onClick={this.taskClick}
+                />
+              )} 
+          </div>
+        )}
 
       </div>
     )

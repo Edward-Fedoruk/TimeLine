@@ -2,19 +2,26 @@ import React from 'react'
 import { withStyles } from '@material-ui/core'
 
 const styles = (theme) => ({
-  lineWrap: {
+  wrap: {
     width: '100%',
-    backgroundColor: '#eee',
+    backgroundColor: 'transparent',
     overflow: 'hidden',
+  },
+
+  lineWrap: {
+    width: 'fit-content',
+    backgroundColor: '#eee',
+    margin: '0 0 0 60%',
+    zIndex: '2'
   },
 
   fullHeightLine: {
     width: '30px',
-    height: '110vh',
+    height: '101vh',
     backgroundColor: '#a2a2a2',
-    margin: '0 0 0 60%',
     position: 'relative',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    transform: 'rotate(180deg)'
   },
 
   task: {
@@ -23,50 +30,42 @@ const styles = (theme) => ({
     backgroundColor: 'green',
     position: 'absolute',
     left: '0',
-    transform: 'translateX(-15%)',
+    transform: 'translate(-15%, -15%)',
     borderRadius: '50%',
-    zIndex: '1'
+    zIndex: '1',
   }
 })
 
 class Line extends React.Component {
   state = {
-    lines: [
-      {
-        id: 0,
-        task: false,
-        tasksPos: []
-      }
-    ]
+    lineHeight: 101,
+    tasksPos: []
   }
 
   makeLine = e => {
     const windowHeight = document.documentElement.clientHeight
-    if(window.scrollY <= 1) {
-      this.state.lines.push(
-        {
-          id: 1 + this.state.lines[this.state.lines.length - 1].id,
-          task: false,
-          tasksPos: []
-        }
-      )
-      this.setState({ lines: this.state.lines })
+    if(window.scrollY === 0) {
+      this.setState({ lineHeight: this.state.lineHeight + 100 })
       window.scrollBy(0, windowHeight)
     }
   }
 
+  taskClick = e => e.stopPropagation()
+
   makeTask = e => {
-    const id = parseInt(e.target.dataset.id)
     const taskPos = e.nativeEvent.offsetY
 
-    this.state.lines[id].tasksPos.push(taskPos)
-    this.state.lines[id].task = true
+    // if(this.state.lines[id].tasksPos.length !== 0) {
+    //   this.state.lines[id].tasksPos.map(pos => {
+    //     console.log(taskPos, pos, pos - taskPos)
+    //     pos - taskPos < 60 ? console.log('<60' ) : console.log('>60')
+    //   })
+    // }
+    
 
-    this.setState({ lines: this.state.lines })
-  }
+    this.state.tasksPos.push(taskPos)
 
-  taskClick = e => {
-    e.stopPropagation()
+    this.setState({ tasksPos: this.state.tasksPos })
   }
 
   componentDidMount() {
@@ -80,29 +79,28 @@ class Line extends React.Component {
 
   render() {
     const { classes } = this.props
-    const { lines } = this.state
-    return (
-      <div className={classes.lineWrap}>
+    const { lineHeight, tasksPos } = this.state
 
-        {[...lines].reverse().map((line, i) => 
-          <div 
-            key={i} 
-            data-id={`${line.id}`}
-            onClick={this.makeTask} 
-            className={classes.fullHeightLine}
-          >
-            {line.task &&
-              line.tasksPos.map((pos, i) =>            
-                <div 
-                  key={i} 
-                  className={classes.task} 
-                  style={{top: `${pos}px`}}
+    return (
+      <div  className={classes.wrap}>
+        <div className={classes.lineWrap}>
+
+            <div 
+              style={{ height: `${lineHeight}vh` }} 
+              className={classes.fullHeightLine}
+              onClick={this.makeTask}
+            >
+              {tasksPos.map((pos, i) => 
+                <div
+                  key={i}
+                  style={{ top: `${pos}px` }}
+                  className={classes.task}
                   onClick={this.taskClick}
                 />
-              )} 
-          </div>
-        )}
+              )}
+            </div>
 
+        </div>
       </div>
     )
   }

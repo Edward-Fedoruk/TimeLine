@@ -1,6 +1,9 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core'
-import { array } from 'prop-types';
+import TextField from '@material-ui/core/TextField'
+import Drawer from '@material-ui/core/Drawer'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
 
 const styles = (theme) => ({
   wrap: {
@@ -34,14 +37,32 @@ const styles = (theme) => ({
     transform: 'translate(-15%, -70%)',
     borderRadius: '50%',
     zIndex: '1',
-    transition: 'all .3s linear'
+    transition: 'all .2s linear',
+    willChange: 'top',
+  },
+
+  textWrap: {
+    position: 'absolute',
+    // right: '-500%',
+    bottom: '50%',
+    transform: 'rotate(180deg) translate(-50%, -50%)',
+    padding: '10px'
+  },
+
+  text: {
+    width: '14vw'
+  },
+  
+  taskFormField: {
+    padding: '20px',
   }
 })
 
 class Line extends React.Component {
   state = {
     lineHeight: 101,
-    tasksPos: []
+    tasksPos: [],
+    taskDrawer: false
   }
 
   makeLine = e => {
@@ -52,14 +73,18 @@ class Line extends React.Component {
     }
   }
 
-  taskClick = e => e.stopPropagation()
+  taskClick = e => {
+    e.stopPropagation()
+
+  }
 
   makeTask = e => {
     const taskPos = e.nativeEvent.offsetY
     
     this.setState(prevState => {
-      prevState.tasksPos.push(taskPos)
-      prevState.tasksPos
+      const { tasksPos } = prevState
+      tasksPos.push(taskPos)
+      tasksPos
         .sort((current, next) => current - next)
         .reverse()
         .forEach((taskPos, i, array) => {
@@ -67,12 +92,12 @@ class Line extends React.Component {
           if(diffBtwTasks < 60) {          
             console.log(diffBtwTasks)
             for (let j = 0; j <= i; j++) 
-              prevState.tasksPos[j] = prevState.tasksPos[j] + 60 - diffBtwTasks        
+              tasksPos[j] = tasksPos[j] + 61 - diffBtwTasks        
           } 
         })
 
       return { tasksPos: this.state.tasksPos }
-    })
+    }, () => this.setState({taskDrawer: !this.state.taskDrawer}))
   }
 
   componentDidMount() {
@@ -86,28 +111,43 @@ class Line extends React.Component {
 
   render() {
     const { classes } = this.props
-    const { lineHeight, tasksPos } = this.state
+    const { lineHeight, tasksPos, taskDrawer } = this.state
 
     return (
       <div  className={classes.wrap}>
+
         <div className={classes.lineWrap}>
-
-            <div 
-              style={{ height: `${lineHeight}vh` }} 
-              className={classes.fullHeightLine}
-              onClick={this.makeTask}
-            >
-              {tasksPos.map((pos, i) => 
-                <div
-                  key={i}
-                  style={{ top: `${pos}px` }}
-                  className={classes.task}
-                  onClick={this.taskClick}
-                />
-              )}
-            </div>
-
+          <div 
+            style={{ height: `${lineHeight}vh` }} 
+            className={classes.fullHeightLine}
+            onClick={this.makeTask}
+          >
+            {tasksPos.map((pos, i) => 
+              <div
+                key={i}
+                style={{ top: `${pos}px` }}
+                className={classes.task}
+                onClick={this.taskClick}
+              > 
+                <Paper className={classes.textWrap}>
+                  <Typography  className={classes.text} component="p">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</Typography>
+                </Paper>
+              </div>
+            )}
+          </div>
         </div>
+          
+        <Drawer open={taskDrawer} anchor="right"> 
+          <Typography align="center" component="h3">task header</Typography>
+          <TextField margin="dense" className={classes.taskFormField} />
+
+          <Typography align="center" component="h3">task description</Typography>
+          <TextField  margin="dense" multiline className={classes.taskFormField} />
+
+          <Typography align="center" component="h3">task header</Typography>
+          <TextField id="datetime-local" type="datetime-local" className={classes.taskFormField}/>
+        </Drawer>
+        
       </div>
     )
   }

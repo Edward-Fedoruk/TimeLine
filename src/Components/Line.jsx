@@ -34,7 +34,7 @@ const styles = (theme) => ({
     transform: 'translate(-15%, -70%)',
     borderRadius: '50%',
     zIndex: '1',
-    transition: 'all .3s'
+    transition: 'all .3s linear'
   }
 })
 
@@ -57,8 +57,6 @@ class Line extends React.Component {
   makeTask = e => {
     const taskPos = e.nativeEvent.offsetY
     
-    // console.log(this.state.tasksPos)
-
     this.setState(prevState => {
       prevState.tasksPos.push(taskPos)
       prevState.tasksPos
@@ -68,9 +66,8 @@ class Line extends React.Component {
           const diffBtwTasks = taskPos - array[1 + i]
           if(diffBtwTasks < 60) {          
             console.log(diffBtwTasks)
-            for (let j = 0; j <= i; j++) {
-              prevState.tasksPos[j] = prevState.tasksPos[j] + diffBtwTasks
-            }
+            for (let j = 0; j <= i; j++) 
+              prevState.tasksPos[j] = prevState.tasksPos[j] + 60 - diffBtwTasks        
           } 
         })
 

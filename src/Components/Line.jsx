@@ -1,5 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core'
+import { array } from 'prop-types';
 
 const styles = (theme) => ({
   wrap: {
@@ -30,9 +31,10 @@ const styles = (theme) => ({
     backgroundColor: 'green',
     position: 'absolute',
     left: '0',
-    transform: 'translate(-15%, -15%)',
+    transform: 'translate(-15%, -70%)',
     borderRadius: '50%',
     zIndex: '1',
+    transition: 'all .3s'
   }
 })
 
@@ -54,18 +56,26 @@ class Line extends React.Component {
 
   makeTask = e => {
     const taskPos = e.nativeEvent.offsetY
-
-    // if(this.state.lines[id].tasksPos.length !== 0) {
-    //   this.state.lines[id].tasksPos.map(pos => {
-    //     console.log(taskPos, pos, pos - taskPos)
-    //     pos - taskPos < 60 ? console.log('<60' ) : console.log('>60')
-    //   })
-    // }
     
+    // console.log(this.state.tasksPos)
 
-    this.state.tasksPos.push(taskPos)
+    this.setState(prevState => {
+      prevState.tasksPos.push(taskPos)
+      prevState.tasksPos
+        .sort((current, next) => current - next)
+        .reverse()
+        .forEach((taskPos, i, array) => {
+          const diffBtwTasks = taskPos - array[1 + i]
+          if(diffBtwTasks < 60) {          
+            console.log(diffBtwTasks)
+            for (let j = 0; j <= i; j++) {
+              prevState.tasksPos[j] = prevState.tasksPos[j] + diffBtwTasks
+            }
+          } 
+        })
 
-    this.setState({ tasksPos: this.state.tasksPos })
+      return { tasksPos: this.state.tasksPos }
+    })
   }
 
   componentDidMount() {

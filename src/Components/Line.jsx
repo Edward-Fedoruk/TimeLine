@@ -65,6 +65,15 @@ const styles = (theme) => ({
     justifyContent: 'center',
     flexWrap: 'wrap',
     width: 'min-content'
+  },
+
+  dateWrap: {
+    bottom: '50%',
+    transform: 'rotate(180deg) translate(150%, -50%)',
+    position: 'absolute',
+    display: 'flex',
+    width: '100px',
+    justifyContent: 'space-between'
   }
 })
 
@@ -75,8 +84,12 @@ class Line extends React.Component {
     taskDrawer: false,
     taskHeader: '',
     taskDescription: '',
+    taskDay: '',
+    taskTime: '',
     indexOfCurrentTask: Number
   }
+
+  refTimePicker = React.createRef()
 
   makeLine = e => {
     const windowHeight = document.documentElement.clientHeight
@@ -96,7 +109,22 @@ class Line extends React.Component {
     })
   }
 
-  drawerClose = () => this.setState ({ taskDrawer: false })
+  drawerClose = () => {
+    const dateFromPicker = this.refTimePicker.current.value
+    const date = `${new Date(dateFromPicker)}`
+    const [ , month, day, year, time ] = date.split(' ')
+    const [ hour, minute ] = time.split(':')
+
+    this.setState(({ allTasks, indexOfCurrentTask }) => { 
+      allTasks[indexOfCurrentTask].taskDay =  month + ' ' + day
+      allTasks[indexOfCurrentTask].taskHour =  hour + ':' + minute
+
+      allTasks[indexOfCurrentTask].taskYear = 
+        new Date().getFullYear() - year === 0 ? '' : year
+
+      return { taskDrawer: false, allTasks}
+    })
+  }
   
   setTaskFields = field => e => {
     const event = e.target
@@ -161,7 +189,9 @@ class Line extends React.Component {
     const { lineHeight, allTasks, 
             taskDrawer, taskHeader, 
             taskDescription } = this.state
+            
     const date = this.getCurrentDate()
+
     return (
       <div  className={classes.wrap}>
 
@@ -178,6 +208,7 @@ class Line extends React.Component {
                 className={classes.task}
                 onClick={this.taskClick(i)}
               > 
+
                 <Paper className={classes.textWrap}>
                   <Typography  
                     className={classes.text} 
@@ -186,6 +217,22 @@ class Line extends React.Component {
                     {task.taskHeader}
                   </Typography>
                 </Paper>
+
+                <Paper className={classes.dateWrap}>
+                  <Typography  
+                    className={classes.dayText} 
+                    component="p"
+                  >
+                    {task.taskDay}
+                  </Typography>
+                  <Typography  
+                    className={classes.dayText} 
+                    component="p"
+                  >
+                    {task.taskHour}
+                  </Typography>
+                </Paper>
+
               </div>
             )}
           </div>
@@ -202,7 +249,6 @@ class Line extends React.Component {
             <TextField 
               margin="dense" 
               onChange={this.setTaskFields("taskHeader")} 
-              autoFocus	
               required 
               value={taskHeader} 
               inputProps={{maxLength: "50"}}
@@ -232,13 +278,13 @@ class Line extends React.Component {
             >
               task time
             </Typography>
-            {console.log(date)}
             <TextField 
               type="datetime-local" 
               defaultValue={date}
               InputLabelProps={{
                 shrink: true,
               }}
+              inputRef={this.refTimePicker}
               className={classes.taskFormField}
             />
 

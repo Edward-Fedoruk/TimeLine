@@ -56,6 +56,15 @@ const styles = (theme) => ({
   
   taskFormField: {
     padding: '20px',
+    width: '100%'
+  },
+
+  drawerWrap: {
+    maxHeight: '1000px',
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    width: 'min-content'
   }
 })
 
@@ -125,6 +134,19 @@ class Line extends React.Component {
 
   }
 
+  getCurrentDate = () => {
+    const date = new Date()
+    const editDate = x => x < 10 ? '0' + x : x
+
+    const year = date.getFullYear()
+    const month = editDate(1 + date.getMonth())
+    const day = editDate(date.getDate())
+    const hours = editDate(date.getHours())
+    const minutes = editDate(date.getMinutes())
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`
+  }
+
   componentDidMount() {
     window.scrollBy(0, 5)
     window.addEventListener('scroll', this.makeLine)
@@ -139,7 +161,7 @@ class Line extends React.Component {
     const { lineHeight, allTasks, 
             taskDrawer, taskHeader, 
             taskDescription } = this.state
-
+    const date = this.getCurrentDate()
     return (
       <div  className={classes.wrap}>
 
@@ -170,51 +192,58 @@ class Line extends React.Component {
         </div>
           
         <Drawer onClose={this.drawerClose} open={taskDrawer} anchor="right"> 
-          <Typography 
-            align="center" 
-            component="h3"
-          >
-            task header
-          </Typography>
-          <TextField 
-            margin="dense" 
-            onChange={this.setTaskFields("taskHeader")} 
-            autoFocus	
-            required 
-            value={taskHeader} 
-            inputProps={{maxLength: "50"}}
-            multiline 
-            className={classes.taskFormField} 
-          />
-              
-          <Typography 
-            align="center" 
-            component="h3"
-          >
-            task description
-          </Typography>
-          <TextField  
-            margin="dense" 
-            rowsMax="15" 
-            multiline 
-            inputProps={{maxLength: "150"}}
-            onChange={this.setTaskFields("taskDescription")}
-            value={taskDescription}
-            className={classes.taskFormField} 
-          />
+          <div className={classes.drawerWrap}>
+            <Typography 
+              align="center" 
+              component="h3"
+            >
+              task header
+            </Typography>
+            <TextField 
+              margin="dense" 
+              onChange={this.setTaskFields("taskHeader")} 
+              autoFocus	
+              required 
+              value={taskHeader} 
+              inputProps={{maxLength: "50"}}
+              multiline 
+              className={classes.taskFormField} 
+            />
+                
+            <Typography 
+              align="center" 
+              component="h3"
+            >
+              task description
+            </Typography>
+            <TextField  
+              margin="dense" 
+              rowsMax="15" 
+              multiline 
+              inputProps={{maxLength: "150"}}
+              onChange={this.setTaskFields("taskDescription")}
+              value={taskDescription}
+              className={classes.taskFormField} 
+            />
 
-          <Typography 
-            align="center" 
-            component="h3"
-          >
-            task time
-          </Typography>
-          <TextField 
-            type="datetime-local" 
-            className={classes.taskFormField}
-          />
+            <Typography 
+              align="center" 
+              component="h3"
+            >
+              task time
+            </Typography>
+            {console.log(date)}
+            <TextField 
+              type="datetime-local" 
+              defaultValue={date}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              className={classes.taskFormField}
+            />
 
-          <Button onClick={this.drawerClose}>OK</Button>
+            <Button onClick={this.drawerClose}>OK</Button>
+          </div>
         </Drawer>
 
       </div>

@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField'
 import Drawer from '@material-ui/core/Drawer'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 
 const styles = (theme) => ({
   wrap: {
@@ -61,8 +62,11 @@ const styles = (theme) => ({
 class Line extends React.Component {
   state = {
     lineHeight: 101,
-    tasksPos: [],
-    taskDrawer: false
+    allTasks: [],
+    taskDrawer: false,
+    taskHeader: '',
+    taskDescription: '',
+    indexOfCurrentTask: Number
   }
 
   makeLine = e => {
@@ -75,29 +79,46 @@ class Line extends React.Component {
 
   taskClick = e => {
     e.stopPropagation()
+  }
 
+  drawerClose = () => this.setState ({ taskDrawer: false })
+  
+  setTaskFields = field => e => {
+    const event = e.target
+    this.setState(({ allTasks, indexOfCurrentTask }) => {
+      allTasks[indexOfCurrentTask][field] = this.state[field]
+      return { allTasks, [field]: event.value }
+    })
   }
 
   makeTask = e => {
     const taskPos = e.nativeEvent.offsetY
-    
-    this.setState(prevState => {
-      const { tasksPos } = prevState
-      tasksPos.push(taskPos)
-      tasksPos
-        .sort((current, next) => current - next)
+
+    this.setState(({ allTasks, taskDrawer }) => {
+      const task = { taskPos }
+      allTasks.push(task)
+      allTasks
+        .sort((current, next) => current.taskPos - next.taskPos)
         .reverse()
-        .forEach((taskPos, i, array) => {
-          const diffBtwTasks = taskPos - array[1 + i]
-          if(diffBtwTasks < 60) {          
-            console.log(diffBtwTasks)
+        .forEach((task, i, array) => {
+          const diffBtwTasks = array[1 + i] === undefined 
+            ? NaN 
+            : task.taskPos - array[1 + i].taskPos
+
+          if(diffBtwTasks < 60)     
             for (let j = 0; j <= i; j++) 
-              tasksPos[j] = tasksPos[j] + 61 - diffBtwTasks        
-          } 
+              allTasks[j].taskPos = allTasks[j].taskPos + 61 - diffBtwTasks        
         })
 
-      return { tasksPos: this.state.tasksPos }
-    }, () => this.setState({taskDrawer: !this.state.taskDrawer}))
+      return { 
+        allTasks: allTasks, 
+        taskDrawer: !taskDrawer,
+        indexOfCurrentTask: allTasks.indexOf(task),
+        taskHeader: '',
+        taskDescription: ''
+      }
+    })
+
   }
 
   componentDidMount() {
@@ -111,7 +132,9 @@ class Line extends React.Component {
 
   render() {
     const { classes } = this.props
-    const { lineHeight, tasksPos, taskDrawer } = this.state
+    const { lineHeight, allTasks, 
+            taskDrawer, taskHeader, 
+            taskDescription } = this.state
 
     return (
       <div  className={classes.wrap}>
@@ -122,32 +145,74 @@ class Line extends React.Component {
             className={classes.fullHeightLine}
             onClick={this.makeTask}
           >
-            {tasksPos.map((pos, i) => 
+            {allTasks.map((task, i) => 
               <div
                 key={i}
-                style={{ top: `${pos}px` }}
+                style={{ top: `${task.taskPos}px` }}
                 className={classes.task}
                 onClick={this.taskClick}
               > 
                 <Paper className={classes.textWrap}>
-                  <Typography  className={classes.text} component="p">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</Typography>
+                  <Typography  
+                    className={classes.text} 
+                    component="p"
+                  >
+                    {task.taskHeader}
+                  </Typography>
                 </Paper>
               </div>
             )}
           </div>
         </div>
           
-        <Drawer open={taskDrawer} anchor="right"> 
-          <Typography align="center" component="h3">task header</Typography>
-          <TextField margin="dense" className={classes.taskFormField} />
+        <Drawer onClose={this.drawerClose} open={taskDrawer} anchor="right"> 
+          <Typography 
+            align="center" 
+            component="h3"
+          >
+            task header
+          </Typography>
+          <TextField 
+            margin="dense" 
+            onChange={this.setTaskFields("taskHeader")} 
+            autoFocus	
+            required 
+            value={taskHeader} 
+            inputProps={{maxLength: "50"}}
+            multiline 
+            className={classes.taskFormField} 
+          />
+              
+          <Typography 
+            align="center" 
+            component="h3"
+          >
+            task description
+          </Typography>
+          <TextField  
+            margin="dense" 
+            rowsMax="15" 
+            multiline 
+            inputProps={{maxLength: "150"}}
+            onChange={this.setTaskFields("taskDescription")}
+            value={taskDescription}
+            className={classes.taskFormField} 
+          />
 
-          <Typography align="center" component="h3">task description</Typography>
-          <TextField  margin="dense" multiline className={classes.taskFormField} />
+          <Typography 
+            align="center" 
+            component="h3"
+          >
+            task time
+          </Typography>
+          <TextField 
+            type="datetime-local" 
+            className={classes.taskFormField}
+          />
 
-          <Typography align="center" component="h3">task header</Typography>
-          <TextField id="datetime-local" type="datetime-local" className={classes.taskFormField}/>
+          <Button onClick={this.drawerClose}>OK</Button>
         </Drawer>
-        
+
       </div>
     )
   }

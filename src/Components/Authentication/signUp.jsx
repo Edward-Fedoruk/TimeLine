@@ -47,7 +47,7 @@ class signUp extends React.Component {
               align="center" 
               component="h1"
             >
-              Sign up to TimeLine or <Link to='/login'>log in</Link>
+              Sign up to TimeLine or <Link to="/login">log in</Link>
             </Typography>
 
             <TextValidator

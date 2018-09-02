@@ -77,8 +77,14 @@ class Line extends React.Component {
     }
   }
 
-  taskClick = e => {
+  taskClick = taskIndex => e => {
     e.stopPropagation()
+    console.log(this.state.allTasks[taskIndex])
+    this.setState({ 
+      taskDrawer: !this.state.taskDrawer,
+      taskHeader: this.state.allTasks[taskIndex].taskHeader,
+      taskDescription: this.state.allTasks[taskIndex].taskDescription
+    })
   }
 
   drawerClose = () => this.setState ({ taskDrawer: false })
@@ -95,7 +101,7 @@ class Line extends React.Component {
     const taskPos = e.nativeEvent.offsetY
 
     this.setState(({ allTasks, taskDrawer }) => {
-      const task = { taskPos }
+      const task = { taskPos, taskHeader: '', taskDescription: '' }
       allTasks.push(task)
       allTasks
         .sort((current, next) => current.taskPos - next.taskPos)
@@ -109,13 +115,11 @@ class Line extends React.Component {
             for (let j = 0; j <= i; j++) 
               allTasks[j].taskPos = allTasks[j].taskPos + 61 - diffBtwTasks        
         })
-
+      
       return { 
         allTasks: allTasks, 
         taskDrawer: !taskDrawer,
         indexOfCurrentTask: allTasks.indexOf(task),
-        taskHeader: '',
-        taskDescription: ''
       }
     })
 
@@ -150,7 +154,7 @@ class Line extends React.Component {
                 key={i}
                 style={{ top: `${task.taskPos}px` }}
                 className={classes.task}
-                onClick={this.taskClick}
+                onClick={this.taskClick(i)}
               > 
                 <Paper className={classes.textWrap}>
                   <Typography  

@@ -5,6 +5,7 @@ import Drawer from '@material-ui/core/Drawer'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 
 const styles = (theme) => ({
   wrap: {
@@ -84,9 +85,8 @@ class Line extends React.Component {
     taskDrawer: false,
     taskHeader: '',
     taskDescription: '',
-    taskDay: '',
-    taskTime: '',
-    indexOfCurrentTask: Number
+    indexOfCurrentTask: Number,
+    currentTaskDate: ''
   }
 
   refTimePicker = React.createRef()
@@ -101,38 +101,67 @@ class Line extends React.Component {
 
   taskClick = taskIndex => e => {
     e.stopPropagation()
-    console.log(this.state.allTasks[taskIndex])
+    // console.log(this.state.allTasks[taskIndex])
     this.setState({ 
       taskDrawer: !this.state.taskDrawer,
       taskHeader: this.state.allTasks[taskIndex].taskHeader,
-      taskDescription: this.state.allTasks[taskIndex].taskDescription
+      taskDescription: this.state.allTasks[taskIndex].taskDescription,
+      indexOfCurrentTask: taskIndex,
+      currentTaskDate: this.state.allTasks[taskIndex].fullDate
     })
   }
 
-  drawerClose = () => {
+  setTaskInformation = () => {
     const dateFromPicker = this.refTimePicker.current.value
     const date = `${new Date(dateFromPicker)}`
     const [ , month, day, year, time ] = date.split(' ')
     const [ hour, minute ] = time.split(':')
 
-    this.setState(({ allTasks, indexOfCurrentTask }) => { 
-      allTasks[indexOfCurrentTask].taskDay =  month + ' ' + day
-      allTasks[indexOfCurrentTask].taskHour =  hour + ':' + minute
-
+    this.setState(({ allTasks, indexOfCurrentTask, taskHeader, taskDescription }) => { 
+      allTasks[indexOfCurrentTask].taskDay = month + ' ' + day
+      allTasks[indexOfCurrentTask].taskHour = hour + ':' + minute
+      allTasks[indexOfCurrentTask].fullDate = dateFromPicker
       allTasks[indexOfCurrentTask].taskYear = 
         new Date().getFullYear() - year === 0 ? '' : year
+      allTasks[indexOfCurrentTask].taskHeader = taskHeader
+      allTasks[indexOfCurrentTask].taskDescription = taskDescription
 
-      return { taskDrawer: false, allTasks}
+      allTasks.sort((currentTask, nextTask) => {
+        console.log(currentTask, nextTask)
+        if(Date.parse(currentTask.fullDate) - Date.parse(nextTask.fullDate) < 0) {
+          console.log('<0')
+          const temp = nextTask.taskPos 
+          nextTask.taskPos = currentTask.taskPos 
+          currentTask.taskPos = temp
+          return 1
+        } 
+        else {
+          console.log('>0')
+          return -1
+        }
+      })
+
+      return { taskDrawer: false, allTasks }
     })
+  }
+
+  drawerClose = () => {
+    console.log( /\S/.test(this.state.taskHeader))
+    this.state.taskHeader === '' || !/\S/.test(this.state.taskHeader) 
+      ? this.deleteTask()
+      : this.setTaskInformation()
   }
   
   setTaskFields = field => e => {
     const event = e.target
-    this.setState(({ allTasks, indexOfCurrentTask }) => {
-      allTasks[indexOfCurrentTask][field] = this.state[field]
+    this.setState(({ allTasks }) => {
       return { allTasks, [field]: event.value }
     })
   }
+
+  changeDate = (e) => 
+    this.setState({currentTaskDate: e.target.value})
+  
 
   makeTask = e => {
     const taskPos = e.nativeEvent.offsetY
@@ -155,12 +184,18 @@ class Line extends React.Component {
       
       return { 
         allTasks: allTasks, 
-        taskDrawer: !taskDrawer,
+        taskDrawer: !taskDrawer,  
         indexOfCurrentTask: allTasks.indexOf(task),
       }
     })
 
   }
+
+  deleteTask = () => 
+    this.setState(({allTasks, indexOfCurrentTask}) => {
+      allTasks.splice(indexOfCurrentTask, 1)
+      return { allTasks, taskDrawer: false }
+    })
 
   getCurrentDate = () => {
     const date = new Date()
@@ -178,6 +213,13 @@ class Line extends React.Component {
   componentDidMount() {
     window.scrollBy(0, 5)
     window.addEventListener('scroll', this.makeLine)
+    
+    ValidatorForm.addValidationRule('isOnlySpaces', value => {
+      if(/\S/.test(value)) {
+        return true
+      }
+      return false
+    })
   }
 
   componentWillUnmount() {
@@ -188,10 +230,8 @@ class Line extends React.Component {
     const { classes } = this.props
     const { lineHeight, allTasks, 
             taskDrawer, taskHeader, 
-            taskDescription } = this.state
+            taskDescription, currentTaskDate } = this.state
             
-    const date = this.getCurrentDate()
-
     return (
       <div  className={classes.wrap}>
 
@@ -240,55 +280,64 @@ class Line extends React.Component {
           
         <Drawer onClose={this.drawerClose} open={taskDrawer} anchor="right"> 
           <div className={classes.drawerWrap}>
-            <Typography 
-              align="center" 
-              component="h3"
-            >
-              task header
-            </Typography>
-            <TextField 
-              margin="dense" 
-              onChange={this.setTaskFields("taskHeader")} 
-              required 
-              value={taskHeader} 
-              inputProps={{maxLength: "50"}}
-              multiline 
-              className={classes.taskFormField} 
-            />
-                
-            <Typography 
-              align="center" 
-              component="h3"
-            >
-              task description
-            </Typography>
-            <TextField  
-              margin="dense" 
-              rowsMax="15" 
-              multiline 
-              inputProps={{maxLength: "150"}}
-              onChange={this.setTaskFields("taskDescription")}
-              value={taskDescription}
-              className={classes.taskFormField} 
-            />
+            <ValidatorForm onSubmit={this.setTaskInformation}>
+              <Typography 
+                align="center" 
+                component="h3"
+              >
+                task header
+              </Typography>
+              <TextValidator 
+                margin="dense" 
+                onChange={this.setTaskFields("taskHeader")} 
+                name="taskHeader" 
+                value={taskHeader} 
+                multiline 
+                validators={['required', 'isOnlySpaces', 'minStringLength:1', 'maxStringLength:16']}
+                errorMessages={['this field is required', 'must cosist not only from spaces', 'must contain at least 1 characters', 'password must contain no more then 50 characters']}
+                className={classes.taskFormField} 
+              />
+                  
+              <Typography 
+                align="center" 
+                component="h3"
+              >
+                task description
+              </Typography>
+              <TextField  
+                margin="dense" 
+                rowsMax="15" 
+                multiline 
+                inputProps={{maxLength: "150"}}
+                onChange={this.setTaskFields("taskDescription")}
+                value={taskDescription}
+                className={classes.taskFormField} 
+              />
 
-            <Typography 
-              align="center" 
-              component="h3"
-            >
-              task time
-            </Typography>
-            <TextField 
-              type="datetime-local" 
-              defaultValue={date}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputRef={this.refTimePicker}
-              className={classes.taskFormField}
-            />
+              <Typography 
+                align="center" 
+                component="h3"
+              >
+                task time
+              </Typography>
+              <TextField 
+                type="datetime-local" 
+                value={
+                  currentTaskDate === '' 
+                    ? this.getCurrentDate() 
+                    : currentTaskDate
+                }
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={this.changeDate}
+                inputRef={this.refTimePicker}
+                className={classes.taskFormField} 
+              />
 
-            <Button onClick={this.drawerClose}>OK</Button>
+              <Button type="submit">OK</Button>
+              <Button onClick={this.deleteTask}>Delete</Button>
+            </ValidatorForm>
           </div>
         </Drawer>
 

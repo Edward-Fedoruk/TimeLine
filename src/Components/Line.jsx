@@ -39,7 +39,7 @@ const styles = (theme) => ({
     transform: 'translate(-15%, -70%)',
     borderRadius: '50%',
     zIndex: '1',
-    transition: 'all 3s linear',
+    // transition: 'top 3s linear',
     willChange: 'top',
   },
 
@@ -86,7 +86,8 @@ class Line extends React.Component {
     taskHeader: '',
     taskDescription: '',
     indexOfCurrentTask: Number,
-    currentTaskDate: ''
+    currentTaskDate: '',
+    animation: false
   }
 
   refTimePicker = React.createRef()
@@ -125,9 +126,10 @@ class Line extends React.Component {
         new Date().getFullYear() - year === 0 ? '' : year
       allTasks[indexOfCurrentTask].taskHeader = taskHeader
       allTasks[indexOfCurrentTask].taskDescription = taskDescription
+
       const task = allTasks[indexOfCurrentTask]
+
       allTasks.sort((current, next) => Date.parse(next.fullDate) - Date.parse(current.fullDate))
-      console.log(task)
       const test = allTasks.indexOf(task)
       // allTasks.sort((current, next) => {
       //   console.log(current,next)
@@ -140,21 +142,26 @@ class Line extends React.Component {
       //   return -1 
       // })
       // console.log(allTasks)
+      // if(allTasks[test - 1])
+      //   allTasks[test - 1].opacity = '1'
+
+        // allTasks[test].opacity = '1'
+      
       if(allTasks[test + 1]) {
         if(allTasks[test].taskPos < allTasks[test + 1].taskPos) {
           allTasks[test].taskPos = allTasks[test + 1].taskPos 
-          for (let i = 0; i <= test; i++) {
+          allTasks[test].animation = true
+          for (let i = 0; i <= test; i++) 
             allTasks[i].taskPos += 60
-          }
         }
       }
 
       if(allTasks[test - 1]) {
         if(allTasks[test].taskPos > allTasks[test - 1].taskPos) {
           allTasks[test].taskPos = allTasks[test - 1].taskPos
-          for (let i = 0; i < test; i++) {
+          allTasks[test].animation = true
+          for (let i = 0; i < test; i++) 
             allTasks[i].taskPos += 60
-          }
         }
       }
      
@@ -235,7 +242,7 @@ class Line extends React.Component {
       //   allTasks[indexOfCurrentTask].taskPos = left[0].taskPos + 60        
       // }
 
-      return { taskDrawer: false, allTasks }
+      return { taskDrawer: false, allTasks, animation: true }
     })
   }
 
@@ -261,7 +268,7 @@ class Line extends React.Component {
     const taskPos = e.nativeEvent.offsetY
 
     this.setState(({ allTasks, taskDrawer }) => {
-      const task = { taskPos, taskHeader: '', taskDescription: '' }
+      const task = { taskPos, taskHeader: '', taskDescription: '', animation: false, opacity: '0' }
       allTasks.push(task)
       allTasks
         .sort((current, next) => current.taskPos - next.taskPos)
@@ -280,6 +287,7 @@ class Line extends React.Component {
         allTasks, 
         taskDrawer: !taskDrawer,  
         indexOfCurrentTask: allTasks.indexOf(task),
+        animation: false
       }
     })
 
@@ -324,7 +332,7 @@ class Line extends React.Component {
     const { classes } = this.props
     const { lineHeight, allTasks, 
             taskDrawer, taskHeader, 
-            taskDescription, currentTaskDate } = this.state
+            taskDescription, currentTaskDate, animation } = this.state
             
     return (
       <div  className={classes.wrap}>
@@ -338,7 +346,7 @@ class Line extends React.Component {
             {allTasks.map((task, i) => 
               <div
                 key={i}
-                style={{ top: `${task.taskPos}px`, opacity: `${task.opacity}` }}
+                style={{transition: `${animation ? 'top .3s linear' : ''}`, top: `${task.taskPos}px`}}
                 className={classes.task}
                 onClick={this.taskClick(i)}
               > 

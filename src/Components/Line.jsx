@@ -39,7 +39,7 @@ const styles = (theme) => ({
     transform: 'translate(-15%, -70%)',
     borderRadius: '50%',
     zIndex: '1',
-    transition: 'all .2s linear',
+    transition: 'all 3s linear',
     willChange: 'top',
   },
 
@@ -125,21 +125,115 @@ class Line extends React.Component {
         new Date().getFullYear() - year === 0 ? '' : year
       allTasks[indexOfCurrentTask].taskHeader = taskHeader
       allTasks[indexOfCurrentTask].taskDescription = taskDescription
-
-      allTasks.sort((currentTask, nextTask) => {
-        console.log(currentTask, nextTask)
-        if(Date.parse(currentTask.fullDate) - Date.parse(nextTask.fullDate) < 0) {
-          console.log('<0')
-          const temp = nextTask.taskPos 
-          nextTask.taskPos = currentTask.taskPos 
-          currentTask.taskPos = temp
-          return 1
-        } 
-        else {
-          console.log('>0')
-          return -1
+      const task = allTasks[indexOfCurrentTask]
+      allTasks.sort((current, next) => Date.parse(next.fullDate) - Date.parse(current.fullDate))
+      console.log(task)
+      const test = allTasks.indexOf(task)
+      // allTasks.sort((current, next) => {
+      //   console.log(current,next)
+      //   if(current.taskPos < next.taskPos) {
+      //     current.taskPos = next.taskPos + 60
+      //     for(let i = 0; i < allTasks.indexOf(current); i++)
+      //       allTasks[i].taskPos += 60 
+      //     return 1
+      //   }
+      //   return -1 
+      // })
+      // console.log(allTasks)
+      if(allTasks[test + 1]) {
+        if(allTasks[test].taskPos < allTasks[test + 1].taskPos) {
+          allTasks[test].taskPos = allTasks[test + 1].taskPos 
+          for (let i = 0; i <= test; i++) {
+            allTasks[i].taskPos += 60
+          }
         }
-      })
+      }
+
+      if(allTasks[test - 1]) {
+        if(allTasks[test].taskPos > allTasks[test - 1].taskPos) {
+          allTasks[test].taskPos = allTasks[test - 1].taskPos
+          for (let i = 0; i < test; i++) {
+            allTasks[i].taskPos += 60
+          }
+        }
+      }
+     
+      // allTasks.forEach((task, i, array) => {
+      //   const diffBtwTasks = array[1 + i] === undefined 
+      //     ? NaN 
+      //     : task.taskPos - array[1 + i].taskPos
+
+      //   if(diffBtwTasks < 60)     
+      //     for (let j = 0; j <= i; j++) 
+      //       allTasks[j].taskPos = allTasks[j].taskPos + 61 - diffBtwTasks        
+      // })
+      // allTasks.sort((currentTask, nextTask) => {
+      //   console.log(currentTask, nextTask)
+      //   if(Date.parse(currentTask.fullDate) - Date.parse(nextTask.fullDate) < 0) {
+      //     // const temp = nextTask.taskPos 
+      //     nextTask.taskPos = currentTask.taskPos + 60
+      //     // currentTask.taskPos = temp
+      //     // test = allTasks.indexOf(currentTask)
+      //     console.log(currentTask , nextTask)
+      //     for (let i = allTasks.indexOf(currentTask); i <= allTasks.length; i++) {
+      //       allTasks[i].taskPos += 60
+      //      }
+      //     return -1
+      //   } 
+      //   else {
+      //     return 1
+      //   }
+      // })
+      // const top = []
+      // const bottom = []
+      // const equals = []
+
+      // const currentTaskDate = Date.parse(allTasks[indexOfCurrentTask].fullDate)
+      // const topTask = allTasks[indexOfCurrentTask - 1] ? Date.parse(allTasks[indexOfCurrentTask - 1].fullDate) : null
+      // const bottomTask = allTasks[indexOfCurrentTask + 1] ? Date.parse(allTasks[indexOfCurrentTask + 1].fullDate) : null
+
+      // if(!((topTask !== null && topTask > currentTaskDate) && (bottomTask !== null && bottomTask < currentTaskDate))) {
+      //   allTasks.forEach(task => {
+      //     if(currentTaskDate > Date.parse(task.fullDate))
+      //       bottom.push(task) 
+      //     else if(currentTaskDate === Date.parse(task.fullDate))
+      //       equals.push(task)
+      //     else 
+      //       top.push(task)
+      //   })
+        
+      //   if(equals.length && allTasks[indexOfCurrentTask] !== equals[0]) {
+      //     allTasks[indexOfCurrentTask].taskPos = equals[0].taskPos + 60
+      //     top.forEach(task => task.taskPos += 60)
+      //   }
+      //   if(bottom.length && top.length) {
+      //     allTasks[indexOfCurrentTask].taskPos = bottom[0].taskPos + 60
+      //     top.forEach(task => task.taskPos += 60)
+      //     console.log('+60')
+      //   }
+      //   else if(bottom.length) {
+      //     allTasks[indexOfCurrentTask].taskPos = bottom[0].taskPos + 60
+      //     top.forEach(task => task.taskPos += 60)       
+      //   }
+      //   else if(top.length && !bottom.length) {
+      //     top[top.length - 1].taskPos = allTasks[indexOfCurrentTask].taskPos
+      //     top.forEach(task => task.taskPos += 60)       
+
+      //     console.log(top, bottom)
+      //   }
+        // if(top.length && bottom.length) {
+        //   top.forEach(task => task.taskPos += 60)
+        //   console.log('+=60')
+        // }
+        
+      // }
+      // console.log(right.length)
+      // if(left.length && !(Date.parse(right[0].fullDate) > currentTaskDate && Date.parse(left[0].fullDate) < currentTaskDate )) {
+      //   right.forEach(task => task.taskPos += 60)
+      // }
+      // if(left.length) {
+      //   allTasks[indexOfCurrentTask].taskPos = left[0].taskPos + 60        
+      // }
 
       return { taskDrawer: false, allTasks }
     })
@@ -183,7 +277,7 @@ class Line extends React.Component {
         })
       
       return { 
-        allTasks: allTasks, 
+        allTasks, 
         taskDrawer: !taskDrawer,  
         indexOfCurrentTask: allTasks.indexOf(task),
       }
@@ -244,7 +338,7 @@ class Line extends React.Component {
             {allTasks.map((task, i) => 
               <div
                 key={i}
-                style={{ top: `${task.taskPos}px` }}
+                style={{ top: `${task.taskPos}px`, opacity: `${task.opacity}` }}
                 className={classes.task}
                 onClick={this.taskClick(i)}
               > 

@@ -131,26 +131,12 @@ class Line extends React.Component {
 
       allTasks.sort((current, next) => Date.parse(next.fullDate) - Date.parse(current.fullDate))
       const test = allTasks.indexOf(task)
-      // allTasks.sort((current, next) => {
-      //   console.log(current,next)
-      //   if(current.taskPos < next.taskPos) {
-      //     current.taskPos = next.taskPos + 60
-      //     for(let i = 0; i < allTasks.indexOf(current); i++)
-      //       allTasks[i].taskPos += 60 
-      //     return 1
-      //   }
-      //   return -1 
-      // })
-      // console.log(allTasks)
-      // if(allTasks[test - 1])
-      //   allTasks[test - 1].opacity = '1'
 
-        // allTasks[test].opacity = '1'
+      allTasks[test].opacity = '1'
       
       if(allTasks[test + 1]) {
         if(allTasks[test].taskPos < allTasks[test + 1].taskPos) {
           allTasks[test].taskPos = allTasks[test + 1].taskPos 
-          allTasks[test].animation = true
           for (let i = 0; i <= test; i++) 
             allTasks[i].taskPos += 60
         }
@@ -159,88 +145,10 @@ class Line extends React.Component {
       if(allTasks[test - 1]) {
         if(allTasks[test].taskPos > allTasks[test - 1].taskPos) {
           allTasks[test].taskPos = allTasks[test - 1].taskPos
-          allTasks[test].animation = true
           for (let i = 0; i < test; i++) 
             allTasks[i].taskPos += 60
         }
       }
-     
-      // allTasks.forEach((task, i, array) => {
-      //   const diffBtwTasks = array[1 + i] === undefined 
-      //     ? NaN 
-      //     : task.taskPos - array[1 + i].taskPos
-
-      //   if(diffBtwTasks < 60)     
-      //     for (let j = 0; j <= i; j++) 
-      //       allTasks[j].taskPos = allTasks[j].taskPos + 61 - diffBtwTasks        
-      // })
-      // allTasks.sort((currentTask, nextTask) => {
-      //   console.log(currentTask, nextTask)
-      //   if(Date.parse(currentTask.fullDate) - Date.parse(nextTask.fullDate) < 0) {
-      //     // const temp = nextTask.taskPos 
-      //     nextTask.taskPos = currentTask.taskPos + 60
-      //     // currentTask.taskPos = temp
-      //     // test = allTasks.indexOf(currentTask)
-      //     console.log(currentTask , nextTask)
-      //     for (let i = allTasks.indexOf(currentTask); i <= allTasks.length; i++) {
-      //       allTasks[i].taskPos += 60
-      //      }
-      //     return -1
-      //   } 
-      //   else {
-      //     return 1
-      //   }
-      // })
-      // const top = []
-      // const bottom = []
-      // const equals = []
-
-      // const currentTaskDate = Date.parse(allTasks[indexOfCurrentTask].fullDate)
-      // const topTask = allTasks[indexOfCurrentTask - 1] ? Date.parse(allTasks[indexOfCurrentTask - 1].fullDate) : null
-      // const bottomTask = allTasks[indexOfCurrentTask + 1] ? Date.parse(allTasks[indexOfCurrentTask + 1].fullDate) : null
-
-      // if(!((topTask !== null && topTask > currentTaskDate) && (bottomTask !== null && bottomTask < currentTaskDate))) {
-      //   allTasks.forEach(task => {
-      //     if(currentTaskDate > Date.parse(task.fullDate))
-      //       bottom.push(task) 
-      //     else if(currentTaskDate === Date.parse(task.fullDate))
-      //       equals.push(task)
-      //     else 
-      //       top.push(task)
-      //   })
-        
-      //   if(equals.length && allTasks[indexOfCurrentTask] !== equals[0]) {
-      //     allTasks[indexOfCurrentTask].taskPos = equals[0].taskPos + 60
-      //     top.forEach(task => task.taskPos += 60)
-      //   }
-      //   if(bottom.length && top.length) {
-      //     allTasks[indexOfCurrentTask].taskPos = bottom[0].taskPos + 60
-      //     top.forEach(task => task.taskPos += 60)
-      //     console.log('+60')
-      //   }
-      //   else if(bottom.length) {
-      //     allTasks[indexOfCurrentTask].taskPos = bottom[0].taskPos + 60
-      //     top.forEach(task => task.taskPos += 60)       
-      //   }
-      //   else if(top.length && !bottom.length) {
-      //     top[top.length - 1].taskPos = allTasks[indexOfCurrentTask].taskPos
-      //     top.forEach(task => task.taskPos += 60)       
-
-      //     console.log(top, bottom)
-      //   }
-        // if(top.length && bottom.length) {
-        //   top.forEach(task => task.taskPos += 60)
-        //   console.log('+=60')
-        // }
-        
-      // }
-      // console.log(right.length)
-      // if(left.length && !(Date.parse(right[0].fullDate) > currentTaskDate && Date.parse(left[0].fullDate) < currentTaskDate )) {
-      //   right.forEach(task => task.taskPos += 60)
-      // }
-      // if(left.length) {
-      //   allTasks[indexOfCurrentTask].taskPos = left[0].taskPos + 60        
-      // }
 
       return { taskDrawer: false, allTasks, animation: true }
     })
@@ -268,7 +176,7 @@ class Line extends React.Component {
     const taskPos = e.nativeEvent.offsetY
 
     this.setState(({ allTasks, taskDrawer }) => {
-      const task = { taskPos, taskHeader: '', taskDescription: '', animation: false, opacity: '0' }
+      const task = { taskPos, taskHeader: '', taskDescription: '', animation: false, opacity: '0.3' }
       allTasks.push(task)
       allTasks
         .sort((current, next) => current.taskPos - next.taskPos)
@@ -287,7 +195,8 @@ class Line extends React.Component {
         allTasks, 
         taskDrawer: !taskDrawer,  
         indexOfCurrentTask: allTasks.indexOf(task),
-        animation: false
+        animation: false,
+
       }
     })
 
@@ -316,12 +225,8 @@ class Line extends React.Component {
     window.scrollBy(0, 5)
     window.addEventListener('scroll', this.makeLine)
     
-    ValidatorForm.addValidationRule('isOnlySpaces', value => {
-      if(/\S/.test(value)) {
-        return true
-      }
-      return false
-    })
+    ValidatorForm.addValidationRule('isOnlySpaces', 
+      value => (/\S/.test(value)) ? true : false)
   }
 
   componentWillUnmount() {
@@ -346,7 +251,8 @@ class Line extends React.Component {
             {allTasks.map((task, i) => 
               <div
                 key={i}
-                style={{transition: `${animation ? 'top .3s linear' : ''}`, top: `${task.taskPos}px`}}
+                style={{transition: `${animation ? 'all .3s linear' : ''}`, top: `${task.taskPos}px`, 
+              opacity: `${task.opacity}`}}
                 className={classes.task}
                 onClick={this.taskClick(i)}
               > 

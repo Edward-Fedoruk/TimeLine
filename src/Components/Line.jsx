@@ -80,29 +80,31 @@ const styles = (theme) => ({
 
 class Line extends React.Component {
   state = {
-    lineHeight: 101,
     allTasks: [],
     taskDrawer: false,
     taskHeader: '',
     taskDescription: '',
     indexOfCurrentTask: Number,
     currentTaskDate: '',
-    animation: false
+    animation: false,
+    delay: 0
   }
 
   refTimePicker = React.createRef()
 
   makeLine = e => {
     const windowHeight = document.documentElement.clientHeight
-    if(window.scrollY === 0) {
-      this.setState({ lineHeight: this.state.lineHeight + 100 })
-      window.scrollBy(0, windowHeight)
+    if(window.scrollY <= 0) {
+      this.setState({ lineHeight: this.state.lineHeight + 100, delay: Date.parse(new Date()) }, 
+      () => {
+        console.log(windowHeight)
+        window.scrollBy(0, windowHeight)
+      })
     }
   }
 
   taskClick = taskIndex => e => {
     e.stopPropagation()
-    // console.log(this.state.allTasks[taskIndex])
     this.setState({ 
       taskDrawer: !this.state.taskDrawer,
       taskHeader: this.state.allTasks[taskIndex].taskHeader,
@@ -155,8 +157,7 @@ class Line extends React.Component {
   }
 
   drawerClose = () => {
-    console.log( /\S/.test(this.state.taskHeader))
-    this.state.taskHeader === '' || !/\S/.test(this.state.taskHeader) 
+    this.state.taskHeader === '' || !(/\S/.test(this.state.taskHeader)) 
       ? this.deleteTask()
       : this.setTaskInformation()
   }
@@ -222,11 +223,12 @@ class Line extends React.Component {
   }
 
   componentDidMount() {
-    window.scrollBy(0, 5)
+    const windowHeight = document.documentElement.clientHeight * 3
+
+    window.scrollBy(0, windowHeight)
     window.addEventListener('scroll', this.makeLine)
     
-    ValidatorForm.addValidationRule('isOnlySpaces', 
-      value => (/\S/.test(value)) ? true : false)
+    ValidatorForm.addValidationRule('isOnlySpaces', value => /\S/.test(value))
   }
 
   componentWillUnmount() {

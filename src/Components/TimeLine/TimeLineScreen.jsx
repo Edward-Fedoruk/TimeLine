@@ -25,17 +25,6 @@ class TimeLineScreen extends React.Component {
   
   refTimePicker = React.createRef()
 
-  makeLine = e => {
-    const windowHeight = document.documentElement.clientHeight
-    if(window.scrollY <= 0) {
-      this.setState({ lineHeight: this.state.lineHeight + 100 }, 
-      () => {
-        console.log(windowHeight)
-        window.scrollBy(0, windowHeight)
-      })
-    }
-  }
-
   taskClick = taskIndex => e => {
     e.stopPropagation()
     this.setState({ 
@@ -74,7 +63,6 @@ class TimeLineScreen extends React.Component {
       }
     })
   }
-  
 
   setTaskInformation = () => {
     const dateFromPicker = this.refTimePicker.current.value

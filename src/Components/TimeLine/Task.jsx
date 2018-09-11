@@ -39,32 +39,35 @@ const styles = (theme) => ({
 })
 
 class Task extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { canDrag: false }
+  // constructor(props) {
+  //   super(props)
+  //   this.state = { canDrag: false }
 
-    this.timer = null
-  }
+  //   this.timer = null
+  // }
 
-  waitForDnD = () => 
-    this.timer = setTimeout(() => {
-      this.setState({ canDrag: true })
-      console.log('can drag')
-    }, 2000)
+  // waitForDnD = e => {
+  //   e.preventDefault()
+  //   this.timer = setTimeout(() => {
+  //     this.setState({ canDrag: true })
+  //     console.log('can drag')
+  //   }, 2000)
+  // }
   
 
-  cancelDnD = () => {
-    clearTimeout(this.timer)
-    if(this.state.canDrag) {
-      this.setState({ canDrag: false })
-      console.log('cant drag')
-    }
-  }
+  // cancelDnD = () => {
+  //   clearTimeout(this.timer)
+  //   if(this.state.canDrag) {
+  //     this.setState({ canDrag: false })
+  //     console.log('cant drag')
+  //   }
+  // }
 
-  taskDrag = e => {
-    console.log(e.clientY, window.innerHeight, window.innerHeight - e.clientY )
-    e.target.style.top = window.innerHeight - e.clientY + 'px'
-  }
+  // taskDrag = e => {
+  //   console.log(this.props.refLine.current)
+  //   console.log(e.clientY, window.innerHeight, window.innerHeight - e.clientY )
+  //   e.target.style.top = window.innerHeight - e.clientY + 'px'
+  // }
 
   render() {
     const { 
@@ -72,18 +75,21 @@ class Task extends React.Component {
       task: { opacity, taskPos, 
             taskHeader, taskDay, 
             taskHour } ,
-      taskClick
+      taskClick,
+      canDrag,
+      refTask
     } = this.props
-    const { canDrag } = this.state
 
     return (
       <div
-        style={{transition: `${animation ? 'all .3s linear' : ''}`, top: `${taskPos}px`, opacity: `${opacity}`}}
-        className={classes.task}
+        style={{
+          transition: `${animation && !canDrag ? 'all .3s linear' : ''}`,
+          top: `${taskPos}px`, 
+          opacity: `${opacity}`
+        }}
+        className={`${classes.task} task`}
         onClick={taskClick}
-        onMouseDown={this.waitForDnD}
-        onMouseUp={this.cancelDnD}
-        onMouseMove={canDrag ? this.taskDrag : null}
+        ref={refTask}
       > 
         <Paper className={classes.textWrap}>
           <Typography  

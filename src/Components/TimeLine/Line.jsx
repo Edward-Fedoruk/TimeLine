@@ -23,7 +23,11 @@ const styles = (theme) => ({
 class Line extends React.Component  {
   state = {
     lineHeight: 300,
+    canDrag: false
   }
+
+  refTask = React.createRef()
+  timer = null
 
   makeLine = e => {
     const windowHeight = document.documentElement.clientHeight
@@ -39,8 +43,32 @@ class Line extends React.Component  {
   componentDidMount() {
     const windowHeight = document.documentElement.clientHeight * 3
     window.scrollBy(0, windowHeight)
+    window.addEventListener('scroll', this.makeLine) 
+  }
 
-    window.addEventListener('scroll', this.makeLine)    
+  taskDrag = e => {
+    console.log(this.refTask.current, e.target)
+    this.refTask.current.style.top = window.innerHeight - e.clientY + 'px'
+
+  }
+
+  waitForDnD = e => {
+    e.preventDefault()
+    console.log(e.target.classList)
+    if([...e.target.classList].includes('task'))
+      this.timer = setTimeout(() => {
+        this.setState({ canDrag: true })
+        console.log('can drag')
+      }, 2000)
+  }   
+
+  cancelDnD = e => {
+    e.preventDefault()
+    clearTimeout(this.timer)
+    if(this.state.canDrag) {
+      this.setState({ canDrag: false })
+      console.log('cant drag')
+    }
   }
 
   componentWillUnmount() {
@@ -50,13 +78,18 @@ class Line extends React.Component  {
   render() {
     const { allTasks, classes, makeTask, 
             taskClick, animation } = this.props
+    const { canDrag, lineHeight } = this.state
 
     return (
       <div className={classes.lineWrap}>
         <div 
-          style={{ height: `${this.state.lineHeight}vh` }} 
+          style={{ height: `${lineHeight}vh` }} 
           className={classes.fullHeightLine}
           onClick={makeTask}
+          onMouseDown={this.waitForDnD}
+          onMouseMove={canDrag ? this.taskDrag : null}
+          onMouseUp={this.cancelDnD}
+          ref={this.refLine}
         >
           {allTasks.map((task, i) => 
             <Task 
@@ -64,6 +97,8 @@ class Line extends React.Component  {
               task={task}
               animation={animation}
               taskClick={taskClick(i)}
+              canDrag={this.state.canDrag}
+              refTask={this.refTask}
             />
           )}
         </div>

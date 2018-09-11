@@ -64,6 +64,8 @@ class TimeLineScreen extends React.Component {
     })
   }
 
+
+
   setTaskInformation = () => {
     const dateFromPicker = this.refTimePicker.current.value
     const date = `${new Date(dateFromPicker)}`

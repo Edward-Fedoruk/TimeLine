@@ -68,12 +68,12 @@ class Task extends React.Component {
   //   console.log(e.clientY, window.innerHeight, window.innerHeight - e.clientY )
   //   e.target.style.top = window.innerHeight - e.clientY + 'px'
   // }
-  taskClick = e => {
+
+  currentTaskClick = e => {
     e.stopPropagation()
     console.log(this.props.canClick)
-    if(this.props.canClick)
-      this.props.taskClick(e)
-    else this.props.enableClick()
+    if(this.props.canClick) this.props.taskClick()
+    else this.props.resetDraggedTask()
   }
 
   render() {
@@ -95,7 +95,7 @@ class Task extends React.Component {
           opacity: `${opacity}`
         }}
         className={`${classes.task} task`}
-        onClick={this.taskClick}
+        onClick={this.currentTaskClick}
         ref={refTask}
       > 
         <Paper className={classes.textWrap}>

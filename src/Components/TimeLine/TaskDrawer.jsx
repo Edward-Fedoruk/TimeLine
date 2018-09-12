@@ -49,7 +49,7 @@ class TaskDrawer extends React.Component {
   render() {
     const { classes, taskDrawer, setTaskInformation, deleteTask, setTaskFields, refTimePicker, taskHeader, taskDescription, currentTaskDate } = this.props
     return (
-      <Drawer  onClose={this.drawerClose} open={taskDrawer} anchor="right"> 
+      <Drawer onClose={this.drawerClose} open={taskDrawer} anchor="right"> 
         <div className={classes.drawerWrap}>
           <ValidatorForm onSubmit={setTaskInformation}>
             <Typography 

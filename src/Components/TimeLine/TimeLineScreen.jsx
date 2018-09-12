@@ -36,6 +36,15 @@ class TimeLineScreen extends React.Component {
     })
   }
 
+  changeTaskPos = (newTaskPos) => {
+    this.setState(({ allTasks, indexOfCurrentTask }) => {
+      allTasks[indexOfCurrentTask].taskPos = parseInt(newTaskPos)
+      return { allTasks }
+    })
+  }
+
+  setCurrentIndex = i => __ => this.setState({ indexOfCurrentTask: i })
+
   makeTask = e => {
     const taskPos = e.nativeEvent.offsetY
 
@@ -130,22 +139,6 @@ class TimeLineScreen extends React.Component {
       <div  className={classes.wrap}>
       
         <Line
-          makeTask={this.makeTask}
-          allTasks={allTasks}
-          lineHeight={lineHeight}
-          taskClick={this.taskClick}
-          animation={animation}
-        />
-
-        <TaskDrawer
-          taskDrawer={taskDrawer}
-          setTaskInformation={this.setTaskInformation}
-          setTaskFields={this.setTaskFields}
-          deleteTask={this.deleteTask}
-          refTimePicker={this.refTimePicker}
-          currentTaskDate={currentTaskDate}
-          taskHeader={taskHeader}
-          taskDescription={taskDescription}
         />
 
       </div>

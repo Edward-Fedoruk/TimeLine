@@ -64,8 +64,6 @@ class TimeLineScreen extends React.Component {
     })
   }
 
-
-
   setTaskInformation = () => {
     const dateFromPicker = this.refTimePicker.current.value
     const date = `${new Date(dateFromPicker)}`
@@ -114,8 +112,6 @@ class TimeLineScreen extends React.Component {
       return { allTasks, [field]: event.value }
     })
   }
-
-  
 
   deleteTask = () => 
     this.setState(({allTasks, indexOfCurrentTask}) => {

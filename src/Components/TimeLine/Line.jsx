@@ -23,7 +23,8 @@ const styles = (theme) => ({
 class Line extends React.Component  {
   state = {
     lineHeight: 300,
-    canDrag: false
+    canDrag: false,
+    canClick: true
   }
 
   refTask = React.createRef()
@@ -49,21 +50,20 @@ class Line extends React.Component  {
   taskDrag = e => {
     console.log(this.refTask.current, e.target)
     this.refTask.current.style.top = window.innerHeight - e.clientY + 'px'
-
   }
 
   waitForDnD = e => {
-    e.preventDefault()
     console.log(e.target.classList)
     if([...e.target.classList].includes('task'))
       this.timer = setTimeout(() => {
-        this.setState({ canDrag: true })
+        this.setState({ canDrag: true, canClick: false })
         console.log('can drag')
       }, 2000)
   }   
 
+  enableClick = () => this.setState({ canClick: true })
+
   cancelDnD = e => {
-    e.preventDefault()
     clearTimeout(this.timer)
     if(this.state.canDrag) {
       this.setState({ canDrag: false })
@@ -78,7 +78,7 @@ class Line extends React.Component  {
   render() {
     const { allTasks, classes, makeTask, 
             taskClick, animation } = this.props
-    const { canDrag, lineHeight } = this.state
+    const { canDrag, lineHeight, canClick } = this.state
 
     return (
       <div className={classes.lineWrap}>
@@ -97,8 +97,10 @@ class Line extends React.Component  {
               task={task}
               animation={animation}
               taskClick={taskClick(i)}
-              canDrag={this.state.canDrag}
+              canDrag={canDrag}
+              canClick={canClick}
               refTask={this.refTask}
+              enableClick={this.enableClick}
             />
           )}
         </div>

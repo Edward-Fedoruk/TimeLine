@@ -83,14 +83,13 @@ class Task extends React.Component {
             taskHeader, taskDay, 
             taskHour } ,
       taskClick,
-      canDrag,
       refTask
     } = this.props
 
     return (
       <div
         style={{
-          transition: `${animation && !canDrag ? 'all .3s linear' : ''}`,
+          transition: `${animation ? 'all .3s linear' : ''}`,
           top: `${taskPos}px`, 
           opacity: `${opacity}`
         }}

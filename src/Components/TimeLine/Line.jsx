@@ -152,7 +152,7 @@ class Line extends React.Component  {
     console.log(e.target.classList)
     if([...e.target.classList].includes('task'))
       this.timer = setTimeout(() => {
-        this.setState({ canDrag: true, canClick: false })
+        this.setState({ canDrag: true, animation: false, canClick: false })
         console.log('can drag')
       }, 2000)
   }   

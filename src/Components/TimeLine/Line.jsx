@@ -47,25 +47,24 @@ class Line extends React.Component  {
       currentTaskDate: this.state.allTasks[taskIndex].fullDate
     })
   
+  makeSpacesBtwTasks = (task, i, array) => {
+    const diffBtwTasks = array[1 + i] === undefined 
+      ? NaN 
+      : task.taskPos - array[1 + i].taskPos
+
+    if(diffBtwTasks < 60)     
+      for (let j = 0; j <= i; j++) 
+        array[j].taskPos = array[j].taskPos + 61 - diffBtwTasks        
+  }
 
   makeTask = e => {
     const taskPos = e.nativeEvent.offsetY
-    console.log(e.target)
     this.setState(({ allTasks, taskDrawer }) => {
       const task = { taskPos, taskHeader: '', taskDescription: '', animation: false, opacity: '0.3' }
       allTasks.push(task)
       allTasks
-        .sort((current, next) => current.taskPos - next.taskPos)
-        .reverse()
-        .forEach((task, i, array) => {
-          const diffBtwTasks = array[1 + i] === undefined 
-            ? NaN 
-            : task.taskPos - array[1 + i].taskPos
-
-          if(diffBtwTasks < 60)     
-            for (let j = 0; j <= i; j++) 
-              allTasks[j].taskPos = allTasks[j].taskPos + 61 - diffBtwTasks        
-        })
+        .sort((current, next) => next.taskPos - current.taskPos)
+        .forEach(this.makeSpacesBtwTasks)
       
       return { 
         allTasks, 
@@ -75,6 +74,14 @@ class Line extends React.Component  {
       }
     })
   }
+
+  taskLteAndExist = (arr, i) => 
+    arr[i + 1] && arr[i].taskPos < arr[i + 1].taskPos
+
+  taskGteAndExist = (arr, i) => 
+    arr[i - 1] && arr[i].taskPos > arr[i - 1].taskPos
+
+  
 
   setTaskInformation = () => {
     const dateFromPicker = this.refTimePicker.current.value
@@ -91,27 +98,21 @@ class Line extends React.Component  {
       allTasks[indexOfCurrentTask].taskHeader = taskHeader
       allTasks[indexOfCurrentTask].taskDescription = taskDescription
 
-      const task = allTasks[indexOfCurrentTask]
+      const tempTask = allTasks[indexOfCurrentTask]
 
       allTasks.sort((current, next) => Date.parse(next.fullDate) - Date.parse(current.fullDate))
-      const test = allTasks.indexOf(task)
+      indexOfCurrentTask = allTasks.indexOf(tempTask)
 
-      allTasks[test].opacity = '1'
+      allTasks[indexOfCurrentTask].opacity = '1'
       
-      if(allTasks[test + 1]) {
-        if(allTasks[test].taskPos < allTasks[test + 1].taskPos) {
-          allTasks[test].taskPos = allTasks[test + 1].taskPos 
-          for (let i = 0; i <= test; i++) 
-            allTasks[i].taskPos += 60
-        }
+      if(this.taskLteAndExist(allTasks, indexOfCurrentTask)) {
+        allTasks[indexOfCurrentTask].taskPos = allTasks[indexOfCurrentTask + 1].taskPos 
+        for (let i = 0; i <= indexOfCurrentTask; i++) allTasks[i].taskPos += 60
       }
-
-      if(allTasks[test - 1]) {
-        if(allTasks[test].taskPos > allTasks[test - 1].taskPos) {
-          allTasks[test].taskPos = allTasks[test - 1].taskPos
-          for (let i = 0; i < test; i++) 
-            allTasks[i].taskPos += 60
-        }
+      
+      if(this.taskGteAndExist(allTasks, indexOfCurrentTask)) {
+        allTasks[indexOfCurrentTask].taskPos = allTasks[indexOfCurrentTask - 1].taskPos
+        for (let i = 0; i < indexOfCurrentTask; i++) allTasks[i].taskPos += 60
       }
 
       return { taskDrawer: false, allTasks, animation: true, taskHeader: '', taskDescription: '' }
@@ -147,21 +148,6 @@ class Line extends React.Component  {
     e.persist()
     this.setState(({ indexOfCurrentTask, allTasks }) => {
       allTasks[indexOfCurrentTask].taskPos = document.documentElement.scrollHeight - e.pageY
-
-      // if(allTasks[indexOfCurrentTask - 1]) {
-      //   if(allTasks[indexOfCurrentTask].taskPos > allTasks[indexOfCurrentTask - 1].taskPos) {
-      //     allTasks[indexOfCurrentTask].fullDate = allTasks[indexOfCurrentTask - 1].fullDate
-      //     allTasks[indexOfCurrentTask].taskDay = allTasks[indexOfCurrentTask - 1].taskDay
-      //     allTasks[indexOfCurrentTask].taskHour = allTasks[indexOfCurrentTask - 1].taskHour
-      //     allTasks[indexOfCurrentTask].taskYear = allTasks[indexOfCurrentTask - 1].taskYear
-
-      //     const temp = allTasks[indexOfCurrentTask - 1]
-      //     allTasks[indexOfCurrentTask - 1] = allTasks[indexOfCurrentTask]
-      //     allTasks[indexOfCurrentTask] = temp 
-
-      //     indexOfCurrentTask--
-      //   }
-      // }
       return { allTasks }
     })
   }
@@ -171,7 +157,7 @@ class Line extends React.Component  {
       this.timer = setTimeout(() => {
         this.setState({ canDrag: true, animation: false, canClick: false, indexOfCurrentTask: taskIndex})
         console.log('can drag')
-      }, 2000)
+      }, 1500)
     }
   }   
 
@@ -205,15 +191,7 @@ class Line extends React.Component  {
           }
         }
 
-       allTasks.forEach((task, i, array) => {
-        const diffBtwTasks = array[1 + i] === undefined 
-          ? NaN 
-          : task.taskPos - array[1 + i].taskPos
-
-        if(diffBtwTasks < 60)     
-          for (let j = 0; j <= i; j++) 
-            allTasks[j].taskPos = allTasks[j].taskPos + 61 - diffBtwTasks        
-      })
+       allTasks.forEach(this.makeSpacesBtwTasks)
 
         console.log( allTasks)
         return { canDrag: false, animation: true }

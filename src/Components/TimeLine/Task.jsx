@@ -83,17 +83,14 @@ class Task extends React.Component {
             taskHeader, taskDay, 
             taskHour } ,
       waitForDnD,
-      canDrag
     } = this.props
 
     return (
       <div
         style={{
-          transition: `${animation ? 'top, opacity .3s linear' : 'width .3s linear, height .3s linear'}`,
+          transition: `${animation ? 'all .3s linear' : ''}`,
           top: `${taskPos}px`, 
           opacity: `${opacity}`,
-          width: `${canDrag ? 60 : 40}px`,
-          height: `${canDrag ? 60 : 40}px`
         }}
         className={`${classes.task} task`}
         onClick={this.currentTaskClick}

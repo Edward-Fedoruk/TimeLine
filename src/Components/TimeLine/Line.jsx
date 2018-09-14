@@ -75,29 +75,40 @@ class Line extends React.Component  {
     })
   }
 
-  taskLteAndExist = (arr, i) => 
-    arr[i + 1] && arr[i].taskPos < arr[i + 1].taskPos
+  taskLteAndExist = (arr, i, prop, wrap) => 
+    arr[i + 1] && wrap(arr[i][prop]) < wrap(arr[i + 1][prop])
 
-  taskGteAndExist = (arr, i) => 
-    arr[i - 1] && arr[i].taskPos > arr[i - 1].taskPos
+  taskGteAndExist = (arr, i, prop, wrap) => 
+    arr[i - 1] && wrap(arr[i][prop]) > wrap(arr[i - 1][prop])
 
-  takeDateFromPicker = () => {
+  getDateFromPicker = () => {
     const dateFromPicker = this.refTimePicker.current.value
     const fullDate = `${new Date(dateFromPicker)}`
     const [ , month, day, year, time ] = fullDate.split(' ')
     const [ hour, minute ] = time.split(':')
 
-    return { month, day, year, time, hour, minute, fullDate }
+    return { month, day, year, time, hour, minute, dateFromPicker }
+  }
+
+  setDateInTask = (task, fullDate, taskDay, taskHour, taskYear) => {
+    task.fullDate = fullDate
+    task.taskDay = taskDay
+    task.taskHour = taskHour
+    task.taskYear = taskYear
   }
   
   setTaskInformation = () => {
-    const date = this.takeDateFromPicker()
+    const date = this.getDateFromPicker()
+    const id = i => i 
 
     this.setState(({ allTasks, indexOfCurrentTask, taskHeader, taskDescription }) => { 
-      allTasks[indexOfCurrentTask].taskDay = date.month + ' ' + date.day
-      allTasks[indexOfCurrentTask].taskHour = date.hour + ':' + date.minute
-      allTasks[indexOfCurrentTask].fullDate = date.fullDate
-      allTasks[indexOfCurrentTask].taskYear = new Date().getFullYear() - date.year === 0 ? '' : date.year
+      this.setDateInTask(
+        allTasks[indexOfCurrentTask], 
+        date.dateFromPicker, 
+        date.day, 
+        date.hour + ':' + date.minute, 
+        new Date().getFullYear() - date.year === 0 ? '' : date.year
+      )
       allTasks[indexOfCurrentTask].taskHeader = taskHeader
       allTasks[indexOfCurrentTask].taskDescription = taskDescription
 
@@ -107,12 +118,12 @@ class Line extends React.Component  {
 
       allTasks[indexOfCurrentTask].opacity = '1'
       
-      if(this.taskLteAndExist(allTasks, indexOfCurrentTask)) {
+      if(this.taskLteAndExist(allTasks, indexOfCurrentTask, 'taskPos', id)) {
         allTasks[indexOfCurrentTask].taskPos = allTasks[indexOfCurrentTask + 1].taskPos 
         for (let i = 0; i <= indexOfCurrentTask; i++) allTasks[i].taskPos += 60
       }
       
-      if(this.taskGteAndExist(allTasks, indexOfCurrentTask)) {
+      if(this.taskGteAndExist(allTasks, indexOfCurrentTask, 'taskPos', id)) {
         allTasks[indexOfCurrentTask].taskPos = allTasks[indexOfCurrentTask - 1].taskPos
         for (let i = 0; i < indexOfCurrentTask; i++) allTasks[i].taskPos += 60
       }
@@ -173,27 +184,30 @@ class Line extends React.Component  {
         allTasks.sort((current, next) => next.taskPos - current.taskPos)
         indexOfCurrentTask = allTasks.indexOf(temp)
 
-        if(allTasks[indexOfCurrentTask + 1]) {
-          if(Date.parse(allTasks[indexOfCurrentTask].fullDate) < Date.parse(allTasks[indexOfCurrentTask + 1].fullDate)) {
-            allTasks[indexOfCurrentTask].fullDate = allTasks[indexOfCurrentTask + 1].fullDate
-            allTasks[indexOfCurrentTask].taskDay = allTasks[indexOfCurrentTask + 1].taskDay
-            allTasks[indexOfCurrentTask].taskHour = allTasks[indexOfCurrentTask + 1].taskHour
-            allTasks[indexOfCurrentTask].taskYear = allTasks[indexOfCurrentTask + 1].taskYear
-          }
+        if(this.taskLteAndExist(allTasks, indexOfCurrentTask, 'fullDate', Date.parse)) {
+          const nextTask = allTasks[indexOfCurrentTask + 1]
+          this.setDateInTask(
+            allTasks[indexOfCurrentTask],
+            nextTask.fullDate,
+            nextTask.taskDay,
+            nextTask.taskHour,
+            nextTask.taskYear
+          )
         }
 
-        if(allTasks[indexOfCurrentTask - 1]) {
-          if(Date.parse(allTasks[indexOfCurrentTask].fullDate) > Date.parse(allTasks[indexOfCurrentTask - 1].fullDate)) {
-            allTasks[indexOfCurrentTask].fullDate = allTasks[indexOfCurrentTask - 1].fullDate
-            allTasks[indexOfCurrentTask].taskDay = allTasks[indexOfCurrentTask - 1].taskDay
-            allTasks[indexOfCurrentTask].taskHour = allTasks[indexOfCurrentTask - 1].taskHour
-            allTasks[indexOfCurrentTask].taskYear = allTasks[indexOfCurrentTask - 1].taskYear
-          }
+        if(this.taskGteAndExist(allTasks, indexOfCurrentTask, 'fullDate', Date.parse)) {
+          const prevTask = allTasks[indexOfCurrentTask - 1]
+          this.setDateInTask(
+            allTasks[indexOfCurrentTask],
+            prevTask.fullDate,
+            prevTask.taskDay,
+            prevTask.taskHour,
+            prevTask.taskYear
+          )
         }
 
        allTasks.forEach(this.makeSpacesBtwTasks)
 
-        console.log( allTasks)
         return { canDrag: false, animation: true }
       })
       console.log('cant drag')
@@ -235,7 +249,6 @@ class Line extends React.Component  {
               taskClick={this.taskClick(i)}
               resetDraggedTask={this.resetDraggedTask(i)}
               canClick={canClick}
-              canDrag={canDrag}
             />
           )}
         </div>

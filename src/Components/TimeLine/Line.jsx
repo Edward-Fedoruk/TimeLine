@@ -35,7 +35,6 @@ class Line extends React.Component  {
     animation: false,
   }
 
-  refTask = React.createRef()
   refTimePicker = React.createRef()
   timer = null
 
@@ -51,7 +50,7 @@ class Line extends React.Component  {
 
   makeTask = e => {
     const taskPos = e.nativeEvent.offsetY
-
+    console.log(e.target)
     this.setState(({ allTasks, taskDrawer }) => {
       const task = { taskPos, taskHeader: '', taskDescription: '', animation: false, opacity: '0.3' }
       allTasks.push(task)
@@ -144,29 +143,48 @@ class Line extends React.Component  {
   }
 
   taskDrag = e => {
-    console.log(this.refTask.current, e.target)
-    this.refTask.current.style.top = window.innerHeight - e.clientY + 'px'
+    e.stopPropagation()
+    e.persist()
+    this.setState(({ indexOfCurrentTask, allTasks }) => {
+      allTasks[indexOfCurrentTask].taskPos = document.documentElement.scrollHeight - e.pageY
+
+      // if(allTasks[indexOfCurrentTask - 1]) {
+      //   if(allTasks[indexOfCurrentTask].taskPos > allTasks[indexOfCurrentTask - 1].taskPos) {
+      //     allTasks[indexOfCurrentTask].fullDate = allTasks[indexOfCurrentTask - 1].fullDate
+      //     allTasks[indexOfCurrentTask].taskDay = allTasks[indexOfCurrentTask - 1].taskDay
+      //     allTasks[indexOfCurrentTask].taskHour = allTasks[indexOfCurrentTask - 1].taskHour
+      //     allTasks[indexOfCurrentTask].taskYear = allTasks[indexOfCurrentTask - 1].taskYear
+
+      //     const temp = allTasks[indexOfCurrentTask - 1]
+      //     allTasks[indexOfCurrentTask - 1] = allTasks[indexOfCurrentTask]
+      //     allTasks[indexOfCurrentTask] = temp 
+
+      //     indexOfCurrentTask--
+      //   }
+      // }
+      return { allTasks }
+    })
   }
 
-  waitForDnD = e => {
-    console.log(e.target.classList)
-    if([...e.target.classList].includes('task'))
+  waitForDnD = taskIndex => e => {
+    if([...e.target.classList].includes('task')) {
       this.timer = setTimeout(() => {
-        this.setState({ canDrag: true, animation: false, canClick: false })
+        this.setState({ canDrag: true, animation: false, canClick: false, indexOfCurrentTask: taskIndex})
         console.log('can drag')
       }, 2000)
+    }
   }   
 
   resetDraggedTask = i => __ => 
     this.setState({ indexOfCurrentTask: i, canClick: true })
-  
 
-  cancelDnD = () => {
+  cancelDnD = (e) => {
+    e.stopPropagation()
     clearTimeout(this.timer)
     if(this.state.canDrag) {
-      this.setState(({allTasks, indexOfCurrentTask }) => {
-        allTasks[indexOfCurrentTask].taskPos = parseInt(this.refTask.current.style.top)
-        return { canDrag: false, allTasks }
+      this.setState(({ indexOfCurrentTask, allTasks }) => {
+        console.log(allTasks[indexOfCurrentTask], allTasks)
+        return { canDrag: false }
       })
       console.log('cant drag')
     }
@@ -194,7 +212,6 @@ class Line extends React.Component  {
           style={{ height: `${lineHeight}vh` }} 
           className={classes.fullHeightLine}
           onClick={this.makeTask}
-          onMouseDown={this.waitForDnD}
           onMouseMove={canDrag ? this.taskDrag : null}
           onMouseUp={this.cancelDnD}
           ref={this.refLine}
@@ -204,10 +221,10 @@ class Line extends React.Component  {
               key={i}
               task={task}
               animation={animation}
+              waitForDnD={this.waitForDnD(i)}
               taskClick={this.taskClick(i)}
               resetDraggedTask={this.resetDraggedTask(i)}
               canClick={canClick}
-              refTask={this.refTask}
             />
           )}
         </div>

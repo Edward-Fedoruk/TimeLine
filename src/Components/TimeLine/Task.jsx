@@ -71,7 +71,7 @@ class Task extends React.Component {
 
   currentTaskClick = e => {
     e.stopPropagation()
-    console.log(this.props.canClick)
+    // console.log(this.props.canClick)
     if(this.props.canClick) this.props.taskClick()
     else this.props.resetDraggedTask()
   }
@@ -82,7 +82,7 @@ class Task extends React.Component {
       task: { opacity, taskPos, 
             taskHeader, taskDay, 
             taskHour } ,
-      taskClick,
+      waitForDnD,
       refTask
     } = this.props
 
@@ -95,6 +95,7 @@ class Task extends React.Component {
         }}
         className={`${classes.task} task`}
         onClick={this.currentTaskClick}
+        onMouseDown={waitForDnD}
         ref={refTask}
       > 
         <Paper className={classes.textWrap}>

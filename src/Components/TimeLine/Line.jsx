@@ -167,7 +167,7 @@ class Line extends React.Component  {
   waitForDnD = taskIndex => e => {
     if([...e.target.classList].includes('task')) {
       this.timer = setTimeout(() => {
-        this.setState({ canDrag: true, animation: false, canClick: false, indexOfCurrentTask: taskIndex})
+        this.setState({ canDrag: true, animation: false, canClick: false, indexOfCurrentTask: taskIndex })
         console.log('can drag')
       }, 1500)
     }
@@ -231,39 +231,42 @@ class Line extends React.Component  {
             lineHeight, animation, canClick } = this.state
 
     return (
-      <div className={classes.lineWrap}>
-        <div 
-          style={{ height: `${lineHeight}vh` }} 
-          className={classes.fullHeightLine}
-          onClick={this.makeTask}
-          onMouseMove={canDrag ? this.taskDrag : null}
-          onMouseUp={this.cancelDnD}
-          ref={this.refLine}
-        >
-          {allTasks.map((task, i) => 
-            <Task 
-              key={i}
-              task={task}
-              animation={animation}
-              waitForDnD={this.waitForDnD(i)}
-              taskClick={this.taskClick(i)}
-              resetDraggedTask={this.resetDraggedTask(i)}
-              canClick={canClick}
-            />
-          )}
+      <div 
+        style={{ width: '100%', height: '100%', overflow: 'hidden' }}
+        onMouseMove={canDrag ? this.taskDrag : null}
+      >
+        <div className={classes.lineWrap}>
+          <div 
+            style={{ height: `${lineHeight}vh` }} 
+            className={classes.fullHeightLine}
+            onClick={this.makeTask}
+            onMouseUp={this.cancelDnD}
+          >
+            {allTasks.map((task, i) => 
+              <Task 
+                key={i}
+                task={task}
+                animation={animation}
+                waitForDnD={this.waitForDnD(i)}
+                taskClick={this.taskClick(i)}
+                resetDraggedTask={this.resetDraggedTask(i)}
+                canClick={canClick}
+              />
+            )}
+          </div>
+
+          <TaskDrawer
+            taskDrawer={taskDrawer}
+            setTaskInformation={this.setTaskInformation}
+            setTaskFields={this.setTaskFields}
+            deleteTask={this.deleteTask}
+            refTimePicker={this.refTimePicker}
+            currentTaskDate={currentTaskDate}
+            taskHeader={taskHeader}
+            taskDescription={taskDescription}
+          />
+
         </div>
-
-        <TaskDrawer
-          taskDrawer={taskDrawer}
-          setTaskInformation={this.setTaskInformation}
-          setTaskFields={this.setTaskFields}
-          deleteTask={this.deleteTask}
-          refTimePicker={this.refTimePicker}
-          currentTaskDate={currentTaskDate}
-          taskHeader={taskHeader}
-          taskDescription={taskDescription}
-        />
-
       </div>
     )
   }

@@ -183,8 +183,40 @@ class Line extends React.Component  {
     clearTimeout(this.timer)
     if(this.state.canDrag) {
       this.setState(({ indexOfCurrentTask, allTasks }) => {
-        console.log(allTasks[indexOfCurrentTask], allTasks)
-        return { canDrag: false }
+        const temp = allTasks[indexOfCurrentTask]
+        allTasks.sort((current, next) => next.taskPos - current.taskPos)
+        indexOfCurrentTask = allTasks.indexOf(temp)
+
+        if(allTasks[indexOfCurrentTask + 1]) {
+          if(Date.parse(allTasks[indexOfCurrentTask].fullDate) < Date.parse(allTasks[indexOfCurrentTask + 1].fullDate)) {
+            allTasks[indexOfCurrentTask].fullDate = allTasks[indexOfCurrentTask + 1].fullDate
+            allTasks[indexOfCurrentTask].taskDay = allTasks[indexOfCurrentTask + 1].taskDay
+            allTasks[indexOfCurrentTask].taskHour = allTasks[indexOfCurrentTask + 1].taskHour
+            allTasks[indexOfCurrentTask].taskYear = allTasks[indexOfCurrentTask + 1].taskYear
+          }
+        }
+
+        if(allTasks[indexOfCurrentTask - 1]) {
+          if(Date.parse(allTasks[indexOfCurrentTask].fullDate) > Date.parse(allTasks[indexOfCurrentTask - 1].fullDate)) {
+            allTasks[indexOfCurrentTask].fullDate = allTasks[indexOfCurrentTask - 1].fullDate
+            allTasks[indexOfCurrentTask].taskDay = allTasks[indexOfCurrentTask - 1].taskDay
+            allTasks[indexOfCurrentTask].taskHour = allTasks[indexOfCurrentTask - 1].taskHour
+            allTasks[indexOfCurrentTask].taskYear = allTasks[indexOfCurrentTask - 1].taskYear
+          }
+        }
+
+       allTasks.forEach((task, i, array) => {
+        const diffBtwTasks = array[1 + i] === undefined 
+          ? NaN 
+          : task.taskPos - array[1 + i].taskPos
+
+        if(diffBtwTasks < 60)     
+          for (let j = 0; j <= i; j++) 
+            allTasks[j].taskPos = allTasks[j].taskPos + 61 - diffBtwTasks        
+      })
+
+        console.log( allTasks)
+        return { canDrag: false, animation: true }
       })
       console.log('cant drag')
     }

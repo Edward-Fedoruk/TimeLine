@@ -81,25 +81,27 @@ class Line extends React.Component  {
   taskGteAndExist = (arr, i) => 
     arr[i - 1] && arr[i].taskPos > arr[i - 1].taskPos
 
-  
-
-  setTaskInformation = () => {
+  takeDateFromPicker = () => {
     const dateFromPicker = this.refTimePicker.current.value
-    const date = `${new Date(dateFromPicker)}`
-    const [ , month, day, year, time ] = date.split(' ')
+    const fullDate = `${new Date(dateFromPicker)}`
+    const [ , month, day, year, time ] = fullDate.split(' ')
     const [ hour, minute ] = time.split(':')
 
+    return { month, day, year, time, hour, minute, fullDate }
+  }
+  
+  setTaskInformation = () => {
+    const date = this.takeDateFromPicker()
+
     this.setState(({ allTasks, indexOfCurrentTask, taskHeader, taskDescription }) => { 
-      allTasks[indexOfCurrentTask].taskDay = month + ' ' + day
-      allTasks[indexOfCurrentTask].taskHour = hour + ':' + minute
-      allTasks[indexOfCurrentTask].fullDate = dateFromPicker
-      allTasks[indexOfCurrentTask].taskYear = 
-        new Date().getFullYear() - year === 0 ? '' : year
+      allTasks[indexOfCurrentTask].taskDay = date.month + ' ' + date.day
+      allTasks[indexOfCurrentTask].taskHour = date.hour + ':' + date.minute
+      allTasks[indexOfCurrentTask].fullDate = date.fullDate
+      allTasks[indexOfCurrentTask].taskYear = new Date().getFullYear() - date.year === 0 ? '' : date.year
       allTasks[indexOfCurrentTask].taskHeader = taskHeader
       allTasks[indexOfCurrentTask].taskDescription = taskDescription
 
       const tempTask = allTasks[indexOfCurrentTask]
-
       allTasks.sort((current, next) => Date.parse(next.fullDate) - Date.parse(current.fullDate))
       indexOfCurrentTask = allTasks.indexOf(tempTask)
 
@@ -144,7 +146,6 @@ class Line extends React.Component  {
   }
 
   taskDrag = e => {
-    e.stopPropagation()
     e.persist()
     this.setState(({ indexOfCurrentTask, allTasks }) => {
       allTasks[indexOfCurrentTask].taskPos = document.documentElement.scrollHeight - e.pageY
@@ -161,8 +162,7 @@ class Line extends React.Component  {
     }
   }   
 
-  resetDraggedTask = i => __ => 
-    this.setState({ indexOfCurrentTask: i, canClick: true })
+  resetDraggedTask = i => __ => this.setState({ indexOfCurrentTask: i, canClick: true })
 
   cancelDnD = (e) => {
     e.stopPropagation()
@@ -235,6 +235,7 @@ class Line extends React.Component  {
               taskClick={this.taskClick(i)}
               resetDraggedTask={this.resetDraggedTask(i)}
               canClick={canClick}
+              canDrag={canDrag}
             />
           )}
         </div>

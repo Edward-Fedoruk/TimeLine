@@ -39,39 +39,13 @@ const styles = (theme) => ({
 })
 
 class Task extends React.Component {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = { canDrag: false }
-
-  //   this.timer = null
-  // }
-
-  // waitForDnD = e => {
-  //   e.preventDefault()
-  //   this.timer = setTimeout(() => {
-  //     this.setState({ canDrag: true })
-  //     console.log('can drag')
-  //   }, 2000)
-  // }
-  
-
-  // cancelDnD = () => {
-  //   clearTimeout(this.timer)
-  //   if(this.state.canDrag) {
-  //     this.setState({ canDrag: false })
-  //     console.log('cant drag')
-  //   }
-  // }
-
-  // taskDrag = e => {
-  //   console.log(this.props.refLine.current)
-  //   console.log(e.clientY, window.innerHeight, window.innerHeight - e.clientY )
-  //   e.target.style.top = window.innerHeight - e.clientY + 'px'
-  // }
+  state = {
+    draggedTask: false
+  }
 
   currentTaskClick = e => {
     e.stopPropagation()
-    // console.log(this.props.canClick)
+    this.setState({ draggedTask: false })
     if(this.props.canClick) this.props.taskClick()
     else this.props.resetDraggedTask()
   }
@@ -84,17 +58,19 @@ class Task extends React.Component {
             taskHour } ,
       waitForDnD,
     } = this.props
-
+    const { draggedTask } = this.state
     return (
       <div
         style={{
           transition: `${animation ? 'all .3s linear' : ''}`,
           top: `${taskPos}px`, 
           opacity: `${opacity}`,
+          width: `${draggedTask ? 45 : 40}px`,
+          height: `${draggedTask ? 45 : 40}px`
         }}
         className={`${classes.task} task`}
         onClick={this.currentTaskClick}
-        onMouseDown={waitForDnD}
+        onMouseDown={(e) => {this.setState({draggedTask: true}); waitForDnD(e)}}
       > 
         <Paper className={classes.textWrap}>
           <Typography  

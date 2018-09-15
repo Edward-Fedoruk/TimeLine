@@ -33,10 +33,13 @@ class Line extends React.Component  {
     indexOfCurrentTask: Number,
     currentTaskDate: '',
     animation: false,
+    scrollingWithTask: false
   }
 
   refTimePicker = React.createRef()
   timer = null
+  ScrollInterval = null
+  ScrollInterval = null
 
   taskClick = taskIndex => __ => 
     this.setState({ 
@@ -128,7 +131,7 @@ class Line extends React.Component  {
         for (let i = 0; i < indexOfCurrentTask; i++) allTasks[i].taskPos += 60
       }
 
-      return { taskDrawer: false, allTasks, animation: true, taskHeader: '', taskDescription: '' }
+      return { taskDrawer: false, animation: true, taskHeader: '', taskDescription: '' }
     })
   }
 
@@ -149,15 +152,47 @@ class Line extends React.Component  {
     const windowHeight = document.documentElement.clientHeight
     if(window.scrollY <= 0) {
       this.setState({ lineHeight: this.state.lineHeight + 100 }, 
-      () => {
-        console.log(windowHeight)
-        window.scrollBy(0, windowHeight)
-      })
+      () => window.scrollBy(0, windowHeight))
     }
+  }
+
+  scrollOnDrag = e => {
+    const mousePos = window.innerHeight - e.clientY
+    const scrollTopStart = window.innerHeight / 2 + 100
+    const scrollBottomStart = window.innerHeight / 2 - 200
+    const doc = document.documentElement
+    
+    if(mousePos > scrollBottomStart && mousePos < scrollTopStart) {
+      clearInterval(this.ScrollInterval)
+      this.setState({ scrollingWithTask: false })  
+    }
+
+    if(mousePos > scrollTopStart && !this.state.scrollingWithTask) {
+      this.ScrollInterval = 
+        setInterval(() => { 
+          window.scrollBy(0, -5) 
+          if(doc.scrollTop !== 0) 
+            this.setState(({ indexOfCurrentTask, allTasks }) => 
+              allTasks[indexOfCurrentTask].taskPos += 5)
+        }, 10)
+      this.setState({ scrollingWithTask: true })  
+    } 
+    else if(mousePos < scrollBottomStart && !this.state.scrollingWithTask) {      
+      this.ScrollInterval = 
+        setInterval(() => { 
+          window.scrollBy(0, 5)
+          if(doc.scrollTop + window.innerHeight !== doc.scrollHeight){
+            this.setState(({ indexOfCurrentTask, allTasks }) => 
+              allTasks[indexOfCurrentTask].taskPos -= 5)
+          }
+        }, 10)
+      this.setState({ scrollingWithTask: true })  
+    } 
   }
 
   taskDrag = e => {
     e.persist()
+    this.scrollOnDrag(e)
     this.setState(({ indexOfCurrentTask, allTasks }) => {
       allTasks[indexOfCurrentTask].taskPos = document.documentElement.scrollHeight - e.pageY
       return { allTasks }
@@ -165,18 +200,18 @@ class Line extends React.Component  {
   }
 
   waitForDnD = taskIndex => e => {
-    if([...e.target.classList].includes('task')) {
+    if([...e.target.classList].includes('task')) 
       this.timer = setTimeout(() => {
         this.setState({ canDrag: true, animation: false, canClick: false, indexOfCurrentTask: taskIndex })
         console.log('can drag')
       }, 1500)
-    }
   }   
 
-  resetDraggedTask = i => __ => this.setState({ indexOfCurrentTask: i, canClick: true })
+  resetDraggedTask = () => this.setState({ canClick: true })
 
   cancelDnD = (e) => {
     e.stopPropagation()
+    clearInterval(this.ScrollInterval)
     clearTimeout(this.timer)
     if(this.state.canDrag) {
       this.setState(({ indexOfCurrentTask, allTasks }) => {
@@ -195,7 +230,7 @@ class Line extends React.Component  {
           )
         }
 
-        if(this.taskGteAndExist(allTasks, indexOfCurrentTask, 'fullDate', Date.parse)) {
+        else if(this.taskGteAndExist(allTasks, indexOfCurrentTask, 'fullDate', Date.parse)) {
           const prevTask = allTasks[indexOfCurrentTask - 1]
           this.setDateInTask(
             allTasks[indexOfCurrentTask],
@@ -206,9 +241,9 @@ class Line extends React.Component  {
           )
         }
 
-       allTasks.forEach(this.makeSpacesBtwTasks)
+        allTasks.forEach(this.makeSpacesBtwTasks)
 
-        return { canDrag: false, animation: true }
+        return { canDrag: false, animation: false, scrollingWithTask: false }
       })
       console.log('cant drag')
     }
@@ -234,13 +269,13 @@ class Line extends React.Component  {
       <div 
         style={{ width: '100%', height: '100%', overflow: 'hidden' }}
         onMouseMove={canDrag ? this.taskDrag : null}
+        onMouseUp={this.cancelDnD}
       >
         <div className={classes.lineWrap}>
           <div 
             style={{ height: `${lineHeight}vh` }} 
             className={classes.fullHeightLine}
             onClick={this.makeTask}
-            onMouseUp={this.cancelDnD}
           >
             {allTasks.map((task, i) => 
               <Task 
@@ -249,7 +284,7 @@ class Line extends React.Component  {
                 animation={animation}
                 waitForDnD={this.waitForDnD(i)}
                 taskClick={this.taskClick(i)}
-                resetDraggedTask={this.resetDraggedTask(i)}
+                resetDraggedTask={this.resetDraggedTask}
                 canClick={canClick}
               />
             )}

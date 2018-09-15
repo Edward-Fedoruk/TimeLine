@@ -24,7 +24,8 @@ const styles = (theme) => ({
   },
 
   text: {
-    width: '14vw'
+    width: '14vw',
+    userSelect: 'none'
   },
 
   dateWrap: {
@@ -33,7 +34,9 @@ const styles = (theme) => ({
     position: 'absolute',
     display: 'flex',
     width: '100px',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    userSelect: 'none'
+
   },
   
 })
@@ -70,7 +73,8 @@ class Task extends React.Component {
         }}
         className={`${classes.task} task`}
         onClick={this.currentTaskClick}
-        onMouseDown={(e) => {this.setState({draggedTask: true}); waitForDnD(e)}}
+        onMouseDown={e => {this.setState({draggedTask: true}); waitForDnD(e)}}
+        onTouchStart={e => {e.preventDefault(); this.setState({draggedTask: true}); waitForDnD(e)}}
       > 
         <Paper className={classes.textWrap}>
           <Typography  

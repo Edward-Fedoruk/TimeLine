@@ -157,7 +157,8 @@ class Line extends React.Component  {
   }
 
   scrollOnDrag = e => {
-    const mousePos = window.innerHeight - e.clientY
+    const clientY = e.clientY || e.touches[0].clientY
+    const mousePos = window.innerHeight - clientY
     const scrollTopStart = window.innerHeight / 2 + 100
     const scrollBottomStart = window.innerHeight / 2 - 200
     const doc = document.documentElement
@@ -170,6 +171,7 @@ class Line extends React.Component  {
     if(mousePos > scrollTopStart && !this.state.scrollingWithTask) {
       this.ScrollInterval = 
         setInterval(() => { 
+          console.log('scrolling top')
           window.scrollBy(0, -5) 
           if(doc.scrollTop !== 0) 
             this.setState(({ indexOfCurrentTask, allTasks }) => 
@@ -194,7 +196,9 @@ class Line extends React.Component  {
     e.persist()
     this.scrollOnDrag(e)
     this.setState(({ indexOfCurrentTask, allTasks }) => {
-      allTasks[indexOfCurrentTask].taskPos = document.documentElement.scrollHeight - e.pageY
+      const pageY =  e.pageY || e.touches[0].pageY
+      console.log(e.touches[0])
+      allTasks[indexOfCurrentTask].taskPos = document.documentElement.scrollHeight - pageY
       return { allTasks }
     })
   }
@@ -202,15 +206,14 @@ class Line extends React.Component  {
   waitForDnD = taskIndex => e => {
     if([...e.target.classList].includes('task')) 
       this.timer = setTimeout(() => {
-        this.setState({ canDrag: true, animation: false, canClick: false, indexOfCurrentTask: taskIndex })
         console.log('can drag')
+        this.setState({ canDrag: true, animation: false, canClick: false, indexOfCurrentTask: taskIndex })
       }, 1500)
   }   
 
   resetDraggedTask = () => this.setState({ canClick: true })
 
   cancelDnD = (e) => {
-    e.stopPropagation()
     clearInterval(this.ScrollInterval)
     clearTimeout(this.timer)
     if(this.state.canDrag) {
@@ -270,6 +273,8 @@ class Line extends React.Component  {
         style={{ width: '100%', height: '100%', overflow: 'hidden' }}
         onMouseMove={canDrag ? this.taskDrag : null}
         onMouseUp={this.cancelDnD}
+        onTouchEnd={this.cancelDnD}
+        onTouchMove={canDrag ? this.taskDrag : null}
       >
         <div className={classes.lineWrap}>
           <div 
@@ -277,8 +282,9 @@ class Line extends React.Component  {
             className={classes.fullHeightLine}
             onClick={this.makeTask}
           >
-            {allTasks.map((task, i) => 
-              <Task 
+            {allTasks.map((task, i) => {
+              console.log('rerendering')
+              return <Task 
                 key={i}
                 task={task}
                 animation={animation}
@@ -287,7 +293,7 @@ class Line extends React.Component  {
                 resetDraggedTask={this.resetDraggedTask}
                 canClick={canClick}
               />
-            )}
+            })}
           </div>
 
           <TaskDrawer

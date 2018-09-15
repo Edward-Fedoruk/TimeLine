@@ -9,3 +9,6 @@ body {
   /* display: none; */
 }
 
+* {
+  touch-action: none;
+}

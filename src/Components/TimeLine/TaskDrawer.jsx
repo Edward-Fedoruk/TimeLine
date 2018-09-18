@@ -40,16 +40,10 @@ class TaskDrawer extends React.Component {
     ValidatorForm.addValidationRule('isOnlySpaces', value => /\S/.test(value))
   }
 
-  drawerClose = () => {
-    this.props.taskHeader === '' || !(/\S/.test(this.props.taskHeader)) 
-      ? this.props.deleteTask()
-      : this.props.setTaskInformation()
-  }
-
   render() {
     const { classes, taskDrawer, setTaskInformation, deleteTask, setTaskFields, refTimePicker, taskHeader, taskDescription, currentTaskDate } = this.props
     return (
-      <Drawer onClose={this.drawerClose} open={taskDrawer} anchor="right"> 
+      <Drawer open={taskDrawer} anchor="right"> 
         <div className={classes.drawerWrap}>
           <ValidatorForm onSubmit={setTaskInformation}>
             <Typography 

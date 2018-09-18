@@ -41,7 +41,7 @@ const styles = (theme) => ({
   
 })
 
-class Task extends React.Component {
+class Task extends React.PureComponent {
   state = {
     draggedTask: false
   }

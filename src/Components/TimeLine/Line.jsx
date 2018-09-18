@@ -41,7 +41,8 @@ class Line extends React.Component  {
   ScrollInterval = null
   ScrollInterval = null
 
-  taskClick = taskIndex => __ => 
+  taskClick = taskIndex => __ => {
+    console.log(taskIndex)
     this.setState({ 
       taskDrawer: !this.state.taskDrawer,
       taskHeader: this.state.allTasks[taskIndex].taskHeader,
@@ -49,6 +50,7 @@ class Line extends React.Component  {
       indexOfCurrentTask: taskIndex,
       currentTaskDate: this.state.allTasks[taskIndex].fullDate
     })
+  }
   
   makeSpacesBtwTasks = (task, i, array) => {
     const diffBtwTasks = array[1 + i] === undefined 
@@ -68,7 +70,7 @@ class Line extends React.Component  {
       allTasks
         .sort((current, next) => next.taskPos - current.taskPos)
         .forEach(this.makeSpacesBtwTasks)
-      
+
       return { 
         allTasks, 
         taskDrawer: !taskDrawer,  
@@ -197,7 +199,6 @@ class Line extends React.Component  {
     this.scrollOnDrag(e)
     this.setState(({ indexOfCurrentTask, allTasks }) => {
       const pageY =  e.pageY || e.touches[0].pageY
-      console.log(e.touches[0])
       allTasks[indexOfCurrentTask].taskPos = document.documentElement.scrollHeight - pageY
       return { allTasks }
     })
@@ -282,9 +283,8 @@ class Line extends React.Component  {
             className={classes.fullHeightLine}
             onClick={this.makeTask}
           >
-            {allTasks.map((task, i) => {
-              console.log('rerendering')
-              return <Task 
+            {allTasks.map((task, i) => 
+              <Task 
                 key={i}
                 task={task}
                 animation={animation}
@@ -293,7 +293,7 @@ class Line extends React.Component  {
                 resetDraggedTask={this.resetDraggedTask}
                 canClick={canClick}
               />
-            })}
+            )}
           </div>
 
           <TaskDrawer

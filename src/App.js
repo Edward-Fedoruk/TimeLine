@@ -10,8 +10,7 @@ import Tab from '@material-ui/core/Tab'
 import { withStyles } from '@material-ui/core'
 
 import Notes from './Components/Notes'
-import Line from './Components/Line'
-import TimeLineScreen from './Components/TimeLine/TimeLineScreen';
+import TimeLine from './Components/TimeLine'
 
 const styles = (theme) => ({
   toolBar: {
@@ -30,10 +29,10 @@ class App extends React.Component {
 
   render() {
     const { classes } = this.props
-    const { value, lineHeight, tasksPos } = this.state
+    const { value } = this.state
     return (
       <React.Fragment>
-        <AppBar position="fixed">
+        {/* <AppBar position="fixed">
 
           <Toolbar className={classes.toolBar} variant="dense">
 
@@ -56,12 +55,12 @@ class App extends React.Component {
             <Tab value={1} label="Line" />
           </Tabs>
 
-        </AppBar>
+        </AppBar> */}
 
-        {value 
-          ? <TimeLineScreen 
-            />
-          : <Notes />}
+        {/* {value 
+          ? <FullLine />
+          : <Notes />} */}
+        <TimeLine />
       
       </React.Fragment>
     )

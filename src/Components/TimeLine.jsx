@@ -1,6 +1,97 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import TimeBlock from './TimeBlock'
+import Year from './Year'
+
+const tasks = 
+[
+  [ 
+    [
+      [
+        {
+          date: '2018-09-17T14:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        },
+
+        {
+          date: '2018-09-17T15:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        }
+      ],
+
+      [
+        {
+          date: '2018-09-18T16:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        },
+
+        {
+          date: '2018-09-18T17:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        }
+      ],
+
+      [
+        {
+          date: '2018-09-24T14:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        },
+
+        {
+          date: '2018-09-24T17:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        },
+
+        {
+          date: '2018-09-24T18:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        }
+      ],
+
+      [
+        {
+          date: '2018-09-25T14:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        },
+
+        {
+          date: '2018-09-25T16:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        },
+
+        {
+          date: '2018-09-25T19:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        }
+      ]
+    ],
+
+    [
+      [
+        {
+          date: '2018-10-26T14:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        },
+
+        {
+          date: '2018-10-26T16:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        }
+      ]
+    ]
+  ]
+]
 
 const styles = () => ({
   lineWrap: {
@@ -14,25 +105,34 @@ const styles = () => ({
   line: {
     width: '20px',
     position: 'absolute',
-    left: '60%'
+    left: '60%',
+    minHeight: '100vh',
+    backgroundColor: 'gray',
+    transform: 'rotate(180deg)'
   }
 })
 
-class FullLine extends React.Component {
+class TimeLine extends React.Component {
   state = {
-    allTasks: [ [0, 1, 2], [2], [1] ],  
-    mode: 'hours'
+    allTasks: []
+  }
+
+  initTasks = null
+
+  componentDidMount() {
+    // fetch date and set in state and global var
+    this.initTasks = tasks
+    this.setState({ allTasks: tasks })
   }
 
   render() {
     const { classes } = this.props
-    const { allTasks, mode } = this.state
-
+    const { allTasks } = this.state
     return (
       <div className={classes.lineWrap}>
         <div className={classes.line}>
-          {allTasks.map(timeBlock => 
-            <TimeBlock mode={mode} timeBlock={timeBlock} />
+          {allTasks.map((months, i) =>
+            <Year months={months} key={i} pos={i} />
           )}
         </div>
       </div>
@@ -40,4 +140,4 @@ class FullLine extends React.Component {
   }
 }
 
-export default withStyles(styles)(FullLine)
+export default withStyles(styles)(TimeLine)

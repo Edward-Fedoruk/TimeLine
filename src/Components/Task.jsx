@@ -7,17 +7,19 @@ const styles = () => ({
     height: '40px',
     borderRadius: '100%',
     backgroundColor: 'green',
-    position: 'absolute',
-    left: '50%',
-    transform: 'translateX(-50%)'
+    // position: 'absolute',
+    // left: '50%',
+    zIndex: '100',
+    transform: 'translateX(-50%)',
+    transition: 'all 3s'
   }
 })
 
 class Task extends React.Component {
   render() {
-    const { classes } = this.props
+    const { classes, pos } = this.props
     return (
-      <div className={classes.task}>
+      <div style={{ top: `${ pos * 40 }px` }} className={classes.task}>
         
       </div>
     )

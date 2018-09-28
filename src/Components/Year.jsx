@@ -6,14 +6,16 @@ import styles from './timeBlockStyles'
 class Years extends React.Component {
 
   render() {
-    const { classes, months, pos } = this.props
+    const { classes, months, pos, mode } = this.props
     return (
       <div 
         className={classes.timeBlock} 
-        // style={{ top: `${ pos * 60 }px`, height: `${60 * months.length}px` }}
+        style={{ 
+          height: `${mode === 3 ? '40px' : `auto`}`,
+        }}
       >
         {months.map((days, i) =>       
-          <Month pos={i} key={i} days={days} />
+          <Month pos={i} key={i} mode={mode} days={days} />
         )}
       </div>
     )

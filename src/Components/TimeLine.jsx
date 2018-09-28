@@ -114,7 +114,8 @@ const styles = () => ({
 
 class TimeLine extends React.Component {
   state = {
-    allTasks: []
+    allTasks: [],
+    mode: 0
   }
 
   initTasks = null
@@ -127,12 +128,12 @@ class TimeLine extends React.Component {
 
   render() {
     const { classes } = this.props
-    const { allTasks } = this.state
+    const { allTasks, mode } = this.state
     return (
       <div className={classes.lineWrap}>
         <div className={classes.line}>
           {allTasks.map((months, i) =>
-            <Year months={months} key={i} pos={i} />
+            <Year mode={mode} months={months} key={i} pos={i} />
           )}
         </div>
       </div>

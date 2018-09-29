@@ -7,7 +7,9 @@ const styles = () => ({
     // padding: '30px 0',
     // transform: 'rotate(180deg)',
     transition: 'all 3s',
-    width: '100%'
+    width: '100%',
+    margin: '30px 0'
+
   }
 })
 

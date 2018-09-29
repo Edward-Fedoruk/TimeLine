@@ -4,24 +4,25 @@ import Day from './Day'
 import styles from './timeBlockStyles'
 
 class Months extends React.Component {
-  // height: `${ mode === 1 ? days.length * 40 : null }px`
-  setStyles = mode => {
-    if(mode === 2) {
-      return  '40px' 
-    }
-    else if(mode === 1) {
-      return `${ this.props.days * 40 }px`
-    }
+
+  setHeight(mode) {
+    if(mode === 1) return `${this.props.days.length * 70}px`
     
+    else if(mode > 1) return `40px`
+
+    else if(mode === 0) {
+      const sum = this.props.days.reduce((ac, cur) => ac + (cur.length * 70) + 30, 0)
+      return `${sum}px`
+    }
   }
+
   render() {
     const { days, classes, pos, mode } = this.props
     return (
       <div 
         style={{ 
-          position: 'relative', 
-          top: `${ mode > 2 ? -(pos * 40) : 0 }px`, 
-          height: `${mode > 1 ? '40px' : mode === 1 ? `${days.length * 40}px` : `auto`}`,
+          top: `${ mode > 2 ? -pos * 70 : 0 }px`, 
+          height: `${this.setHeight(mode)}`,
         }}
         className={classes.timeBlock}
       >

@@ -9,6 +9,8 @@ const styles = () => ({
     height: '2px',
     background: '#000',
     right: '-60vw',
+    transition: 'all 3s',
+    opacity: '0'
   },
 
   time: {
@@ -49,9 +51,9 @@ class TimeSeparator extends React.Component {
   }
   
   render() {
-    const { classes } = this.props
+    const { classes, fadeIn } = this.props
     return (
-      <div className={classes.timeSeparator}>
+      <div style={{ opacity: `${fadeIn ? 1 : 0}`  }} className={classes.timeSeparator}>
         <span className={classes.time}>{ this.convertDate() }</span>
       </div>
     )

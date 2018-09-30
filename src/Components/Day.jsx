@@ -26,6 +26,7 @@ const dayStyles = () =>({
 })
 
 class Day extends React.Component {
+
   render() {
     const { tasks, pos, classes, mode } = this.props
     return (
@@ -36,8 +37,12 @@ class Day extends React.Component {
           height: `${ mode > 0 ? 40 : 70 * tasks.length }px`
         }}
       >
-        { mode === 0 && <TimeSeparator mode={mode} date={tasks[0].date} /> } 
-        
+        <TimeSeparator 
+          mode={mode} 
+          date={tasks[0].date} 
+          fadeIn={mode === 0}
+        />
+
         {tasks.map((task, i) =>
           <Task task={task} mode={mode} key={i} pos={i} />
         )}

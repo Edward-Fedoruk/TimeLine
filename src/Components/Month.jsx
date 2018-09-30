@@ -27,7 +27,12 @@ class Months extends React.Component {
         }}
         className={classes.timeBlock}
       >
-        { mode === 1 && <TimeSeparator mode={mode} date={days[0][0].date} /> } 
+        <TimeSeparator 
+          mode={mode} 
+          date={days[0][0].date} 
+          fadeIn={mode === 1}
+        />
+
         {days.map((tasks, i) =>
           <Day mode={mode} key={i} pos={i} tasks={tasks} /> 
         )}

@@ -15,7 +15,12 @@ class Years extends React.Component {
           height: `${ mode === 3 ? '40px' : `auto` }`,
         }}
       > 
-        { mode >= 2 && <TimeSeparator mode={mode} date={months[0][0][0].date} /> } 
+        <TimeSeparator 
+          mode={mode} 
+          date={months[0][0][0].date} 
+          fadeIn={mode > 1}
+        />
+
         {months.map((days, i) =>
           <Month pos={i} key={i} mode={mode} days={days} />
         )}

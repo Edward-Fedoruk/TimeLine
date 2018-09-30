@@ -118,8 +118,6 @@ class TimeLine extends React.Component {
     mode: 0
   }
 
-  initTasks = null
-
   componentDidMount() {
     // fetch date and set in state and global var
     this.initTasks = tasks

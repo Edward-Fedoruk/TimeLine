@@ -2,6 +2,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Day from './Day'
 import styles from './timeBlockStyles'
+import TimeSeparator from './TimeSeparator'
 
 class Months extends React.Component {
 
@@ -12,7 +13,7 @@ class Months extends React.Component {
 
     else if(mode === 0) {
       const sum = this.props.days.reduce((ac, cur) => ac + (cur.length * 70) + 30, 0)
-      return `${sum}px`
+      return `${sum - 30}px`
     }
   }
 
@@ -26,6 +27,7 @@ class Months extends React.Component {
         }}
         className={classes.timeBlock}
       >
+        { mode === 1 && <TimeSeparator mode={mode} date={days[0][0].date} /> } 
         {days.map((tasks, i) =>
           <Day mode={mode} key={i} pos={i} tasks={tasks} /> 
         )}

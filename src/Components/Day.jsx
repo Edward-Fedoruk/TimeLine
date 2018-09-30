@@ -2,6 +2,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Task from './Task'
 import styles from './timeBlockStyles'
+import TimeSeparator from './TimeSeparator'
 
 const dayStyles = () =>({
   timeSeparator: {
@@ -32,12 +33,11 @@ class Day extends React.Component {
         className={classes.timeBlock} 
         style={{
           top:    `${ mode > 1 ? -pos * 70 : 0 }px`, 
-          height: `${ mode > 0 ? 40 : 70 * tasks.length }px` 
+          height: `${ mode > 0 ? 40 : 70 * tasks.length }px`
         }}
       >
-        <div className={classes.timeSeparator}>
-          <span className={classes.time}> {mode === 0 && tasks[0].date} </span>
-        </div>
+        { mode === 0 && <TimeSeparator mode={mode} date={tasks[0].date} /> } 
+        
         {tasks.map((task, i) =>
           <Task task={task} mode={mode} key={i} pos={i} />
         )}

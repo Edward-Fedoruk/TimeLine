@@ -2,19 +2,21 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Month from './Month'
 import styles from './timeBlockStyles'
+import TimeSeparator from './TimeSeparator'
 
 class Years extends React.Component {
 
   render() {
-    const { classes, months, pos, mode } = this.props
+    const { classes, months, mode } = this.props
     return (
       <div 
         className={classes.timeBlock} 
         style={{ 
-          height: `${mode === 3 ? '40px' : `auto`}`,
+          height: `${ mode === 3 ? '40px' : `auto` }`,
         }}
-      >
-        {months.map((days, i) =>       
+      > 
+        { mode >= 2 && <TimeSeparator mode={mode} date={months[0][0][0].date} /> } 
+        {months.map((days, i) =>
           <Month pos={i} key={i} mode={mode} days={days} />
         )}
       </div>

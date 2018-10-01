@@ -129,8 +129,9 @@ class TimeLine extends React.Component {
     const { allTasks, mode } = this.state
     return (
       <div className={classes.lineWrap}>
-      <button onClick={() => this.setState({mode: mode + 1})}>+</button>
-        <button onClick={() => this.setState({mode: mode - 1})}>-</button>
+
+        <button onClick={() => this.setState({mode: mode + 1})}>+</button>
+
         <div className={classes.line}>
           {allTasks.map((months, i) =>
             <Year mode={mode} months={months} key={i} pos={i} />

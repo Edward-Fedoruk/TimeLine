@@ -19,6 +19,8 @@ class Months extends React.Component {
 
   render() {
     const { days, classes, pos, mode } = this.props
+    const lastTaskDate = days[0].date
+    
     return (
       <div 
         style={{ 
@@ -29,7 +31,7 @@ class Months extends React.Component {
       >
         <TimeSeparator 
           mode={mode} 
-          date={days[0][0].date} 
+          date={lastTaskDate} 
           fadeIn={mode === 1}
         />
 

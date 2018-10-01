@@ -22,6 +22,14 @@ const dayStyles = () =>({
     transform: 'rotate(180deg)'
   },
 
+  tasks: {
+    fontSize: '12px',
+    position: 'absolute',
+    left: '200%',
+    transform: 'rotate(180deg)',
+    width: 'max-content'
+  },
+
   ...styles()
 })
 
@@ -29,6 +37,8 @@ class Day extends React.Component {
 
   render() {
     const { tasks, pos, classes, mode } = this.props
+    const lastTaskDate = tasks[0].date
+
     return (
       <div 
         className={classes.timeBlock} 
@@ -39,9 +49,11 @@ class Day extends React.Component {
       >
         <TimeSeparator 
           mode={mode} 
-          date={tasks[0].date} 
+          date={lastTaskDate} 
           fadeIn={mode === 0}
         />
+        
+        {mode === 1 && <p className={classes.tasks}>{tasks.length} tasks in this day</p>}
 
         {tasks.map((task, i) =>
           <Task task={task} mode={mode} key={i} pos={i} />

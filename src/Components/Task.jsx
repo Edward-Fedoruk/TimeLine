@@ -41,12 +41,12 @@ class Task extends React.Component {
       hour: 'numeric',
       minute: 'numeric',
     })
+
     return (
       <div 
         style={{ top: `${ mode === 0 ? 0 : -pos * 70 }px` }} 
         className={classes.task}
       >
-        {console.log(task)}
         <p className={classes.header}> {mode === 0 && task.header} </p>
         <p className={classes.time}> {mode === 0 && newDate} </p>
       </div>

@@ -3,8 +3,16 @@ import { withStyles } from '@material-ui/core/styles'
 import Month from './Month'
 import styles from './timeBlockStyles'
 import TimeSeparator from './TimeSeparator'
+import TasksAmount from './TasksAmount'
+import TaskTime from './TaskTime'
 
 class Years extends React.Component {
+
+  getTasksInYear = () => 
+    this.props.months.reduce((acum, day) => 
+      acum + day.reduce((ac, cur) => ac + cur.length, 0), 
+    0)
+
   setHeight(mode) {
     if(mode === 2) return `${this.props.months.length * 70}px`
     
@@ -32,17 +40,30 @@ class Years extends React.Component {
         className={classes.timeBlock} 
         style={{ 
           height: `${this.setHeight(mode)}`,
+          transform: 'inherit'
         }}
       > 
         <TimeSeparator 
           mode={mode} 
           date={lastTaskDate} 
-          fadeIn={mode > 1}
+          fadeIn={mode === 2}
         />
+
+        <TasksAmount
+          fadeIn={mode === 3}
+          mode={mode}
+          tasks={this.getTasksInYear()}
+        />
+
+        {/* <TaskTime
+          date={newDate}
+          fadeIn={mode === 0}
+        />  */}
 
         {months.map((days, i) =>
           <Month pos={i} key={i} mode={mode} days={days} />
         )}
+        
       </div>
     )
   }

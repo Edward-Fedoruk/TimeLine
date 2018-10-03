@@ -3,8 +3,14 @@ import { withStyles } from '@material-ui/core/styles'
 import Day from './Day'
 import styles from './timeBlockStyles'
 import TimeSeparator from './TimeSeparator'
+import TasksAmount from './TasksAmount'
+import TaskTime from './TaskTime'
+
 
 class Months extends React.Component {
+
+  getTasksInMonth = () => 
+    this.props.days.reduce((ac, cur) => ac + cur.length, 0)
 
   setHeight(mode) {
     if(mode === 1) return `${this.props.days.length * 70}px`
@@ -12,15 +18,15 @@ class Months extends React.Component {
     else if(mode > 1) return `40px`
 
     else if(mode === 0) {
-      const sum = this.props.days.reduce((ac, cur) => ac + (cur.length * 70) + 30, 0)
-      return `${sum - 30}px`
+      const monthBlockH = this.props.days.reduce((ac, cur) => ac + (cur.length * 70) + 30, 0)
+      return `${monthBlockH - 30}px`
     }
   }
 
   render() {
     const { days, classes, pos, mode } = this.props
-    const lastTaskDate = days[0].date
-    
+    const lastTaskDate = days[0][0].date
+
     return (
       <div 
         style={{ 
@@ -34,6 +40,17 @@ class Months extends React.Component {
           date={lastTaskDate} 
           fadeIn={mode === 1}
         />
+
+        <TasksAmount
+          fadeIn={mode === 2}
+          mode={mode}
+          tasks={this.getTasksInMonth()}
+        />
+
+        {/* <TaskTime
+          date={newDate}
+          fadeIn={mode === 0}
+        />  */}
 
         {days.map((tasks, i) =>
           <Day mode={mode} key={i} pos={i} tasks={tasks} /> 

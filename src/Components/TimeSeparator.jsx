@@ -8,9 +8,11 @@ const styles = () => ({
     width: '100vw',
     height: '2px',
     background: '#000',
-    right: '-60vw',
-    transition: 'all 3s',
-    opacity: '0'
+    left: '-60vw',
+    transition: 'all 1.5s',
+    opacity: '0',
+    transform: 'rotate(180deg)'
+
   },
 
   time: {
@@ -35,13 +37,9 @@ class TimeSeparator extends React.Component {
       {
         year: 'numeric',
         month: 'long',
-        day: 'numeric',
       },
 
-      {
-        year: 'numeric',
-        month: 'long',
-      },
+      { year: 'numeric' },
 
       { year: 'numeric' }
     ]

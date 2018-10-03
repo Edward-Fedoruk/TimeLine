@@ -2,18 +2,29 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = () => ({
- 
+  tasksIn: {
+    fontSize: '12px',
+    position: 'absolute',
+    right: '200%',
+    // transform: 'rotate(180deg)',
+    width: 'max-content'
+    
+  },
+
+  wrap: {
+    transition: 'all 2s'
+  }
 })
 
 class TasksAmount extends React.Component {
   
   render() {
-    const { classes, fadeIn, mode } = this.props
-    const modes = [, 'day', 'month', 'year']
+    const { classes, fadeIn, mode, tasks } = this.props
+    const modes = [ , 'day', 'month', 'year']
     
     return (
-      <div style={{ opacity: `${fadeIn ? 1 : 0}`  }} className={classes.timeSeparator}>
-        <p className={classes.tasks}>{tasks.length} tasks in this {modes[mode]}</p>
+      <div style={{ opacity: `${fadeIn ? 1 : 0}`  }} className={classes.wrap}>
+        <p className={classes.tasksIn}>{tasks} tasks in this {modes[mode]}</p>
       </div>  
     )
   }

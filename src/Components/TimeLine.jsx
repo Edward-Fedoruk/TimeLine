@@ -8,13 +8,13 @@ const tasks =
     [
       [
         {
-          date: '2018-09-17T14:41:00Z',
+          date: '2018-09-17T15:41:00Z',
           header: 'important task',
           description: 'a lot of text'
         },
 
         {
-          date: '2018-09-17T15:41:00Z',
+          date: '2018-09-17T14:41:00Z',
           header: 'important task',
           description: 'a lot of text'
         }
@@ -22,7 +22,7 @@ const tasks =
 
       [
         {
-          date: '2018-09-18T16:41:00Z',
+          date: '2018-09-18T18:41:00Z',
           header: 'important task',
           description: 'a lot of text'
         },
@@ -36,19 +36,19 @@ const tasks =
 
       [
         {
+          date: '2018-09-24T18:41:00Z',
+          header: 'important task',
+          description: 'a lot of text'
+        },
+
+        {
           date: '2018-09-24T14:41:00Z',
           header: 'important task',
           description: 'a lot of text'
         },
 
         {
-          date: '2018-09-24T17:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-24T18:41:00Z',
+          date: '2018-09-24T12:41:00Z',
           header: 'important task',
           description: 'a lot of text'
         }
@@ -56,7 +56,7 @@ const tasks =
 
       [
         {
-          date: '2018-09-25T14:41:00Z',
+          date: '2018-09-25T19:41:00Z',
           header: 'important task',
           description: 'a lot of text'
         },
@@ -68,7 +68,7 @@ const tasks =
         },
 
         {
-          date: '2018-09-25T19:41:00Z',
+          date: '2018-09-25T14:41:00Z',
           header: 'important task',
           description: 'a lot of text'
         }
@@ -78,13 +78,13 @@ const tasks =
     [
       [
         {
-          date: '2018-10-26T14:41:00Z',
+          date: '2018-10-26T16:41:00Z',
           header: 'important task',
           description: 'a lot of text'
         },
 
         {
-          date: '2018-10-26T16:41:00Z',
+          date: '2018-10-26T14:41:00Z',
           header: 'important task',
           description: 'a lot of text'
         }

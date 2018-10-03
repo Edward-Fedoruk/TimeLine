@@ -1,5 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
+import TaskTime from './TaskTime'
 
 const styles = () => ({
   task: {
@@ -10,7 +11,7 @@ const styles = () => ({
     position: 'relative',
     left: '50%',
     zIndex: '100',
-    transform: 'translateX(-50%)',
+    transform: 'translateX(-50%) rotate(180deg)',
     transition: 'all 3s',
     marginBottom: '30px'
   },
@@ -20,15 +21,8 @@ const styles = () => ({
     position: 'absolute',
     left: '120%',
     transform: 'rotate(180deg)',
-    width: 'max-content'
-  },
-
-  time: {
-    fontSize: '12px',
-    position: 'absolute',
-    right: '120%',
-    transform: 'rotate(180deg)',
-    width: 'max-content'
+    width: 'max-content',
+    transition: 'all 2s'
   },
 
 })
@@ -44,11 +38,23 @@ class Task extends React.Component {
 
     return (
       <div 
-        style={{ top: `${ mode === 0 ? 0 : -pos * 70 }px` }} 
+        style={{ 
+          top: `${ mode === 0 ? 0 : -pos * 70 }px`,
+          
+        }} 
         className={classes.task}
       >
-        <p className={classes.header}> {mode === 0 && task.header} </p>
-        <p className={classes.time}> {mode === 0 && newDate} </p>
+        <p 
+          className={classes.header}
+          style={{ opacity: `${mode === 0 ? 1 : 0}` }}  
+        > 
+          {task.header} 
+        </p>
+
+        <TaskTime
+          date={newDate}
+          fadeIn={mode === 0}
+        />      
       </div>
     )
   }

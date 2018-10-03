@@ -3,6 +3,8 @@ import { withStyles } from '@material-ui/core/styles'
 import Task from './Task'
 import styles from './timeBlockStyles'
 import TimeSeparator from './TimeSeparator'
+import TasksAmount from './TasksAmount'
+import TaskTime from './TaskTime'
 
 const dayStyles = () =>({
   timeSeparator: {
@@ -53,7 +55,16 @@ class Day extends React.Component {
           fadeIn={mode === 0}
         />
         
-        {mode === 1 && <p className={classes.tasks}>{tasks.length} tasks in this day</p>}
+        <TasksAmount
+          fadeIn={mode === 1}
+          mode={mode}
+          tasks={tasks.length}
+        />
+
+        {/* <TaskTime
+          date={tasks[0].date}
+          fadeIn={mode === 0}
+        /> */}
 
         {tasks.map((task, i) =>
           <Task task={task} mode={mode} key={i} pos={i} />

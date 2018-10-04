@@ -26,13 +26,14 @@ class Months extends React.Component {
   render() {
     const { days, classes, pos, mode } = this.props
     const lastTaskDate = days[0][0].date
-
+    
     return (
       <div 
         style={{ 
           top: `${ mode > 2 ? -pos * 70 : 0 }px`, 
           height: `${this.setHeight(mode)}`,
         }}
+        data-timeBlock="true"
         className={classes.timeBlock}
       >
         <TimeSeparator 
@@ -47,10 +48,11 @@ class Months extends React.Component {
           tasks={this.getTasksInMonth()}
         />
 
-        {/* <TaskTime
-          date={newDate}
-          fadeIn={mode === 0}
-        />  */}
+        <TaskTime
+          date={lastTaskDate}
+          fadeIn={mode === 2}
+          mode={mode}
+        /> 
 
         {days.map((tasks, i) =>
           <Day mode={mode} key={i} pos={i} tasks={tasks} /> 

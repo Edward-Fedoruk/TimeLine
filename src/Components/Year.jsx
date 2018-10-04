@@ -42,6 +42,7 @@ class Years extends React.Component {
           height: `${this.setHeight(mode)}`,
           transform: 'inherit'
         }}
+        data-timeBlock="true"
       > 
         <TimeSeparator 
           mode={mode} 
@@ -55,10 +56,11 @@ class Years extends React.Component {
           tasks={this.getTasksInYear()}
         />
 
-        {/* <TaskTime
-          date={newDate}
-          fadeIn={mode === 0}
-        />  */}
+        <TaskTime
+          date={lastTaskDate}
+          fadeIn={mode === 3}
+          mode={mode}
+        /> 
 
         {months.map((days, i) =>
           <Month pos={i} key={i} mode={mode} days={days} />

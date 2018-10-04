@@ -5,15 +5,35 @@ const styles = () => ({
   time: {
     fontSize: '12px',
     position: 'absolute',
-    right: '120%',
-    transform: 'rotate(180deg)',
+    left: '220%',
     width: 'max-content',
     transition: 'all 2s'
   },
 })
 
 class TaskTime extends React.Component {
-  
+  convertDate() {
+    const options = [
+      , 
+
+      {
+        day: 'numeric',
+        weekday: 'long'
+      },
+
+      {
+        month: 'long',
+      },
+
+      { year: 'numeric' },
+
+      { year: 'numeric' }
+    ]
+
+    const { mode, date } = this.props
+    return new Date(date).toLocaleString('en-us', options[mode])
+  }
+
   render() {
     const { classes, fadeIn, date } = this.props
     
@@ -22,7 +42,7 @@ class TaskTime extends React.Component {
         className={classes.time}
         style={{ opacity: `${fadeIn ? 1 : 0}` }}  
       > 
-        {date} 
+        {this.convertDate()}
       </p>  
     )
   }

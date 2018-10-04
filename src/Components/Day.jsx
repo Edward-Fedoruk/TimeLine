@@ -40,10 +40,11 @@ class Day extends React.Component {
   render() {
     const { tasks, pos, classes, mode } = this.props
     const lastTaskDate = tasks[0].date
-
+    const test = new Date(tasks[0].date).toLocaleString('en-us', { day: 'numeric', weekday: 'long', })
     return (
       <div 
         className={classes.timeBlock} 
+        data-timeBlock="true"
         style={{
           top:    `${ mode > 1 ? -pos * 70 : 0 }px`, 
           height: `${ mode > 0 ? 40 : 70 * tasks.length }px`
@@ -61,10 +62,12 @@ class Day extends React.Component {
           tasks={tasks.length}
         />
 
-        {/* <TaskTime
-          date={tasks[0].date}
-          fadeIn={mode === 0}
-        /> */}
+        <TaskTime
+          date={lastTaskDate}
+          fadeIn={mode === 1}
+          mode={mode}
+
+        />
 
         {tasks.map((task, i) =>
           <Task task={task} mode={mode} key={i} pos={i} />

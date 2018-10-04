@@ -10,16 +10,26 @@ const styles = () => ({
     backgroundColor: 'green',
     position: 'relative',
     left: '50%',
-    zIndex: '100',
+    zIndex: '200',
     transform: 'translateX(-50%) rotate(180deg)',
     transition: 'all 3s',
     marginBottom: '30px'
+    
   },
 
   header: {
     fontSize: '12px',
     position: 'absolute',
     left: '120%',
+    transform: 'rotate(180deg)',
+    width: 'max-content',
+    transition: 'all 2s'
+  },
+
+  time: {
+    fontSize: '12px',
+    position: 'absolute',
+    right: '120%',
     transform: 'rotate(180deg)',
     width: 'max-content',
     transition: 'all 2s'
@@ -51,10 +61,12 @@ class Task extends React.Component {
           {task.header} 
         </p>
 
-        <TaskTime
-          date={newDate}
-          fadeIn={mode === 0}
-        />      
+        <p 
+          className={classes.time}
+          style={{ opacity: `${mode === 0 ? 1 : 0}` }}  
+        > 
+          {newDate} 
+        </p>       
       </div>
     )
   }

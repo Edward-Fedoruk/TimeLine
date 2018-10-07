@@ -12,7 +12,7 @@ const styles = () => ({
     left: '50%',
     zIndex: '200',
     transform: 'translateX(-50%) rotate(180deg)',
-    transition: 'all 3s',
+    transition: 'all 3s ease-in-out',
     marginBottom: '30px'
     
   },

@@ -23,8 +23,8 @@ const styles = (theme) => ({
 
 class TaskDrawer extends React.Component {
  
-  getCurrentDate = () => {
-    const date = new Date()
+  formatDate = taskDate => {
+    const date = new Date(taskDate)
     const editDate = x => x < 10 ? '0' + x : x
 
     const year = date.getFullYear()
@@ -38,6 +38,7 @@ class TaskDrawer extends React.Component {
 
   componentDidMount() {
     ValidatorForm.addValidationRule('isOnlySpaces', value => /\S/.test(value))
+    ValidatorForm.addValidationRule('badDateFormat', date => !isNaN(Date.parse(`${date}`)))
   }
 
   render() {
@@ -75,6 +76,7 @@ class TaskDrawer extends React.Component {
             >
               task description
             </Typography>
+
             <TextField  
               margin="dense" 
               rowsMax="15" 
@@ -91,17 +93,18 @@ class TaskDrawer extends React.Component {
             >
               task time
             </Typography>
-            <TextField 
+
+            <TextValidator 
+              name="date" 
+              margin="dense" 
+              validators={['badDateFormat']}
+              errorMessages={['bad date format']}
               type="datetime-local" 
-              value={
-                taskDate === '' 
-                  ? this.getCurrentDate() 
-                  : taskDate
-              }
+              value={this.formatDate(taskDate)}
               InputLabelProps={{
                 shrink: true,
               }}
-              onChange={setTaskFields("currentTaskDate")}
+              onChange={setTaskFields("taskDate")}
               // inputRef={refTimePicker}
               className={classes.taskFormField} 
             />

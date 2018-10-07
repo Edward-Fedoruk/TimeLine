@@ -33,7 +33,7 @@ class Months extends React.Component {
           top: `${ mode > 2 ? -pos * 70 : 0 }px`, 
           height: `${this.setHeight(mode)}`,
         }}
-        data-timeBlock="true"
+        data-timeblock="true"
         className={classes.timeBlock}
       >
         <TimeSeparator 

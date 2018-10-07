@@ -31,6 +31,11 @@ class Years extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps) {
+    if(this.props.mode !== nextProps.mode) return true
+    else return false
+  }
+
   render() {
     const { classes, months, mode } = this.props
     const lastTaskDate = months[0][0][0].date
@@ -42,7 +47,7 @@ class Years extends React.Component {
           height: `${this.setHeight(mode)}`,
           transform: 'inherit'
         }}
-        data-timeBlock="true"
+        data-timeblock="true"
       > 
         <TimeSeparator 
           mode={mode} 

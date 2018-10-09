@@ -45,7 +45,7 @@ class Day extends React.Component {
         className={classes.timeBlock} 
         data-timeblock="true"
         style={{
-          top:    `${ mode > 1 ? -monthIndex * 70 : 0 }px`, 
+          top:    `${ mode > 1 ? -dayIndex * 70 : 0 }px`, 
           height: `${ mode > 0 ? 40 : 70 * tasks.length }px`
         }}
       >

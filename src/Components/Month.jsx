@@ -30,7 +30,7 @@ class Months extends React.Component {
     return (
       <div 
         style={{ 
-          top: `${ mode > 2 ? -yearIndex * 70 : 0 }px`, 
+          top: `${ mode > 2 ? -monthIndex * 70 : 0 }px`, 
           height: `${this.setHeight(mode)}`,
         }}
         data-timeblock="true"

@@ -6,7 +6,7 @@ import TimeSeparator from './TimeSeparator'
 import TasksAmount from './TasksAmount'
 import TaskTime from './TaskTime'
 
-class Years extends React.Component {
+class Years extends React.PureComponent {
 
   getTasksInYear = () => 
     this.props.months.reduce((acum, day) => 
@@ -30,14 +30,12 @@ class Years extends React.Component {
       return `${sum - 30}px`
     }
   }
-
-  shouldComponentUpdate(nextProps) {
-    if(this.props.mode !== nextProps.mode) return true
-    else return false
+  componentDidUpdate() {
+    console.log('upd')
   }
 
   render() {
-    const { classes, months, mode } = this.props
+    const { classes, months, mode, yearIndex } = this.props
     const lastTaskDate = months[0][0][0].date
 
     return (
@@ -68,7 +66,7 @@ class Years extends React.Component {
         /> 
 
         {months.map((days, i) =>
-          <Month pos={i} key={i} mode={mode} days={days} />
+          <Month yearIndex={yearIndex} monthIndex={i} key={i} mode={mode} days={days} />
         )}
         
       </div>

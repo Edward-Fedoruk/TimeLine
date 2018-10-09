@@ -38,14 +38,14 @@ const dayStyles = () =>({
 class Day extends React.Component {
 
   render() {
-    const { tasks, pos, classes, mode } = this.props
+    const { tasks, monthIndex, classes, mode, yearIndex, dayIndex } = this.props
     const lastTaskDate = tasks[0].date
     return (
       <div 
         className={classes.timeBlock} 
         data-timeblock="true"
         style={{
-          top:    `${ mode > 1 ? -pos * 70 : 0 }px`, 
+          top:    `${ mode > 1 ? -monthIndex * 70 : 0 }px`, 
           height: `${ mode > 0 ? 40 : 70 * tasks.length }px`
         }}
       >
@@ -69,7 +69,7 @@ class Day extends React.Component {
         />
 
         {tasks.map((task, i) =>
-          <Task task={task} mode={mode} key={i} pos={i} />
+          <Task task={task} mode={mode} key={i} yearIndex={yearIndex} monthIndex={monthIndex} dayIndex={dayIndex} taskIndex={i} />
         )}
       </div>
     )

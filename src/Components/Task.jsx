@@ -13,8 +13,8 @@ const styles = () => ({
     zIndex: '200',
     transform: 'translateX(-50%) rotate(180deg)',
     transition: 'all 3s ease-in-out',
-    marginBottom: '30px'
-    
+    marginBottom: '30px',
+    cursor: 'pointer'
   },
 
   header: {
@@ -40,19 +40,18 @@ const styles = () => ({
 class Task extends React.Component {
 
   render() {
-    const { classes, pos, mode, task } = this.props
+    const { classes, yearIndex, dayIndex, monthIndex, taskIndex, mode, task } = this.props
     const newDate = new Date(task.date).toLocaleString('en-us', {
       hour: 'numeric',
       minute: 'numeric',
     })
-
     return (
       <div 
         style={{ 
-          top: `${ mode === 0 ? 0 : -pos * 70 }px`,
-          
+          top: `${ mode === 0 ? 0 : -taskIndex * 70 }px`,          
         }} 
         className={classes.task}
+        data-task={`${yearIndex} ${monthIndex} ${dayIndex} ${taskIndex}`}
       >
         <p 
           className={classes.header}

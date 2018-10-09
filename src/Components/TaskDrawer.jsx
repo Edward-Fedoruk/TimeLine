@@ -44,7 +44,7 @@ class TaskDrawer extends React.Component {
   render() {
     const { 
       classes, taskDrawer, createTask, 
-      taskHeader, taskDescription, taskDate,
+      taskHeader, taskDescr, taskDate,
       setTaskFields
     } = this.props
 
@@ -82,8 +82,8 @@ class TaskDrawer extends React.Component {
               rowsMax="15" 
               multiline 
               inputProps={{maxLength: "150"}}
-              onChange={setTaskFields("taskDescription")}
-              value={taskDescription}
+              onChange={setTaskFields("taskDescr")}
+              value={taskDescr}
               className={classes.taskFormField} 
             />
 

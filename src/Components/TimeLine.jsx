@@ -132,18 +132,42 @@ class TimeLine extends React.Component {
     taskDrawer: false,
     taskHeader: '',
     taskDescr: '',
-    taskDate: new Date()
+    taskDate: new Date(),
+    updTasks: false
   }
 
-  /* 
-    check if date atribute exist.
+   
+  /*check if date atribute exist.
     If it exist then user clicked on 
-    lineBlock and right drawer will appear.
-  */  
+    lineBlock and right drawer will appear.*/ 
   openTaskMenu = e => {
     const dataTimeblock = e.target.dataset.timeblock
-    if(!dataTimeblock) return
-    this.setState({ taskDrawer: true, taskDate: new Date() })    
+    const dataTask = e.target.dataset.task
+
+    if(dataTimeblock)
+      this.setState({ taskDrawer: true, taskDate: new Date() }) 
+    else if(dataTask) { 
+      const coordinates = dataTask.split(' ').map(numb => parseInt(numb))
+      
+      const year  = coordinates[0]
+      const month = coordinates[1] 
+      const day   = coordinates[2]
+      const task  = coordinates[3]
+      
+      const selectedTask = this.state.allTasks[year][month][day][task]
+      const taskDate   = selectedTask.date
+      const taskHeader = selectedTask.header
+      const taskDescr  = selectedTask.description
+      console.log(taskDescr)
+      
+      this.setState({ 
+        taskDate,
+        taskHeader,
+        taskDescr,
+        taskDrawer: true,
+        updTasks: !this.state.updTasks
+      })
+    }
   }
 
   /*
@@ -270,7 +294,8 @@ class TimeLine extends React.Component {
     const { classes } = this.props
     const { 
       allTasks, mode, taskDrawer,
-      taskHeader, taskDescr, taskDate
+      taskHeader, taskDescr, taskDate,
+      updTasks
     } = this.state
 
     return (
@@ -284,7 +309,13 @@ class TimeLine extends React.Component {
           data-timeblock="true"
         >
           {allTasks.map((months, i) =>
-            <Year mode={mode} months={months} key={i} pos={i} />
+            <Year 
+              mode={mode} 
+              months={months} 
+              updTasks={updTasks} 
+              key={i} 
+              yearIndex={i} 
+            />
           )}
         </div> 
 

@@ -24,13 +24,13 @@ class Months extends React.Component {
   }
 
   render() {
-    const { days, classes, pos, mode } = this.props
+    const { days, classes, yearIndex, mode, monthIndex } = this.props
     const lastTaskDate = days[0][0].date
     
     return (
       <div 
         style={{ 
-          top: `${ mode > 2 ? -pos * 70 : 0 }px`, 
+          top: `${ mode > 2 ? -yearIndex * 70 : 0 }px`, 
           height: `${this.setHeight(mode)}`,
         }}
         data-timeblock="true"
@@ -55,7 +55,7 @@ class Months extends React.Component {
         /> 
 
         {days.map((tasks, i) =>
-          <Day mode={mode} key={i} pos={i} tasks={tasks} /> 
+          <Day mode={mode} key={i} yearIndex={yearIndex} monthIndex={monthIndex} dayIndex={i} tasks={tasks} /> 
         )}
       </div>
     )

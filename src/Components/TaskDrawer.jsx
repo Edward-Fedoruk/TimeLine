@@ -43,7 +43,7 @@ class TaskDrawer extends React.Component {
 
   render() {
     const { 
-      classes, taskDrawer, createTask, 
+      classes, taskDrawer, submitTask, 
       taskHeader, taskDescr, taskDate,
       setTaskFields
     } = this.props
@@ -51,7 +51,7 @@ class TaskDrawer extends React.Component {
     return (
       <Drawer open={taskDrawer} anchor="right"> 
         <div className={classes.drawerWrap}>
-          <ValidatorForm onSubmit={() => createTask()} >
+          <ValidatorForm onSubmit={submitTask} >
             <Typography 
               align="center" 
               component="h3"

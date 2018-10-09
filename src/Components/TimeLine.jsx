@@ -133,7 +133,8 @@ class TimeLine extends React.Component {
     taskHeader: '',
     taskDescr: '',
     taskDate: new Date(),
-    updTasks: false
+    updTasks: false,
+    currentIndex: null
   }
 
    
@@ -146,137 +147,119 @@ class TimeLine extends React.Component {
 
     if(dataTimeblock)
       this.setState({ taskDrawer: true, taskDate: new Date() }) 
+
     else if(dataTask) { 
-      const coordinates = dataTask.split(' ').map(numb => parseInt(numb))
-      
-      const year  = coordinates[0]
-      const month = coordinates[1] 
-      const day   = coordinates[2]
-      const task  = coordinates[3]
-      
+      const taskPos = dataTask.split(' ').map(numb => parseInt(numb))
+      const [year, month, day, task] = taskPos
+
       const selectedTask = this.state.allTasks[year][month][day][task]
       const taskDate   = selectedTask.date
       const taskHeader = selectedTask.header
       const taskDescr  = selectedTask.description
-      console.log(taskDescr)
       
       this.setState({ 
         taskDate,
         taskHeader,
         taskDescr,
         taskDrawer: true,
+        currentIndex: taskPos,
         updTasks: !this.state.updTasks
       })
     }
   }
 
-  /*
-    pushing task in allTasks array 
+  addTask({ taskHeader, taskDescr, taskDate, allTasks, updTasks }) {
+    const date = new Date(taskDate)
+    const taskYear  = date.getFullYear()
+    const taskMonth = date.getMonth() + 1
+    const taskDay   = date.getDate()
     
-  */
-  createTask = () => {
-    
-    this.setState(({ taskHeader, taskDescr, taskDate, allTasks }) => {
-      const date = new Date(taskDate)
-      const taskYear = date.getFullYear()
-      const taskMonth = date.getMonth() + 1
-      const taskDay = date.getDate()
-      
-      const task = {
-        date:         `${date}`,
-        header:       `${taskHeader}`,
-        description:  `${taskDescr}`
-      }
+    const task = {
+      date:         `${date}`,
+      header:       `${taskHeader}`,
+      description:  `${taskDescr}`
+    }
 
-      const makeYear = () => {
-        allTasks.push(
-          [
-            [
-              [
-                task
-              ]
-            ]
-          ]
-        )
+    const getYear   = timeBlock => new Date(timeBlock[0][0][0].date).getFullYear()
+    const getMonth  = timeBlock => new Date(timeBlock[0][0].date).getMonth() + 1
+    const getDay    = timeBlock => new Date(timeBlock[0].date).getDate()
+    const parseDate = timeBlock => Date.parse(timeBlock.date)
 
-        allTasks.sort((year, nextYear) => {
-          const a = new Date(year[0][0].date).getFullYear()
-          const b = new Date(nextYear[0][0].date).getFullYear()
-          return a - b
-        })
-      }
-      
-      const makeMonth = (yearIndex) => {
-        allTasks[yearIndex].push(
-          [
-            [
-              task
-            ]
-          ]
-        )
+    const sortByDate = (timeFunc, ASC) => (a, b) => 
+      ASC ? timeFunc(a) - timeFunc(b) : timeFunc(b) - timeFunc(a)
 
-        allTasks[yearIndex].sort((month, nextMonth) => {
-          const a = new Date(month[0].date).getMonth() + 1
-          const b = new Date(nextMonth[0].date).getMonth() + 1
-          return b - a
-        })
-      }
+    const makeDate = (tasksArr, newTask, sortFunc) => {
+      tasksArr.push(newTask)
+      tasksArr.sort(sortFunc)
+    }
 
-      const makeDay = (yearIndex, monthIndex) => {
-        allTasks[yearIndex][monthIndex].push([task])
-
-        allTasks[yearIndex][monthIndex].sort((day, nextDay) => {
-          const a = new Date(day.date).getFullYear()
-          const b = new Date(nextDay.date).getFullYear()
-          return b - a
-        })
-      }
-
-      const pushTaskIn = (yearIndex, monthIndex, dayIndex) => {
-        allTasks[yearIndex][monthIndex][dayIndex].push(task)
-
-        allTasks[yearIndex][monthIndex][dayIndex].sort((day, nextDay) => {
-          const a = Date.parse(day.date)
-          const b = Date.parse(nextDay.date)
-          return b - a
-        })
-      }
-
-      const setTaskInfo = (year, month, day, index) => {
-        if(index === 0) {
-          if(allTasks.length === year) makeYear()
+    const setTaskInfo = (year, month, day, index) => {
+      switch(index) {
+        case 0: {          
+          console.log(allTasks)
+          if(allTasks.length === year) 
+            makeDate(allTasks, [[[task]]], sortByDate(getYear, true))
 
           else if(new Date(allTasks[year][month][day][0].date).getFullYear() === taskYear)
             setTaskInfo(year, month, day, index + 1)
 
           else setTaskInfo(year + 1, month, day, index)
-        }
+        } break
 
-        else if(index === 1) {
-          if(allTasks[year].length === month) makeMonth(year)          
+        case 1: {
+          const yearBlock = allTasks[year]
 
+          if(yearBlock.length === month) 
+            makeDate(yearBlock, [[task]], sortByDate(getMonth, false))
+      
           else if(new Date(allTasks[year][month][day][0].date).getMonth() + 1 === taskMonth) 
             setTaskInfo(year, month, day, index + 1)
             
           else setTaskInfo( year, month + 1, day, index)
-        }
+        } break
 
-        else if(index === 2) {
-          if(allTasks[year][month].length === day) makeDay(year, month) 
+        case 2: {
+          const monthBlock = allTasks[year][month]
+
+          if(monthBlock.length === day) 
+            makeDate(monthBlock, [task], sortByDate(getDay, false)) 
 
           else if(new Date(allTasks[year][month][day][0].date).getDate() === taskDay)
             setTaskInfo(year, month, day, index + 1)
 
           else setTaskInfo(year, month, day + 1, index)
-        }
-        
-        else if(index === 3) pushTaskIn(year, month, day)
-      }
+        } break
 
-      setTaskInfo(0, 0, 0, 0)
+        case 3: 
+          makeDate(allTasks[year][month][day], task, sortByDate(parseDate, false))
+          break
+      }          
+    }
 
-      return { allTasks, taskDrawer: false }
-    })
+    setTaskInfo(0, 0, 0, 0)
+
+    return { allTasks, taskDrawer: false, currentIndex: null, updTasks: !updTasks }
+  }
+
+  /*
+    pushing task in allTasks array     
+  */
+  submitTask = () => {
+    if(this.state.currentIndex == null) {
+      this.setState(this.addTask)
+    }
+    else {
+      this.setState(({ allTasks, taskHeader, taskDate, taskDescr, updTasks, currentIndex }) => {
+        const [ year, month, day, task ] = currentIndex
+        const selectedTask = allTasks[year][month][day][task]
+
+        selectedTask.date        = taskDate
+        selectedTask.header      = taskHeader
+        selectedTask.description = taskDescr
+
+        return {allTasks, updTasks: !updTasks, taskDrawer: false, currentIndex: null}
+      })
+    }
   }
 
   setTaskFields = field => e => {
@@ -321,7 +304,7 @@ class TimeLine extends React.Component {
 
         <TaskDrawer 
           taskDrawer={taskDrawer}
-          createTask={this.createTask}
+          submitTask={this.submitTask}
           taskHeader={taskHeader}
           taskDescr={taskDescr}
           taskDate={taskDate}

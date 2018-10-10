@@ -103,7 +103,7 @@ const tasks =
         }
       ]
     ]
-  ],
+  ]
 ]
 
 const styles = () => ({
@@ -133,36 +133,35 @@ class TimeLine extends React.Component {
     taskHeader: '',
     taskDescr: '',
     taskDate: new Date(),
+    taskPrevDate: '',
     updTasks: false,
     currentIndex: null
   }
 
    
-  /*check if date atribute exist.
+  /*check if date attribute exist.
     If it exist then user clicked on 
     lineBlock and right drawer will appear.*/ 
   openTaskMenu = e => {
-    const dataTimeblock = e.target.dataset.timeblock
-    const dataTask = e.target.dataset.task
+    const clickedOnLine = e.target.dataset.timeblock
+    const taskPos = e.target.dataset.task
 
-    if(dataTimeblock)
+    if(clickedOnLine)
       this.setState({ taskDrawer: true, taskDate: new Date() }) 
 
-    else if(dataTask) { 
-      const taskPos = dataTask.split(' ').map(numb => parseInt(numb))
-      const [year, month, day, task] = taskPos
+    else if(taskPos) { 
+      const taskCoordinates = taskPos.split(' ').map(numb => parseInt(numb))
+      const [ year, month, day, task ] = taskCoordinates
 
       const selectedTask = this.state.allTasks[year][month][day][task]
-      const taskDate   = selectedTask.date
-      const taskHeader = selectedTask.header
-      const taskDescr  = selectedTask.description
       
       this.setState({ 
-        taskDate,
-        taskHeader,
-        taskDescr,
+        taskDate: selectedTask.date,
+        taskPrevDate: selectedTask.date, 
+        taskHeader: selectedTask.header,
+        taskDescr: selectedTask.description,
         taskDrawer: true,
-        currentIndex: taskPos,
+        currentIndex: taskCoordinates,
         updTasks: !this.state.updTasks
       })
     }
@@ -170,14 +169,14 @@ class TimeLine extends React.Component {
 
   addTask({ taskHeader, taskDescr, taskDate, allTasks, updTasks }) {
     const date = new Date(taskDate)
-    const taskYear  = date.getFullYear()
-    const taskMonth = date.getMonth() + 1
-    const taskDay   = date.getDate()
+    const yearOfNewTask  = date.getFullYear()
+    const monthOfNewTask = date.getMonth() + 1
+    const dayOfNewTask   = date.getDate()
     
     const task = {
-      date:         `${date}`,
-      header:       `${taskHeader}`,
-      description:  `${taskDescr}`
+      date:        `${date}`,
+      header:      `${taskHeader}`,
+      description: `${taskDescr}`
     }
 
     const getYear   = timeBlock => new Date(timeBlock[0][0][0].date).getFullYear()
@@ -188,7 +187,7 @@ class TimeLine extends React.Component {
     const sortByDate = (timeFunc, ASC) => (a, b) => 
       ASC ? timeFunc(a) - timeFunc(b) : timeFunc(b) - timeFunc(a)
 
-    const makeDate = (tasksArr, newTask, sortFunc) => {
+    const insertTask = (tasksArr, newTask, sortFunc) => {
       tasksArr.push(newTask)
       tasksArr.sort(sortFunc)
     }
@@ -196,11 +195,10 @@ class TimeLine extends React.Component {
     const setTaskInfo = (year, month, day, index) => {
       switch(index) {
         case 0: {          
-          console.log(allTasks)
           if(allTasks.length === year) 
-            makeDate(allTasks, [[[task]]], sortByDate(getYear, true))
+            insertTask(allTasks, [[[task]]], sortByDate(getYear, true))
 
-          else if(new Date(allTasks[year][month][day][0].date).getFullYear() === taskYear)
+          else if(new Date(allTasks[year][month][day][0].date).getFullYear() === yearOfNewTask)
             setTaskInfo(year, month, day, index + 1)
 
           else setTaskInfo(year + 1, month, day, index)
@@ -210,9 +208,9 @@ class TimeLine extends React.Component {
           const yearBlock = allTasks[year]
 
           if(yearBlock.length === month) 
-            makeDate(yearBlock, [[task]], sortByDate(getMonth, false))
-      
-          else if(new Date(allTasks[year][month][day][0].date).getMonth() + 1 === taskMonth) 
+            insertTask(yearBlock, [[task]], sortByDate(getMonth, false))
+
+          else if(new Date(allTasks[year][month][day][0].date).getMonth() + 1 === monthOfNewTask)
             setTaskInfo(year, month, day, index + 1)
             
           else setTaskInfo( year, month + 1, day, index)
@@ -222,16 +220,16 @@ class TimeLine extends React.Component {
           const monthBlock = allTasks[year][month]
 
           if(monthBlock.length === day) 
-            makeDate(monthBlock, [task], sortByDate(getDay, false)) 
+            insertTask(monthBlock, [task], sortByDate(getDay, false)) 
 
-          else if(new Date(allTasks[year][month][day][0].date).getDate() === taskDay)
+          else if(new Date(allTasks[year][month][day][0].date).getDate() === dayOfNewTask)
             setTaskInfo(year, month, day, index + 1)
 
           else setTaskInfo(year, month, day + 1, index)
         } break
 
         case 3: 
-          makeDate(allTasks[year][month][day], task, sortByDate(parseDate, false))
+          insertTask(allTasks[year][month][day], task, sortByDate(parseDate, false))
           break
       }          
     }
@@ -241,20 +239,43 @@ class TimeLine extends React.Component {
     return { allTasks, taskDrawer: false, currentIndex: null, updTasks: !updTasks }
   }
 
-  /*
-    pushing task in allTasks array     
-  */
+  checkDateChange(prevDate, newDate) {
+
+  }
+
   submitTask = () => {
-    if(this.state.currentIndex == null) {
+    if(this.state.currentIndex == null) 
       this.setState(this.addTask)
+
+    else if(this.state.prevDate !== this.state.taskDate) {
+      this.setState(state => {
+        const [ year, month, day, task ] = state.currentIndex
+        state.allTasks[year][month][day].splice(task, 1)
+
+        if(state.allTasks[year][month][day].length === 0)
+          state.allTasks[year][month].splice(day, 1)
+
+        if(state.allTasks[year][month].length === 0)
+          state.allTasks[year].splice(month, 1)
+
+        if(state.allTasks[year].length === 0)
+          state.allTasks.splice(year, 1)
+
+        return this.addTask(state)
+      })
     }
+    
     else {
-      this.setState(({ allTasks, taskHeader, taskDate, taskDescr, updTasks, currentIndex }) => {
+      this.setState(({ 
+        allTasks, taskHeader, taskDate, 
+        taskDescr, updTasks, currentIndex, 
+        taskPrevDate 
+      }) => {
         const [ year, month, day, task ] = currentIndex
         const selectedTask = allTasks[year][month][day][task]
-
-        selectedTask.date        = taskDate
-        selectedTask.header      = taskHeader
+        
+        selectedTask.date = taskDate
+        selectedTask.header = taskHeader
         selectedTask.description = taskDescr
 
         return {allTasks, updTasks: !updTasks, taskDrawer: false, currentIndex: null}
@@ -297,7 +318,7 @@ class TimeLine extends React.Component {
               months={months} 
               updTasks={updTasks} 
               key={i} 
-              yearIndex={i} 
+              yearIndex={i}
             />
           )}
         </div> 

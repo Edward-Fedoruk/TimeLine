@@ -2,7 +2,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Day from './Day'
 import styles from './timeBlockStyles'
-import TimeSeparator from './TimeSeparator'
+import TimeDivider from './TimeDivider'
 import TasksAmount from './TasksAmount'
 import TaskTime from './TaskTime'
 
@@ -36,7 +36,7 @@ class Months extends React.Component {
         data-timeblock="true"
         className={classes.timeBlock}
       >
-        <TimeSeparator 
+        <TimeDivider 
           mode={mode} 
           date={lastTaskDate} 
           fadeIn={mode === 1}

@@ -23,7 +23,7 @@ const styles = () => ({
   },
 })
 
-class TimeSeparator extends React.Component {
+class TimeDivider extends React.Component {
 
   convertDate() {
     const options = [
@@ -58,4 +58,4 @@ class TimeSeparator extends React.Component {
   }
 }
 
-export default withStyles(styles)(TimeSeparator)
+export default withStyles(styles)(TimeDivider)

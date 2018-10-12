@@ -2,7 +2,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Month from './Month'
 import styles from './timeBlockStyles'
-import TimeSeparator from './TimeSeparator'
+import TimeDivider from './TimeDivider'
 import TasksAmount from './TasksAmount'
 import TaskTime from './TaskTime'
 
@@ -47,7 +47,7 @@ class Years extends React.PureComponent {
         }}
         data-timeblock="true"
       > 
-        <TimeSeparator 
+        <TimeDivider 
           mode={mode} 
           date={lastTaskDate} 
           fadeIn={mode === 2}

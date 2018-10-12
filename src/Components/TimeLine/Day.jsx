@@ -2,12 +2,12 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Task from './Task'
 import styles from './timeBlockStyles'
-import TimeSeparator from './TimeSeparator'
+import TimeDivider from './TimeDivider'
 import TasksAmount from './TasksAmount'
 import TaskTime from './TaskTime'
 
 const dayStyles = () =>({
-  timeSeparator: {
+  TimeDivider: {
     position: 'absolute',
     bottom: 0,
     width: '100vw',
@@ -49,7 +49,7 @@ class Day extends React.Component {
           height: `${ mode > 0 ? 40 : 70 * tasks.length }px`
         }}
       >
-        <TimeSeparator 
+        <TimeDivider 
           mode={mode} 
           date={lastTaskDate} 
           fadeIn={mode === 0}
@@ -65,7 +65,6 @@ class Day extends React.Component {
           date={lastTaskDate}
           fadeIn={mode === 1}
           mode={mode}
-
         />
 
         {tasks.map((task, i) =>

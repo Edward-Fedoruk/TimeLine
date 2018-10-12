@@ -10,7 +10,7 @@ import Tab from '@material-ui/core/Tab'
 import { withStyles } from '@material-ui/core'
 
 import Notes from './Components/Notes'
-import TimeLine from './Components/TimeLine'
+import TimeLine from './Components/TimeLine/TimeLine'
 
 const styles = (theme) => ({
   toolBar: {

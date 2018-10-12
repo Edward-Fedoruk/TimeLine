@@ -45,7 +45,8 @@ class TaskDrawer extends React.Component {
     const { 
       classes, taskDrawer, submitTask, 
       taskHeader, taskDescr, taskDate,
-      setTaskFields
+      setTaskFields, deleteTask, taskCreation,
+      cancelCreation
     } = this.props
 
     return (
@@ -110,7 +111,9 @@ class TaskDrawer extends React.Component {
             />
 
             <Button type="submit">OK</Button>
-            {/* <Button onClick={deleteTask}>Delete</Button> */}
+            {taskCreation 
+              ? <Button onClick={cancelCreation}>Cancel</Button>
+              : <Button onClick={deleteTask}>Delete</Button>}
           </ValidatorForm>
         </div>
       </Drawer>

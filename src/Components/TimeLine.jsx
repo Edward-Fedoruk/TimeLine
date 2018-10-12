@@ -135,9 +135,9 @@ class TimeLine extends React.Component {
     taskDate: new Date(),
     taskPrevDate: '',
     updTasks: false,
-    currentIndex: null
+    currentIndex: null,
+    taskCreation: false
   }
-
    
   /*check if date attribute exist.
     If it exist then user clicked on 
@@ -147,7 +147,7 @@ class TimeLine extends React.Component {
     const taskPos = e.target.dataset.task
 
     if(clickedOnLine)
-      this.setState({ taskDrawer: true, taskDate: new Date() }) 
+      this.setState({ taskDrawer: true, taskDate: new Date(), taskCreation: true }) 
 
     else if(taskPos) { 
       const taskCoordinates = taskPos.split(' ').map(numb => parseInt(numb))
@@ -162,10 +162,13 @@ class TimeLine extends React.Component {
         taskDescr: selectedTask.description,
         taskDrawer: true,
         currentIndex: taskCoordinates,
-        updTasks: !this.state.updTasks
+        updTasks: !this.state.updTasks,
+        taskCreation: false
       })
     }
   }
+  
+  cancelCreation = () => this.setState({ taskDrawer: false })
 
   addTask({ taskHeader, taskDescr, taskDate, allTasks, updTasks }) {
     const date = new Date(taskDate)
@@ -245,19 +248,24 @@ class TimeLine extends React.Component {
     return { allTasks, taskDrawer: false, currentIndex: null, updTasks: !updTasks }
   }
 
+  deleteTask = () => this.setState(({ currentIndex, allTasks, updTasks }) => {
+    const [ year, month, day, task ] = currentIndex
+    allTasks[year][month][day].splice(task, 1)
+
+    if(allTasks[year][month][day].length === 0)
+      allTasks[year][month].splice(day, 1)
+
+    if(allTasks[year][month].length === 0)
+      allTasks[year].splice(month, 1)
+
+    if(allTasks[year].length === 0)
+      allTasks.splice(year, 1)
+    
+    return { allTasks, currentIndex: null, taskDrawer: false, updTasks: !updTasks }
+  })
+
   changeTaskDate(state) {
-    const [ year, month, day, task ] = state.currentIndex
-    state.allTasks[year][month][day].splice(task, 1)
-
-    if(state.allTasks[year][month][day].length === 0)
-      state.allTasks[year][month].splice(day, 1)
-
-    if(state.allTasks[year][month].length === 0)
-      state.allTasks[year].splice(month, 1)
-
-    if(state.allTasks[year].length === 0)
-      state.allTasks.splice(year, 1)
-
+    this.deleteTask()
     return this.addTask(state)
   }
 
@@ -290,7 +298,6 @@ class TimeLine extends React.Component {
 
   componentDidMount() {
     // fetch date and set in state and global var
-    this.initTasks = tasks
     this.setState({ allTasks: tasks })
   }
 
@@ -299,7 +306,7 @@ class TimeLine extends React.Component {
     const { 
       allTasks, mode, taskDrawer,
       taskHeader, taskDescr, taskDate,
-      updTasks
+      updTasks, taskCreation
     } = this.state
 
     return (
@@ -330,6 +337,9 @@ class TimeLine extends React.Component {
           taskDescr={taskDescr}
           taskDate={taskDate}
           setTaskFields={this.setTaskFields}
+          deleteTask={this.deleteTask}
+          taskCreation={taskCreation}
+          cancelCreation={this.cancelCreation}
         />
       </div>
     )

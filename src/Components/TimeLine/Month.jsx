@@ -13,12 +13,12 @@ class Months extends React.Component {
     this.props.days.reduce((ac, cur) => ac + cur.length, 0)
 
   setHeight(mode) {
-    if(mode === 1) return `${this.props.days.length * 40}px`
+    if(mode === 1) return `${this.props.days.length * 44}px`
     
     else if(mode > 1) return `14px`
 
-    else if(mode === 0) {
-      const monthBlockH = this.props.days.reduce((ac, cur) => ac + (cur.length * 40) + 30, 0)
+    else if(mode === 0) { 
+      const monthBlockH = this.props.days.reduce((ac, cur) => ac + (cur.length * 44) + 30, 0)
       return `${monthBlockH - 30}px`
     }
   }
@@ -30,7 +30,7 @@ class Months extends React.Component {
     return (
       <div 
         style={{ 
-          top: `${ mode > 2 ? -monthIndex * 40 : 0 }px`, 
+          top: `${ mode > 2 ? -monthIndex * 44 : 0 }px`, 
           height: `${this.setHeight(mode)}`,
         }}
         data-timeblock="true"

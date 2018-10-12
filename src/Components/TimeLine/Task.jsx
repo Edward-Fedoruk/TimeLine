@@ -50,7 +50,7 @@ class Task extends React.Component {
     return (
       <div 
         style={{ 
-          top: `${ mode === 0 ? 0 : -taskIndex * 70 }px`,          
+          top: `${ mode === 0 ? 0 : -taskIndex * 44 }px`,          
         }} 
         className={classes.task}
         data-task={`${yearIndex} ${monthIndex} ${dayIndex} ${taskIndex}`}

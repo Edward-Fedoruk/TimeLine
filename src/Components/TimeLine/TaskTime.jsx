@@ -5,9 +5,11 @@ const styles = () => ({
   time: {
     fontSize: '12px',
     position: 'absolute',
-    left: '220%',
+    left: '300%',
     width: 'max-content',
-    transition: 'all 2s'
+    transition: 'all 2s',
+    color: '#fff',
+    margin: '0'
   },
 })
 

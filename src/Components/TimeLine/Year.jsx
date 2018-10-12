@@ -14,17 +14,18 @@ class Years extends React.PureComponent {
     0)
 
   setHeight(mode) {
-    if(mode === 2) return `${this.props.months.length * 40}px`
+    if(mode === 2) return `${this.props.months.length * 44}px`
     
-    else if(mode > 2) return `40px`
+    else if(mode > 2) return `14px`
 
     else if(mode === 1) {
-      const sum = this.props.months.reduce((ac, cur) => ac + (cur.length * 40) + 30, 0)
+      const sum = this.props.months.reduce((ac, cur) => ac + (cur.length * 44) + 30, 0)
       return `${sum - 30}px`
     }
+
     else if(mode === 0) {
       const sum = this.props.months.reduce((acum, day) => 
-          acum + day.reduce((ac, cur) => ac + (cur.length * 40) + 30, 0), 
+        acum + day.reduce((ac, cur) => ac + (cur.length * 44) + 30, 0), 
       0)
         console.log(sum)
       return `${sum - 30}px`

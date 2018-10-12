@@ -5,10 +5,11 @@ const styles = () => ({
   tasksIn: {
     fontSize: '12px',
     position: 'absolute',
-    right: '200%',
+    right: '300%',
     // transform: 'rotate(180deg)',
-    width: 'max-content'
-    
+    width: 'max-content',
+    color: '#fff',
+    margin: '0'
   },
 
   wrap: {

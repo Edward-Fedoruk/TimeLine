@@ -14,7 +14,6 @@ const dayStyles = () =>({
     height: '2px',
     background: '#000',
     right: '-60vw',
-
   },
 
   time: {
@@ -45,8 +44,8 @@ class Day extends React.Component {
         className={classes.timeBlock} 
         data-timeblock="true"
         style={{
-          top:    `${ mode > 1 ? -dayIndex * 70 : 0 }px`, 
-          height: `${ mode > 0 ? 40 : 70 * tasks.length }px`
+          top:    `${ mode > 1 ? -dayIndex * 40 : 0 }px`, 
+          height: `${ mode > 0 ? 70 : 40 * tasks.length }px`
         }}
       >
         <TimeDivider 

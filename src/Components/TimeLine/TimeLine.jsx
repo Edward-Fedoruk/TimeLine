@@ -3,6 +3,8 @@ import { withStyles } from '@material-ui/core/styles'
 import Year from './Year'
 import TaskDrawer from './TaskDrawer'
 
+import mountains from '../../assets/mountains.png'
+
 const tasks = 
 [
   [ 
@@ -108,20 +110,38 @@ const tasks =
 
 const styles = () => ({
   lineWrap: {
-    height: '100vh',
+    height: 'calc(100vh - 96px)',
     overflowY: 'scroll',
     width: '100vw',
     position: 'absolute',
-    bottom: '0'
+    bottom: '0',
+    backgroundColor: '#663A92',
+    backgroundImage: `url(${mountains})`,
+    backgroundSize: '100% auto',
+    backgroundPosition: 'center center',
+    '&::before': {
+      content: "''",
+      position: 'fixed',
+      width: '100%',
+      height: '100%',
+      display: 'block',
+      opacity: '0.84',
+      background: 'radial-gradient(1506.27px at 100% 100%, #361BB2 0%, #C567D8 100%)'
+    }
   },
 
   line: {
-    width: '20px',
+    width: '7px',
     position: 'absolute',
-    left: '60%',
+    left: '75%',
     minHeight: '100vh',
-    backgroundColor: 'gray',
+    backgroundColor: 'rgba(238, 238, 238, 0.5)',
     transform: 'rotate(180deg)'
+  },
+
+  overlay: {
+    zIndex: '20',
+
   }
 })
 
@@ -154,7 +174,7 @@ class TimeLine extends React.Component {
       const [ year, month, day, task ] = taskCoordinates
 
       const selectedTask = this.state.allTasks[year][month][day][task]
-      
+
       this.setState({ 
         taskDate: selectedTask.date,
         taskPrevDate: selectedTask.date, 
@@ -248,7 +268,7 @@ class TimeLine extends React.Component {
     return { allTasks, taskDrawer: false, currentIndex: null, updTasks: !updTasks }
   }
 
-  deleteTask = () => this.setState(({ currentIndex, allTasks, updTasks }) => {
+  deleteTask = ({ currentIndex, allTasks, updTasks }) => {
     const [ year, month, day, task ] = currentIndex
     allTasks[year][month][day].splice(task, 1)
 
@@ -262,12 +282,13 @@ class TimeLine extends React.Component {
       allTasks.splice(year, 1)
     
     return { allTasks, currentIndex: null, taskDrawer: false, updTasks: !updTasks }
-  })
-
-  changeTaskDate(state) {
-    this.deleteTask()
-    return this.addTask(state)
   }
+
+  changeTaskPosition = () => this.setState(state => {
+    this.deleteTask(state)
+    return this.addTask(state)
+  })
+  
 
   changeTaskFields(state) {
     const [ year, month, day, task ] = state.currentIndex
@@ -277,15 +298,20 @@ class TimeLine extends React.Component {
     selectedTask.header = state.taskHeader
     selectedTask.description = state.taskDescr
 
-    return { state }
+    return { 
+      taskDrawer: !state.taskDrawer,
+      allTasks: state.allTasks
+    }
   }
 
   submitTask = () => {
-    if(this.state.currentIndex == null) 
+    if(this.state.currentIndex == null) {
       this.setState(this.addTask)
+    }
 
-    else if(this.state.prevDate !== this.state.taskDate) 
-      this.setState(this.changeTaskDate)
+    else if(this.state.taskPrevDate !== this.state.taskDate) {
+      this.changeTaskPosition()
+    }
     
     else 
       this.setState(this.changeTaskFields)
@@ -312,8 +338,6 @@ class TimeLine extends React.Component {
     return (
       <div className={classes.lineWrap}>
 
-        <button onClick={() => this.setState({mode: mode + 1})}>+</button>
-
         <div 
           className={classes.line}
           onClick={this.openTaskMenu}
@@ -337,7 +361,7 @@ class TimeLine extends React.Component {
           taskDescr={taskDescr}
           taskDate={taskDate}
           setTaskFields={this.setTaskFields}
-          deleteTask={this.deleteTask}
+          deleteTask={() => this.setState(this.deleteTask)}
           taskCreation={taskCreation}
           cancelCreation={this.cancelCreation}
         />

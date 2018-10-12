@@ -4,39 +4,64 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
-import MoreVert from '@material-ui/icons/MoreVert'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
-import { withStyles } from '@material-ui/core'
+import Drawer from '@material-ui/core/Drawer'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import DraftsIcon from '@material-ui/icons/Drafts'
+import SendIcon from '@material-ui/icons/Send'
+import MyLocation from '@material-ui/icons/MyLocation'
+
+import { withStyles, Paper } from '@material-ui/core'
 
 import Notes from './Components/Notes'
 import TimeLine from './Components/TimeLine/TimeLine'
 
-const styles = (theme) => ({
+const styles = (theme) => {
+  console.log(theme)
+  return {
   toolBar: {
     display: 'flex',
-    justifyContent: 'space-between',
-    borderBottom: '1px solid #000',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
-})
+
+  appBar: {
+    height: '96px',
+    display: 'flex',
+    justifyContent: 'center',
+    zIndex: theme.zIndex.drawer + 1
+  },
+
+  drawer: {
+    height: 'calc(100vh - 96px)',
+    position: 'absolute',
+    bottom: '0',
+    top: 'unset',
+    width: '256px',
+    paddingTop: '36px'
+  }
+
+}}
 
 class App extends React.Component {
   state = {
-    value: 0,
+    appDrawer: false,
   }
 
-  tabChange = (e, value) => this.setState({ value })
+  toggleAppMenu = () => this.setState({appDrawer: !this.state.appDrawer})
 
   render() {
     const { classes } = this.props
-    const { value } = this.state
+    const { appDrawer } = this.state
     return (
       <React.Fragment>
-        {/* <AppBar position="fixed">
+        <AppBar className={classes.appBar} position="fixed">
 
-          <Toolbar className={classes.toolBar} variant="dense">
+          <Toolbar className={classes.toolBar} variant="regular">
 
-            <IconButton color="inherit" aria-label="Menu">
+            <IconButton onClick={this.toggleAppMenu} color="inherit" aria-label="Menu">
               <MenuIcon />
             </IconButton>
 
@@ -44,22 +69,36 @@ class App extends React.Component {
               TimeLine
             </Typography>
 
-            <IconButton color="inherit" aria-label="Menu">
-              <MoreVert />
-            </IconButton>
-
           </Toolbar>
 
-          <Tabs onChange={this.tabChange} centered fullWidth value={value}>
-            <Tab value={0} label="Notes" />
-            <Tab value={1} label="Line" />
-          </Tabs>
+        </AppBar>
 
-        </AppBar> */}
+        <Drawer
+          variant="persistent"
+          classes={{
+            paper: classes.drawer,
+          }}
+          open={appDrawer}
+        >
+          <List component="nav">
 
-        {/* {value 
-          ? <FullLine />
-          : <Notes />} */}
+            <ListItem button>
+              <ListItemIcon>
+                <MyLocation />
+              </ListItemIcon>
+              <ListItemText inset primary="TimeLine" />
+            </ListItem>
+
+            <ListItem button>
+              <ListItemIcon>
+                <DraftsIcon />
+              </ListItemIcon>
+              <ListItemText inset primary="Drafts" />
+            </ListItem>
+            
+          </List>
+        </Drawer>
+
         <TimeLine />
       
       </React.Fragment>

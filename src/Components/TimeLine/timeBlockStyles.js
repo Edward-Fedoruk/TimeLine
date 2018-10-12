@@ -1,7 +1,7 @@
 const styles = () => ({
   timeBlock: {
     // minHeight: '100vh',
-    backgroundColor: 'gray',
+    backgroundColor: 'rgba(238, 238, 238, 0)',
     height: 'auto',
     position: 'relative',
     // padding: '30px 0',

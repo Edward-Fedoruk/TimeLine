@@ -1,38 +1,40 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import TaskTime from './TaskTime'
 
 const styles = () => ({
   task: {
-    width: '40px',
-    height: '40px',
+    width: '14px',
+    height: '14px',
     borderRadius: '100%',
-    backgroundColor: 'green',
+    backgroundColor: '#BEB2DB',
     position: 'relative',
     left: '50%',
     zIndex: '200',
     transform: 'translateX(-50%) rotate(180deg)',
     transition: 'all 3s ease-in-out',
     marginBottom: '30px',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    color: '#fff'
   },
 
   header: {
     fontSize: '12px',
     position: 'absolute',
-    left: '120%',
+    left: '180%',
     transform: 'rotate(180deg)',
     width: 'max-content',
-    transition: 'all 2s'
+    transition: 'all 2s',
+    margin: '0'
   },
 
   time: {
     fontSize: '12px',
     position: 'absolute',
-    right: '120%',
+    right: '180%',
     transform: 'rotate(180deg)',
     width: 'max-content',
-    transition: 'all 2s'
+    transition: 'all 2s',
+    margin: '0'
   },
 
 })

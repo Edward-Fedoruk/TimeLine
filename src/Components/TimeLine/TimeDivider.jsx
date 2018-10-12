@@ -1,14 +1,14 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 
-const styles = () => ({
+const styles = (theme) => ({
   timeSeparator: {
     position: 'absolute',
     bottom: 0,
     width: '100vw',
     height: '2px',
     background: '#000',
-    left: '-60vw',
+    left: '-75vw',
     transition: 'all 1.5s',
     opacity: '0',
     transform: 'rotate(180deg)'
@@ -19,7 +19,8 @@ const styles = () => ({
     position: 'absolute',
     right: '10px',
     fontSize: '14px',
-    transform: 'rotate(180deg)'
+    transform: 'rotate(180deg)',
+    color: theme.palette.secondary.main
   },
 })
 

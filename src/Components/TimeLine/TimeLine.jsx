@@ -119,6 +119,7 @@ const styles = () => ({
     backgroundImage: `url(${mountains})`,
     backgroundSize: '100% auto',
     backgroundPosition: 'center center',
+    backgroundRepeat: 'no-repeat',
     '&::before': {
       content: "''",
       position: 'fixed',
@@ -126,7 +127,7 @@ const styles = () => ({
       height: '100%',
       display: 'block',
       opacity: '0.84',
-      background: 'radial-gradient(1506.27px at 100% 100%, #361BB2 0%, #C567D8 100%)'
+      background: 'radial-gradient(93.13rem at 100% 100%, #361BB2 0%, #C567D8 100%)'
     }
   },
 

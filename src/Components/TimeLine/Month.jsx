@@ -13,24 +13,26 @@ class Months extends React.Component {
     this.props.days.reduce((ac, cur) => ac + cur.length, 0)
 
   setHeight(mode) {
-    if(mode === 1) return `${this.props.days.length * 44}px`
+    const { days, theme } = this.props
+
+    if(mode === 1) return `${days.length * theme.timeLineSpaces.taskWithSpace}px`
     
-    else if(mode > 1) return `14px`
+    else if(mode > 1) return `${theme.timeLineSpaces.taskSize}px`
 
     else if(mode === 0) { 
-      const monthBlockH = this.props.days.reduce((ac, cur) => ac + (cur.length * 44) + 30, 0)
-      return `${monthBlockH - 30}px`
+      const monthBlockH = days.reduce((ac, cur) => ac + (cur.length * theme.timeLineSpaces.taskWithSpace) + theme.timeLineSpaces.taskOffset, 0)
+      return `${monthBlockH - theme.timeLineSpaces.taskOffset}px`
     }
   }
 
   render() {
-    const { days, classes, yearIndex, mode, monthIndex } = this.props
+    const { days, classes, yearIndex, mode, monthIndex, theme } = this.props
     const lastTaskDate = days[0][0].date
     
     return (
       <div 
         style={{ 
-          top: `${ mode > 2 ? -monthIndex * 44 : 0 }px`, 
+          top: `${ mode > 2 ? -monthIndex * theme.timeLineSpaces.taskWithSpace : 0 }px`, 
           height: `${this.setHeight(mode)}`,
         }}
         data-timeblock="true"
@@ -62,4 +64,4 @@ class Months extends React.Component {
   }
 }
 
-export default withStyles(styles)(Months)
+export default withStyles(styles, { withTheme: true })(Months)

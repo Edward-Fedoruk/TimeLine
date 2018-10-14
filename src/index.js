@@ -15,9 +15,15 @@ const theme = createMuiTheme({
       main: '#663A92'
     },
     secondary: {
-      main: '#fff',
+      main: '#FAFAFA',
     },
   },
+
+  timeLineSpaces: {
+    taskOffset: 50,
+    taskSize: 23,
+    taskWithSpace: 73
+  }
 })
 
 const root = document.getElementById('root')

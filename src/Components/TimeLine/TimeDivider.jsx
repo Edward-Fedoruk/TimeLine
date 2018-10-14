@@ -6,21 +6,22 @@ const styles = (theme) => ({
     position: 'absolute',
     bottom: 0,
     width: '100vw',
-    height: '2px',
-    background: '#000',
+    height: '1px',
+    background: 'rgba(238, 238, 238, .4)',
     left: '-75vw',
     transition: 'all 1.5s',
     opacity: '0',
     transform: 'rotate(180deg)'
-
   },
 
   time: {
     position: 'absolute',
-    right: '10px',
+    right: '25px',
     fontSize: '14px',
     transform: 'rotate(180deg)',
-    color: theme.palette.secondary.main
+    color: theme.palette.secondary.main,
+    lineHeight: '2',
+    fontSize: '13px'
   },
 })
 

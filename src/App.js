@@ -18,8 +18,8 @@ import { withStyles, Paper } from '@material-ui/core'
 import Notes from './Components/Notes'
 import TimeLine from './Components/TimeLine/TimeLine'
 
-const styles = (theme) => {
-  console.log(theme)
+const styles = ({ zIndex, palette}) => {
+  console.log()
   return {
   toolBar: {
     display: 'flex',
@@ -28,19 +28,21 @@ const styles = (theme) => {
   },
 
   appBar: {
-    height: '96px',
+    height: '48px',
     display: 'flex',
     justifyContent: 'center',
-    zIndex: theme.zIndex.drawer + 1
+    zIndex: zIndex.drawer + 1
   },
 
   drawer: {
-    height: 'calc(100vh - 96px)',
+    height: 'calc(100vh - 48px)',
     position: 'absolute',
     bottom: '0',
     top: 'unset',
-    width: '256px',
-    paddingTop: '36px'
+    width: '229px',
+    paddingTop: '36px',
+    backgroundColor: palette.secondary.main,
+    opacity: '.97'
   }
 
 }}
@@ -58,7 +60,6 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <AppBar className={classes.appBar} position="fixed">
-
           <Toolbar className={classes.toolBar} variant="regular">
 
             <IconButton onClick={this.toggleAppMenu} color="inherit" aria-label="Menu">
@@ -70,7 +71,6 @@ class App extends React.Component {
             </Typography>
 
           </Toolbar>
-
         </AppBar>
 
         <Drawer

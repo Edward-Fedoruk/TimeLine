@@ -6,7 +6,7 @@ import TimeDivider from './TimeDivider'
 import TasksAmount from './TasksAmount'
 import TaskTime from './TaskTime'
 
-const dayStyles = () =>({
+const dayStyles = (theme) =>({
   TimeDivider: {
     position: 'absolute',
     bottom: 0,
@@ -37,15 +37,16 @@ const dayStyles = () =>({
 class Day extends React.Component {
 
   render() {
-    const { tasks, monthIndex, classes, mode, yearIndex, dayIndex } = this.props
+    const { tasks, monthIndex, classes, mode, yearIndex, dayIndex, theme } = this.props
     const lastTaskDate = tasks[0].date
+    console.log(theme)
     return (
       <div 
         className={classes.timeBlock} 
         data-timeblock="true"
         style={{
-          top:    `${ mode > 1 ? -dayIndex * 44 : 0 }px`, 
-          height: `${ mode > 0 ? 14 : 44 * tasks.length }px`
+          top:    `${ mode > 1 ? -dayIndex * theme.timeLineSpaces.taskWithSpace : 0 }px`, 
+          height: `${ mode > 0 ? theme.timeLineSpaces.taskSize : theme.timeLineSpaces.taskWithSpace * tasks.length }px`
         }}
       >
         <TimeDivider 
@@ -74,4 +75,4 @@ class Day extends React.Component {
   }
 }
 
-export default withStyles(dayStyles)(Day)
+export default withStyles(dayStyles, { withTheme: true })(Day)

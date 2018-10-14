@@ -110,8 +110,9 @@ const tasks =
 
 const styles = () => ({
   lineWrap: {
-    height: 'calc(100vh - 96px)',
+    height: 'calc(100vh - 48px)',
     overflowY: 'scroll',
+    overflowX: 'hidden',
     width: '100vw',
     position: 'absolute',
     bottom: '0',
@@ -132,7 +133,7 @@ const styles = () => ({
   },
 
   line: {
-    width: '7px',
+    width: '12px',
     position: 'absolute',
     left: '75%',
     minHeight: '100vh',
@@ -159,6 +160,8 @@ class TimeLine extends React.Component {
     currentIndex: null,
     taskCreation: false
   }
+
+
    
   /*check if date attribute exist.
     If it exist then user clicked on 

@@ -8,7 +8,7 @@ const styles = () => ({
     // transform: 'rotate(180deg)',
     transition: 'all 3s ease-in-out',
     width: '100%',
-    margin: '30px 0'
+    margin: '50px 0'
 
   }
 })

@@ -1,5 +1,5 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles, withTheme } from '@material-ui/core/styles'
 import Month from './Month'
 import styles from './timeBlockStyles'
 import TimeDivider from './TimeDivider'
@@ -14,21 +14,23 @@ class Years extends React.PureComponent {
     0)
 
   setHeight(mode) {
-    if(mode === 2) return `${this.props.months.length * 44}px`
+    const { months, theme } = this.props
     
-    else if(mode > 2) return `14px`
+    if(mode === 2) return `${months.length * theme.timeLineSpaces.taskWithSpace}px`
+    
+    else if(mode > 2) return theme.timeLineSpaces.taskSize
 
     else if(mode === 1) {
-      const sum = this.props.months.reduce((ac, cur) => ac + (cur.length * 44) + 30, 0)
-      return `${sum - 30}px`
+      const sum = months.reduce((ac, cur) => ac + (cur.length * theme.timeLineSpaces.taskWithSpace) + theme.timeLineSpaces.taskOffset, 0)
+      return `${sum - theme.timeLineSpaces.taskOffset}px`
     }
 
     else if(mode === 0) {
-      const sum = this.props.months.reduce((acum, day) => 
-        acum + day.reduce((ac, cur) => ac + (cur.length * 44) + 30, 0), 
+      const sum = months.reduce((acum, day) => 
+        acum + day.reduce((ac, cur) => ac + (cur.length * theme.timeLineSpaces.taskWithSpace) + theme.timeLineSpaces.taskOffset, 0), 
       0)
         console.log(sum)
-      return `${sum - 30}px`
+      return `${sum - theme.timeLineSpaces.taskOffset}px`
     }
   }
   componentDidUpdate() {
@@ -75,4 +77,4 @@ class Years extends React.PureComponent {
   }
 }
 
-export default withStyles(styles)(Years)
+export default withStyles(styles, { withTheme: true })(Years)

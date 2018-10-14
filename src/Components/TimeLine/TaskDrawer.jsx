@@ -12,7 +12,7 @@ const styles = (theme) => ({
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    width: 'min-content'
+    width: '80%'
   },
   
   taskFormField: {
@@ -59,15 +59,15 @@ class TaskDrawer extends React.Component {
             >
               task header
             </Typography>
-
+            
             <TextValidator 
               margin="dense" 
               onChange={setTaskFields("taskHeader")} 
               name="taskHeader" 
               value={taskHeader}
               multiline 
-              validators={['required', 'isOnlySpaces', 'minStringLength:1', 'maxStringLength:16']}
-              errorMessages={['this field is required', 'must cosist not only from spaces', 'must contain at least 1 characters', 'password must contain no more then 50 characters']}
+              validators={['required', 'isOnlySpaces', 'minStringLength:1', 'maxStringLength:50']}
+              errorMessages={['this field is required', 'must consist not only from spaces', 'must contain at least 1 characters', 'password must contain no more then 50 characters']}
               className={classes.taskFormField} 
             />
                 

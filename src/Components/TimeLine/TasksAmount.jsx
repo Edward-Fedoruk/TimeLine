@@ -1,5 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
+import { Transition } from 'react-transition-group'
 
 const styles = () => ({
   tasksIn: {
@@ -24,9 +25,17 @@ class TasksAmount extends React.Component {
     const modes = [ , 'day', 'month', 'year']
     
     return (
-      <div style={{ opacity: `${fadeIn ? 1 : 0}`  }} className={classes.wrap}>
-        <p className={classes.tasksIn}>{tasks} tasks in this {modes[mode]}</p>
-      </div>  
+      <Transition
+        mountOnEnter
+        unmountOnExit
+        in={fadeIn}
+        timeout={2000}
+      >
+        {state => 
+          <div style={{ opacity: `${state === 'entered' ? 1 : 0}`  }} className={classes.wrap}>
+            <p className={classes.tasksIn}>{tasks} tasks in this {modes[mode]}</p>
+          </div>}
+      </Transition>
     )
   }
 }

@@ -49,6 +49,7 @@ class Day extends React.Component {
           height: `${ mode > 0 ? theme.timeLineSpaces.taskSize : theme.timeLineSpaces.taskWithSpace * tasks.length }px`
         }}
       >
+        
         <TimeDivider 
           mode={mode} 
           date={lastTaskDate} 
@@ -68,7 +69,15 @@ class Day extends React.Component {
         />
 
         {tasks.map((task, i) =>
-          <Task task={task} mode={mode} key={i} yearIndex={yearIndex} monthIndex={monthIndex} dayIndex={dayIndex} taskIndex={i} />
+          <Task 
+            task={task} 
+            mode={mode} 
+            key={i} 
+            yearIndex={yearIndex} 
+            monthIndex={monthIndex} 
+            dayIndex={dayIndex} 
+            taskIndex={i}
+          />
         )}
       </div>
     )

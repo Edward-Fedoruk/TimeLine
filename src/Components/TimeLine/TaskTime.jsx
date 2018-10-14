@@ -1,5 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
+import { Transition } from 'react-transition-group'
 
 const styles = () => ({
   time: {
@@ -37,15 +38,23 @@ class TaskTime extends React.Component {
   }
 
   render() {
-    const { classes, fadeIn, date } = this.props
+    const { classes, fadeIn } = this.props
     
     return (
-      <p 
-        className={classes.time}
-        style={{ opacity: `${fadeIn ? 1 : 0}` }}  
-      > 
-        {this.convertDate()}
-      </p>  
+      <Transition
+        mountOnEnter
+        unmountOnExit
+        in={fadeIn}
+        timeout={2000}
+      >
+        {state => 
+          <p 
+            className={classes.time}
+            style={{ opacity: `${state === 'entered' ? 1 : 0}` }}  
+          > 
+            {this.convertDate()}
+          </p>}  
+      </Transition>
     )
   }
 }

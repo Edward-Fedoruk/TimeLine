@@ -195,6 +195,7 @@ class TimeLine extends React.Component {
   cancelCreation = () => this.setState({ taskDrawer: false })
 
   addTask({ taskHeader, taskDescr, taskDate, allTasks, updTasks }) {
+    // take date from submitted task form
     const date = new Date(taskDate)
     const yearOfNewTask  = date.getFullYear()
     const monthOfNewTask = date.getMonth() + 1
@@ -206,17 +207,24 @@ class TimeLine extends React.Component {
       description: `${taskDescr}`
     }
 
+    // simple date pickers for 4d array
     const getYear   = timeBlock => new Date(timeBlock[0][0][0].date).getFullYear()
     const getMonth  = timeBlock => new Date(timeBlock[0][0].date).getMonth() + 1
     const getDay    = timeBlock => new Date(timeBlock[0].date).getDate()
     const parseDate = timeBlock => Date.parse(timeBlock.date)
 
+    /* sort function. Takes in date picker function, ASC (ascending).
+       Return sort function (a, b) -> number.
+       If ASC was true then tasks array will be sorted in ascending order. */
     const withDateFunc = (timeFunc, ASC) => (a, b) => 
       ASC ? timeFunc(a) - timeFunc(b) : timeFunc(b) - timeFunc(a)
 
+    // wrapper function for readability 
     const insetIn = (tasksArr, newTask) => tasksArr.push(newTask)
     const sort = (tasksArr, sortFunc) => tasksArr.sort(sortFunc)
 
+    // Recursively iterate through tasks array 
+    // finding where to put task
     const setTaskInfo = (year, month, day, index) => {
       switch(index) {
         case 0: {          
@@ -269,7 +277,15 @@ class TimeLine extends React.Component {
 
     setTaskInfo(0, 0, 0, 0)
 
-    return { allTasks, taskDrawer: false, currentIndex: null, updTasks: !updTasks }
+    return { 
+      allTasks, 
+      taskDrawer: false, 
+      currentIndex: null, 
+      updTasks: !updTasks,
+      taskHeader: '',
+      taskDescr: '',
+      taskDate: new Date()
+    }
   }
 
   deleteTask = ({ currentIndex, allTasks, updTasks }) => {
@@ -303,8 +319,12 @@ class TimeLine extends React.Component {
     selectedTask.description = state.taskDescr
 
     return { 
-      taskDrawer: !state.taskDrawer,
-      allTasks: state.allTasks
+      taskDrawer: false,
+      allTasks: state.allTasks,
+      taskHeader: '',
+      taskDescr: '',
+      taskDate: new Date(),
+      updTasks: !state.updTasks
     }
   }
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
+import { Transition } from 'react-transition-group'
 
 const styles = (theme) => ({
   timeSeparator: {
@@ -53,9 +54,20 @@ class TimeDivider extends React.Component {
   render() {
     const { classes, fadeIn } = this.props
     return (
-      <div style={{ opacity: `${fadeIn ? 1 : 0}`  }} className={classes.timeSeparator}>
-        <span className={classes.time}>{ this.convertDate() }</span>
-      </div>
+      <Transition
+        mountOnEnter
+        unmountOnExit
+        in={fadeIn}
+        timeout={1500}
+      >
+        {state => 
+          <div 
+            style={{ opacity: `${state === "entered" ? 1 : 0}`  }} 
+            className={classes.timeSeparator}
+          >
+            <span className={classes.time}>{ this.convertDate() }</span>
+          </div>}
+      </Transition>
     )
   }
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
+import { Transition } from 'react-transition-group'
 
 const styles = ({ timeLineSpaces }) => ({
   task: {
@@ -11,7 +12,7 @@ const styles = ({ timeLineSpaces }) => ({
     left: '50%',
     zIndex: '200',
     transform: 'translateX(-50%) rotate(180deg)',
-    transition: 'all 3s ease-in-out',
+    transition: 'all 1s linear',
     marginBottom: `${timeLineSpaces.taskOffset}px`,
     cursor: 'pointer',
     color: '#fff'
@@ -58,19 +59,29 @@ class Task extends React.Component {
         className={classes.task}
         data-task={`${yearIndex} ${monthIndex} ${dayIndex} ${taskIndex}`}
       >
-        <p 
-          className={classes.header}
-          style={{ opacity: `${mode === 0 ? 1 : 0}` }}  
-        > 
-          {task.header} 
-        </p>
-        
-        <p 
-          className={classes.time}
-          style={{ opacity: `${mode === 0 ? 1 : 0}` }}  
-        > 
-          {newDate} 
-        </p>       
+        <Transition
+          mountOnEnter
+          unmountOnExit
+          in={mode === 0}
+          timeout={2000}
+        >
+          {state => 
+            <React.Fragment>
+              <p 
+                className={classes.header}
+                style={{ opacity: `${state === 'entered' ? 1 : 0}` }}  
+              > 
+                {task.header} 
+              </p>
+              
+              <p 
+                className={classes.time}
+                style={{ opacity: `${state === 'entered' ? 1 : 0}` }}  
+              > 
+                {newDate} 
+              </p>       
+            </React.Fragment>}
+        </Transition>
       </div>
     )
   }

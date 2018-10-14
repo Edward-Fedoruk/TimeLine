@@ -6,7 +6,7 @@ import TimeDivider from './TimeDivider'
 import TasksAmount from './TasksAmount'
 import TaskTime from './TaskTime'
 
-class Years extends React.PureComponent {
+class Years extends React.Component {
 
   getTasksInYear = () => 
     this.props.months.reduce((acum, day) => 
@@ -18,7 +18,7 @@ class Years extends React.PureComponent {
     
     if(mode === 2) return `${months.length * theme.timeLineSpaces.taskWithSpace}px`
     
-    else if(mode > 2) return theme.timeLineSpaces.taskSize
+    else if(mode === 3) return `${theme.timeLineSpaces.taskSize}px`
 
     else if(mode === 1) {
       const sum = months.reduce((ac, cur) => ac + (cur.length * theme.timeLineSpaces.taskWithSpace) + theme.timeLineSpaces.taskOffset, 0)
@@ -33,8 +33,11 @@ class Years extends React.PureComponent {
       return `${sum - theme.timeLineSpaces.taskOffset}px`
     }
   }
-  componentDidUpdate() {
-    console.log('upd')
+  
+  shouldComponentUpdate(nextProps, nextState) {
+    if(nextProps.updTasks !== this.props.updTasks
+      || nextProps.mode !== this.props.mode) return true
+    else return false
   }
 
   render() {

@@ -12,10 +12,10 @@ const styles = ({ timeLineSpaces }) => ({
     left: '50%',
     zIndex: '200',
     transform: 'translateX(-50%) rotate(180deg)',
-    transition: 'all 1s linear',
+    transition: 'top 2s ease-in-out',
     marginBottom: `${timeLineSpaces.taskOffset}px`,
     cursor: 'pointer',
-    color: '#fff'
+    color: '#fff',
   },
 
   header: {
@@ -24,17 +24,17 @@ const styles = ({ timeLineSpaces }) => ({
     left: '180%',
     transform: 'rotate(180deg)',
     width: 'max-content',
-    transition: 'all 2s',
+    transition: 'all 1s linear',
     margin: '0'
   },
   
   time: {
-    fontSize: '13px',
+    fontSize: '12px',
     position: 'absolute',
     right: '180%',
     transform: 'rotate(180deg)',
     width: 'max-content',
-    transition: 'all 2s',
+    transition: 'opacity 1s linear',
     margin: '0',
   },
 
@@ -63,7 +63,7 @@ class Task extends React.Component {
           mountOnEnter
           unmountOnExit
           in={mode === 0}
-          timeout={2000}
+          timeout={1000}
         >
           {state => 
             <React.Fragment>

@@ -7,14 +7,13 @@ const styles = () => ({
     fontSize: '12px',
     position: 'absolute',
     right: '300%',
-    // transform: 'rotate(180deg)',
     width: 'max-content',
     color: '#fff',
     margin: '0'
   },
 
   wrap: {
-    transition: 'all 2s'
+    transition: 'opacity 1s'
   }
 })
 
@@ -29,11 +28,13 @@ class TasksAmount extends React.Component {
         mountOnEnter
         unmountOnExit
         in={fadeIn}
-        timeout={2000}
+        timeout={1000}
       >
         {state => 
           <div style={{ opacity: `${state === 'entered' ? 1 : 0}`  }} className={classes.wrap}>
-            <p className={classes.tasksIn}>{tasks} tasks in this {modes[mode]}</p>
+            <p className={classes.tasksIn}>
+              {state === 'entered' ? `${tasks} tasks in this ${modes[mode]}` : '' } 
+            </p>
           </div>}
       </Transition>
     )

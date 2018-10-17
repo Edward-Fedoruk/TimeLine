@@ -10,9 +10,10 @@ const styles = (theme) => ({
     height: '1px',
     background: 'rgba(238, 238, 238, .4)',
     left: '-75vw',
-    transition: 'all 1.5s',
+    transition: 'opacity 1s',
     opacity: '0',
-    transform: 'rotate(180deg)'
+    transform: 'rotate(180deg)',
+    willChange: 'opacity'
   },
 
   time: {
@@ -22,7 +23,8 @@ const styles = (theme) => ({
     transform: 'rotate(180deg)',
     color: theme.palette.secondary.main,
     lineHeight: '2',
-    fontSize: '13px'
+    fontSize: '13px',
+    willChange: 'opacity'
   },
 })
 
@@ -65,7 +67,7 @@ class TimeDivider extends React.Component {
             style={{ opacity: `${state === "entered" ? 1 : 0}`  }} 
             className={classes.timeSeparator}
           >
-            <span className={classes.time}>{ this.convertDate() }</span>
+            <span className={classes.time}>{state === "entered" && this.convertDate() }</span>
           </div>}
       </Transition>
     )

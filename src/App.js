@@ -12,6 +12,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import DraftsIcon from '@material-ui/icons/Drafts'
 import SendIcon from '@material-ui/icons/Send'
 import MyLocation from '@material-ui/icons/MyLocation'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 import { withStyles, Paper } from '@material-ui/core'
 
@@ -34,7 +35,7 @@ const styles = ({ zIndex, palette}) => {
     zIndex: zIndex.drawer + 1
   },
 
-  drawer: {
+  drawerPaper: {
     height: 'calc(100vh - 48px)',
     position: 'absolute',
     bottom: '0',
@@ -43,7 +44,9 @@ const styles = ({ zIndex, palette}) => {
     paddingTop: '36px',
     backgroundColor: palette.secondary.main,
     opacity: '.97'
-  }
+  },
+
+  drawer: { zIndex: '1' }
 
 }}
 
@@ -73,12 +76,15 @@ class App extends React.Component {
           </Toolbar>
         </AppBar>
 
+          
         <Drawer
-          variant="persistent"
           classes={{
-            paper: classes.drawer,
+            paper: classes.drawerPaper,
           }}
+          className={classes.drawer}
           open={appDrawer}
+          onClose={this.toggleAppMenu}
+          ModalProps={{ BackdropProps: { invisible: true } }}
         >
           <List component="nav">
 

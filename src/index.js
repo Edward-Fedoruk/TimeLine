@@ -23,6 +23,22 @@ const theme = createMuiTheme({
     taskOffset: 50,
     taskSize: 23,
     taskWithSpace: 73
+  },
+
+  overrides: {
+    MuiInput: {
+      underline: {
+        '&:before': { //underline color when textfield is inactive
+          borderBottomColor: '#AF5DD3',
+        },
+        '&:hover:not($disabled):before': { //underline color when hovered 
+          borderBottomColor: '#AF5DD3',
+        },
+        '&:hover:not($disabled):not($focused):not($error):before': {
+          borderBottom: `2px solid #572D8B !important`,
+        },
+      }
+    }
   }
 })
 

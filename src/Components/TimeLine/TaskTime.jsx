@@ -8,9 +8,10 @@ const styles = () => ({
     position: 'absolute',
     left: '300%',
     width: 'max-content',
-    transition: 'all 2s',
+    transition: 'opacity 1s linear',
     color: '#fff',
-    margin: '0'
+    margin: '0',
+    willChange: 'opacity'
   },
 })
 
@@ -45,14 +46,14 @@ class TaskTime extends React.Component {
         mountOnEnter
         unmountOnExit
         in={fadeIn}
-        timeout={2000}
+        timeout={1000}
       >
         {state => 
           <p 
             className={classes.time}
             style={{ opacity: `${state === 'entered' ? 1 : 0}` }}  
           > 
-            {this.convertDate()}
+            {state === 'entered' && this.convertDate()}
           </p>}  
       </Transition>
     )

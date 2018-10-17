@@ -160,8 +160,6 @@ class TimeLine extends React.Component {
     currentIndex: null,
     taskCreation: false
   }
-
-
    
   /*check if date attribute exist.
     If it exist then user clicked on 
@@ -351,6 +349,10 @@ class TimeLine extends React.Component {
     this.setState({ allTasks: tasks })
   }
 
+  componentDidUpdate() {
+    console.log('timeLine upd')
+  }
+
   render() {
     const { classes } = this.props
     const { 
@@ -379,6 +381,7 @@ class TimeLine extends React.Component {
         </div> 
 
         <TaskDrawer 
+          closeTaskDrawer={this.closeTaskDrawer}
           taskDrawer={taskDrawer}
           submitTask={this.submitTask}
           taskHeader={taskHeader}

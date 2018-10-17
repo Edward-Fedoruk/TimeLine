@@ -6,19 +6,26 @@ import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 import Drawer from '@material-ui/core/Drawer'
 import Button from '@material-ui/core/Button'
 
-const styles = (theme) => ({
+const styles = ({ palette }) => ({
   drawerWrap: {
-    maxHeight: '1000px',
+    width: '90%',
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    width: '80%'
+    margin: '0 auto' 
   },
   
   taskFormField: {
-    padding: '20px',
-    width: '100%'
+    // padding: '20px',
+    // width: '100%'
   },
+
+  drawer: {
+    width: '350px',
+    paddingTop: '36px',
+    backgroundColor: palette.secondary.main,
+    opacity: '.97',
+  }
 })
 
 class TaskDrawer extends React.Component {
@@ -50,18 +57,17 @@ class TaskDrawer extends React.Component {
     } = this.props
 
     return (
-      <Drawer open={taskDrawer} anchor="right"> 
+      <Drawer
+       open={taskDrawer} 
+       anchor="right"
+       classes={{paper: classes.drawer}}
+      > 
         <div className={classes.drawerWrap}>
-          <ValidatorForm onSubmit={submitTask} >
-            <Typography 
-              align="center" 
-              component="h3"
-            >
-              task header
-            </Typography>
-            
+          <ValidatorForm onSubmit={submitTask}>    
             <TextValidator 
-              margin="dense" 
+              margin="normal" 
+              label="Task Name"
+              fullWidth
               onChange={setTaskFields("taskHeader")} 
               name="taskHeader" 
               value={taskHeader}
@@ -70,17 +76,12 @@ class TaskDrawer extends React.Component {
               errorMessages={['this field is required', 'must consist not only from spaces', 'must contain at least 1 characters', 'password must contain no more then 50 characters']}
               className={classes.taskFormField} 
             />
-                
-            <Typography 
-              align="center" 
-              component="h3"
-            >
-              task description
-            </Typography>
 
             <TextField  
-              margin="dense" 
+              margin="normal" 
               rowsMax="15" 
+              fullWidth
+              label="Task Description"
               multiline 
               inputProps={{maxLength: "150"}}
               onChange={setTaskFields("taskDescr")}
@@ -88,25 +89,15 @@ class TaskDrawer extends React.Component {
               className={classes.taskFormField} 
             />
 
-            <Typography 
-              align="center" 
-              component="h3"
-            >
-              task time
-            </Typography>
-
             <TextValidator 
+              fullWidth
               name="date" 
-              margin="dense" 
+              margin="normal" 
               validators={['badDateFormat']}
               errorMessages={['bad date format']}
               type="datetime-local" 
-              value={this.formatDate(taskDate)}
-              InputLabelProps={{
-                shrink: true,
-              }}
+              value={this.formatDate(taskDate)}              
               onChange={setTaskFields("taskDate")}
-              // inputRef={refTimePicker}
               className={classes.taskFormField} 
             />
 

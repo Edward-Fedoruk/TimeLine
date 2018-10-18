@@ -74,7 +74,6 @@ class Years extends React.Component {
         {months.map((days, i) =>
           <Month yearIndex={yearIndex} monthIndex={i} key={i} mode={mode} days={days} />
         )}
-        
       </div>
     )
   }

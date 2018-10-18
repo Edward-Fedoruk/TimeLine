@@ -15,49 +15,36 @@ const styles = () => ({
   },
 })
 
-class TaskTime extends React.Component {
-  convertDate() {
-    const options = [
-      , 
+const convertDate = (mode, date) => {
+  const options = [
+    , 
+    {
+      day: 'numeric',
+      weekday: 'long'
+    },
+    { month: 'long' },
+    { year: 'numeric' },
+    { year: 'numeric' }
+  ]
 
-      {
-        day: 'numeric',
-        weekday: 'long'
-      },
-
-      {
-        month: 'long',
-      },
-
-      { year: 'numeric' },
-
-      { year: 'numeric' }
-    ]
-
-    const { mode, date } = this.props
-    return new Date(date).toLocaleString('en-us', options[mode])
-  }
-
-  render() {
-    const { classes, fadeIn } = this.props
-    
-    return (
-      <Transition
-        mountOnEnter
-        unmountOnExit
-        in={fadeIn}
-        timeout={1000}
-      >
-        {state => 
-          <p 
-            className={classes.time}
-            style={{ opacity: `${state === 'entered' ? 1 : 0}` }}  
-          > 
-            {state === 'entered' && this.convertDate()}
-          </p>}  
-      </Transition>
-    )
-  }
+  return new Date(date).toLocaleString('en-us', options[mode])
 }
+
+const TaskTime = ({ classes, fadeIn, date, mode }) => (
+  <Transition
+    mountOnEnter
+    unmountOnExit
+    in={fadeIn}
+    timeout={1000}
+  >
+    {state => 
+      <p 
+        className={classes.time}
+        style={{ opacity: `${state === 'entered' ? 1 : 0}` }}  
+      > 
+        {state === 'entered' && convertDate(mode, date)}
+      </p>}  
+  </Transition>
+)
 
 export default withStyles(styles)(TaskTime)

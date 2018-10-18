@@ -34,54 +34,52 @@ const dayStyles = (theme) =>({
   ...styles()
 })
 
-class Day extends React.Component {
+const Day = ({ 
+  tasks, monthIndex, classes, 
+  mode, yearIndex, dayIndex, theme 
+}) => {
+  const lastTaskDate = tasks[0].date
+  return (
+    <div 
+      className={classes.timeBlock} 
+      data-timeblock="true"
+      style={{
+        top:    `${ mode > 1 ? -dayIndex * theme.timeLineSpaces.taskWithSpace : 0 }px`, 
+        height: `${ mode > 0 ? theme.timeLineSpaces.taskSize : theme.timeLineSpaces.taskWithSpace * tasks.length }px`
+      }}
+    >
+      
+      <TimeDivider 
+        mode={mode} 
+        date={lastTaskDate} 
+        fadeIn={mode === 0}
+      />
+      
+      <TasksAmount
+        fadeIn={mode === 1}
+        mode={mode}
+        tasks={tasks.length}
+      />
 
-  render() {
-    const { tasks, monthIndex, classes, mode, yearIndex, dayIndex, theme } = this.props
-    const lastTaskDate = tasks[0].date
-    console.log(theme)
-    return (
-      <div 
-        className={classes.timeBlock} 
-        data-timeblock="true"
-        style={{
-          top:    `${ mode > 1 ? -dayIndex * theme.timeLineSpaces.taskWithSpace : 0 }px`, 
-          height: `${ mode > 0 ? theme.timeLineSpaces.taskSize : theme.timeLineSpaces.taskWithSpace * tasks.length }px`
-        }}
-      >
-        
-        <TimeDivider 
+      <TaskTime
+        date={lastTaskDate}
+        fadeIn={mode === 1}
+        mode={mode}
+      />
+
+      {tasks.map((task, i) =>
+        <Task 
+          task={task} 
           mode={mode} 
-          date={lastTaskDate} 
-          fadeIn={mode === 0}
+          key={i} 
+          yearIndex={yearIndex} 
+          monthIndex={monthIndex} 
+          dayIndex={dayIndex} 
+          taskIndex={i}
         />
-        
-        <TasksAmount
-          fadeIn={mode === 1}
-          mode={mode}
-          tasks={tasks.length}
-        />
-
-        <TaskTime
-          date={lastTaskDate}
-          fadeIn={mode === 1}
-          mode={mode}
-        />
-
-        {tasks.map((task, i) =>
-          <Task 
-            task={task} 
-            mode={mode} 
-            key={i} 
-            yearIndex={yearIndex} 
-            monthIndex={monthIndex} 
-            dayIndex={dayIndex} 
-            taskIndex={i}
-          />
-        )}
-      </div>
-    )
-  }
+      )}
+    </div>
+  )
 }
 
 export default withStyles(dayStyles, { withTheme: true })(Day)

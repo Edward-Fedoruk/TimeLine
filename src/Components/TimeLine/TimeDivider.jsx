@@ -28,50 +28,44 @@ const styles = (theme) => ({
   },
 })
 
-class TimeDivider extends React.Component {
+const convertDate = (mode, date) => {
+  const options = [
+    {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long'
+    },
 
-  convertDate() {
-    const options = [
-      {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long'
-      },
+    {
+      year: 'numeric',
+      month: 'long',
+    },
 
-      {
-        year: 'numeric',
-        month: 'long',
-      },
+    { year: 'numeric' },
 
-      { year: 'numeric' },
+    { year: 'numeric' }
+  ]
 
-      { year: 'numeric' }
-    ]
-
-    const { mode, date } = this.props
-    return new Date(date).toLocaleString('en-us', options[mode])
-  }
-  
-  render() {
-    const { classes, fadeIn } = this.props
-    return (
-      <Transition
-        mountOnEnter
-        unmountOnExit
-        in={fadeIn}
-        timeout={1500}
-      >
-        {state => 
-          <div 
-            style={{ opacity: `${state === "entered" ? 1 : 0}`  }} 
-            className={classes.timeSeparator}
-          >
-            <span className={classes.time}>{state === "entered" && this.convertDate() }</span>
-          </div>}
-      </Transition>
-    )
-  }
+  return new Date(date).toLocaleString('en-us', options[mode])
 }
+
+const TimeDivider = ({ classes, fadeIn, mode, date }) => (
+  <Transition
+    mountOnEnter
+    unmountOnExit
+    in={fadeIn}
+    timeout={1500}
+  >
+    {state => 
+      <div 
+        style={{ opacity: `${state === "entered" ? 1 : 0}`  }} 
+        className={classes.timeSeparator}
+      >
+        <span className={classes.time}>{state === "entered" && convertDate(mode, date) }</span>
+      </div>}
+  </Transition>
+)
+
 
 export default withStyles(styles)(TimeDivider)

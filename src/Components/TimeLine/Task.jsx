@@ -1,6 +1,8 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { Transition } from 'react-transition-group'
+import CurrentDateLine from './CurrentDateLine'
+
 
 const styles = ({ timeLineSpaces }) => ({
   task: {
@@ -43,7 +45,7 @@ const styles = ({ timeLineSpaces }) => ({
 const Task = ({ 
   classes, yearIndex, dayIndex, 
   monthIndex, taskIndex, mode, 
-  task, theme 
+  task, theme, currentTaskLine
 }) => {
   const newDate = new Date(task.date).toLocaleString('en-us', {
     hour: 'numeric',
@@ -58,6 +60,7 @@ const Task = ({
       className={classes.task}
       data-task={`${yearIndex} ${monthIndex} ${dayIndex} ${taskIndex}`}
     >
+      {/* {console.log(currentTaskLine)}       */}
       <Transition
         mountOnEnter
         unmountOnExit

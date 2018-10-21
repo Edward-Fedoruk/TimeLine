@@ -29,7 +29,7 @@ class Years extends React.Component {
       const sum = months.reduce((acum, day) => 
         acum + day.reduce((ac, cur) => ac + (cur.length * theme.timeLineSpaces.taskWithSpace) + theme.timeLineSpaces.taskOffset, 0), 
       0)
-        console.log(sum)
+        // console.log(sum)
       return `${sum - theme.timeLineSpaces.taskOffset}px`
     }
   }

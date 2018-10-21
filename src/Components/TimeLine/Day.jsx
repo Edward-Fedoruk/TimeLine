@@ -34,6 +34,16 @@ const dayStyles = (theme) =>({
   ...styles()
 })
 
+const checkCurrentTask = (tasks, i) => {
+  if(i === 0) return false 
+
+  console.log(
+    Date.parse(tasks[i].date) > Date.parse(new Date())
+      , Date.parse(tasks[i-1].date) < Date.parse(new Date()), tasks[i].date, i)
+
+  return Date.parse(tasks[i].date) > Date.parse(new Date()) && Date.parse(tasks[i-1].date) < Date.parse(new Date())
+}
+
 const Day = ({ 
   tasks, monthIndex, classes, 
   mode, yearIndex, dayIndex, theme 
@@ -69,7 +79,7 @@ const Day = ({
 
       {tasks.map((task, i) =>
         <Task 
-          task={task} 
+          task={task}
           mode={mode} 
           key={i} 
           yearIndex={yearIndex} 

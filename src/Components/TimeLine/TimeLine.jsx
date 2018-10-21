@@ -2,7 +2,6 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Year from './Year'
 import TaskDrawer from './TaskDrawer'
-
 import mountains from '../../assets/mountains.png'
 
 const tasks = 
@@ -225,7 +224,7 @@ class TimeLine extends React.Component {
     // finding where to put task
     const setTaskInfo = (year, month, day, index) => {
       switch(index) {
-        case 0: {          
+        case 0:          
           if(allTasks.length === year) {
             insetIn(allTasks, [[[task]]])
             sort(allTasks, withDateFunc(getYear, true))
@@ -235,9 +234,9 @@ class TimeLine extends React.Component {
             setTaskInfo(year, month, day, index + 1)
 
           else setTaskInfo(year + 1, month, day, index)
-        } break
+        break
 
-        case 1: {
+        case 1: 
           const months = allTasks[year]
 
           if(months.length === month) {
@@ -249,9 +248,9 @@ class TimeLine extends React.Component {
             setTaskInfo(year, month, day, index + 1)
             
           else setTaskInfo( year, month + 1, day, index)
-        } break
+        break
 
-        case 2: {
+        case 2: 
           const days = allTasks[year][month]
 
           if(days.length === day) {
@@ -263,13 +262,13 @@ class TimeLine extends React.Component {
             setTaskInfo(year, month, day, index + 1)
 
           else setTaskInfo(year, month, day + 1, index)
-        } break
+        break
 
-        case 3: {
+        case 3: 
           const tasks = allTasks[year][month][day]
           insetIn(tasks, task)
           sort(tasks, withDateFunc(parseDate, false))
-        } break
+        break
       }          
     }
 
@@ -327,16 +326,13 @@ class TimeLine extends React.Component {
   }
 
   submitTask = () => {
-    if(this.state.currentIndex == null) {
+    if(this.state.currentIndex == null) 
       this.setState(this.addTask)
-    }
 
-    else if(this.state.taskPrevDate !== this.state.taskDate) {
+    else if(this.state.taskPrevDate !== this.state.taskDate) 
       this.changeTaskPosition()
-    }
     
-    else 
-      this.setState(this.changeTaskFields)
+    else this.setState(this.changeTaskFields)
   }
 
   setTaskFields = field => e => {
@@ -350,7 +346,7 @@ class TimeLine extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('timeLine upd')
+    // console.log('timeLine upd')
   }
 
   render() {

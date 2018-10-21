@@ -35,15 +35,12 @@ const convertDate = (mode, date) => {
       month: 'long',
       day: 'numeric',
       weekday: 'long'
-    },
-
+    },    
     {
       year: 'numeric',
       month: 'long',
     },
-
     { year: 'numeric' },
-
     { year: 'numeric' }
   ]
 

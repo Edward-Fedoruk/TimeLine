@@ -12,7 +12,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#663A92'
+      main: '#663A92',
     },
     secondary: {
       main: '#FAFAFA',
@@ -23,6 +23,10 @@ const theme = createMuiTheme({
     taskOffset: 50,
     taskSize: 23,
     taskWithSpace: 73
+  },
+
+  typography: {
+    useNextVariants: true,
   },
 
   overrides: {

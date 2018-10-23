@@ -117,7 +117,7 @@ const styles = () => ({
     bottom: '0',
     backgroundColor: '#663A92',
     backgroundImage: `url(${mountains})`,
-    backgroundSize: '100% auto',
+    backgroundSize: 'cover',
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
     '&::before': {

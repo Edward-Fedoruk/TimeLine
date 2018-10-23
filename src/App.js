@@ -9,12 +9,9 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import DraftsIcon from '@material-ui/icons/Drafts'
-import SendIcon from '@material-ui/icons/Send'
-import MyLocation from '@material-ui/icons/MyLocation'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Timeline from '@material-ui/icons/Timeline'
 
-import { withStyles, Paper } from '@material-ui/core'
+import { withStyles } from '@material-ui/core'
 
 import Notes from './Components/Notes'
 import TimeLine from './Components/TimeLine/TimeLine'
@@ -90,16 +87,9 @@ class App extends React.Component {
 
             <ListItem button>
               <ListItemIcon>
-                <MyLocation />
+                <Timeline />
               </ListItemIcon>
               <ListItemText inset primary="TimeLine" />
-            </ListItem>
-
-            <ListItem button>
-              <ListItemIcon>
-                <DraftsIcon />
-              </ListItemIcon>
-              <ListItemText inset primary="Drafts" />
             </ListItem>
             
           </List>

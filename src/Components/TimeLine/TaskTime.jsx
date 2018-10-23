@@ -1,6 +1,7 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { Transition } from 'react-transition-group'
+import Typography from '@material-ui/core/Typography'
 
 const styles = () => ({
   time: {
@@ -38,12 +39,13 @@ const TaskTime = ({ classes, fadeIn, date, mode }) => (
     timeout={1000}
   >
     {state => 
-      <p 
+      <Typography 
+        color='secondary'
         className={classes.time}
         style={{ opacity: `${state === 'entered' ? 1 : 0}` }}  
       > 
         {state === 'entered' && convertDate(mode, date)}
-      </p>}  
+      </Typography>}  
   </Transition>
 )
 

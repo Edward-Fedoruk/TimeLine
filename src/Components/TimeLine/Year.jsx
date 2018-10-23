@@ -40,6 +40,10 @@ class Years extends React.Component {
     else return false
   }
 
+  componentDidUpdate() {
+    console.log('test')
+  }
+
   render() {
     const { classes, months, mode, yearIndex } = this.props
     const lastTaskDate = months[0][0][0].date

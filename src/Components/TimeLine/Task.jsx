@@ -2,6 +2,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { Transition } from 'react-transition-group'
 import CurrentDateLine from './CurrentDateLine'
+import Typography from '@material-ui/core/Typography'
 
 
 const styles = ({ timeLineSpaces }) => ({
@@ -17,11 +18,9 @@ const styles = ({ timeLineSpaces }) => ({
     transition: 'top 2s ease-in-out',
     marginBottom: `${timeLineSpaces.taskOffset}px`,
     cursor: 'pointer',
-    color: '#fff',
   },
 
   header: {
-    fontSize: '1rem',
     position: 'absolute',
     left: '180%',
     transform: 'rotate(180deg)',
@@ -60,7 +59,6 @@ const Task = ({
       className={classes.task}
       data-task={`${yearIndex} ${monthIndex} ${dayIndex} ${taskIndex}`}
     >
-      {/* {console.log(currentTaskLine)}       */}
       <Transition
         mountOnEnter
         unmountOnExit
@@ -69,19 +67,23 @@ const Task = ({
       >
         {state => 
           <React.Fragment>
-            <p 
+            <Typography 
+              variant='subheading'
+              color='secondary'
               className={classes.header}
               style={{ opacity: `${state === 'entered' ? 1 : 0}` }}  
             > 
               {task.header} 
-            </p>
+            </Typography>
             
-            <p 
+            <Typography 
+              color='secondary'
+              noWrap
               className={classes.time}
               style={{ opacity: `${state === 'entered' ? 1 : 0}` }}  
             > 
               {newDate} 
-            </p>       
+            </Typography>       
           </React.Fragment>}
       </Transition>
     </div>

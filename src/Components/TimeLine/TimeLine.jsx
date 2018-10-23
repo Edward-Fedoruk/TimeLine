@@ -151,9 +151,11 @@ class TimeLine extends React.Component {
     allTasks: [],
     mode: 0,
     taskDrawer: false,
-    taskHeader: '',
-    taskDescr: '',
-    taskDate: new Date(),
+    taskInfo: {
+      header: '',
+      desc: '',
+      date: new Date(),
+    },
     taskPrevDate: '',
     updTasks: false,
     currentIndex: null,
@@ -168,7 +170,7 @@ class TimeLine extends React.Component {
     const taskPos = e.target.dataset.task
 
     if(clickedOnLine)
-      this.setState({ taskDrawer: true, taskDate: new Date(), taskCreation: true }) 
+      this.setState({ taskDrawer: true, taskInfo: { date: new Date(), header: '', desc: '' }, taskCreation: true }) 
 
     else if(taskPos) { 
       const taskCoordinates = taskPos.split(' ').map(numb => parseInt(numb))
@@ -177,13 +179,15 @@ class TimeLine extends React.Component {
       const selectedTask = this.state.allTasks[year][month][day][task]
 
       this.setState({ 
-        taskDate: selectedTask.date,
+        taskInfo: {
+          header: selectedTask.header,
+          desc:   selectedTask.description,
+          date:   selectedTask.date,
+        },
         taskPrevDate: selectedTask.date, 
-        taskHeader: selectedTask.header,
-        taskDescr: selectedTask.description,
-        taskDrawer: true,
+        taskDrawer:   true,
         currentIndex: taskCoordinates,
-        updTasks: !this.state.updTasks,
+        updTasks:     !this.state.updTasks,
         taskCreation: false
       })
     }
@@ -191,17 +195,17 @@ class TimeLine extends React.Component {
   
   cancelCreation = () => this.setState({ taskDrawer: false })
 
-  addTask({ taskHeader, taskDescr, taskDate, allTasks, updTasks }) {
+  addTask({ taskInfo, allTasks, updTasks }) {
     // take date from submitted task form
-    const date = new Date(taskDate)
+    const date = new Date(taskInfo.date)
     const yearOfNewTask  = date.getFullYear()
     const monthOfNewTask = date.getMonth() + 1
     const dayOfNewTask   = date.getDate()
     
     const task = {
       date:        `${date}`,
-      header:      `${taskHeader}`,
-      description: `${taskDescr}`
+      header:      `${taskInfo.header}`,
+      description: `${taskInfo.desc}`
     }
 
     // simple date pickers for 4d array
@@ -224,7 +228,7 @@ class TimeLine extends React.Component {
     // finding where to put task
     const setTaskInfo = (year, month, day, index) => {
       switch(index) {
-        case 0:          
+        case 0:         
           if(allTasks.length === year) {
             insetIn(allTasks, [[[task]]])
             sort(allTasks, withDateFunc(getYear, true))
@@ -279,9 +283,11 @@ class TimeLine extends React.Component {
       taskDrawer: false, 
       currentIndex: null, 
       updTasks: !updTasks,
-      taskHeader: '',
-      taskDescr: '',
-      taskDate: new Date()
+      taskInfo: {
+        header: '',
+        desc: '',
+        date: new Date()
+      }
     }
   }
 
@@ -306,39 +312,48 @@ class TimeLine extends React.Component {
     return this.addTask(state)
   })
   
-
   changeTaskFields(state) {
     const [ year, month, day, task ] = state.currentIndex
     const selectedTask = state.allTasks[year][month][day][task]
     
-    selectedTask.date = state.taskDate
-    selectedTask.header = state.taskHeader
-    selectedTask.description = state.taskDescr
+    selectedTask.date = state.taskInfo.date
+    selectedTask.header = state.taskInfo.header
+    selectedTask.description = state.taskInfo.desc
 
     return { 
       taskDrawer: false,
       allTasks: state.allTasks,
-      taskHeader: '',
-      taskDescr: '',
-      taskDate: new Date(),
+      taskInfo: {
+        header: '',
+        desc: '',
+        date: new Date(),
+      },
       updTasks: !state.updTasks
     }
   }
 
   submitTask = () => {
+    // when a user clicked on the line
     if(this.state.currentIndex == null) 
       this.setState(this.addTask)
 
-    else if(this.state.taskPrevDate !== this.state.taskDate) 
+    // when a user changed task date
+    else if(this.state.taskPrevDate !== this.state.taskInfo.date) 
       this.changeTaskPosition()
     
+    // when a user clicked on the task and hasn't changed  date
     else this.setState(this.changeTaskFields)
   }
 
   setTaskFields = field => e => {
-    const target = e.target
-    this.setState({ [field]: target.value })
+    const fieldValue = e.target.value
+    this.setState(({ taskInfo }) =>  {
+      taskInfo[field] = fieldValue 
+      return { taskInfo }
+    })
   }
+
+  setTaskDate = date => this.setState(({ taskInfo }) => taskInfo.date = date)
 
   componentDidMount() {
     // fetch date and set in state and global var
@@ -353,8 +368,7 @@ class TimeLine extends React.Component {
     const { classes } = this.props
     const { 
       allTasks, mode, taskDrawer,
-      taskHeader, taskDescr, taskDate,
-      updTasks, taskCreation
+      taskInfo, updTasks, taskCreation
     } = this.state
 
     return (
@@ -380,10 +394,9 @@ class TimeLine extends React.Component {
           closeTaskDrawer={this.closeTaskDrawer}
           taskDrawer={taskDrawer}
           submitTask={this.submitTask}
-          taskHeader={taskHeader}
-          taskDescr={taskDescr}
-          taskDate={taskDate}
+          taskInfo={taskInfo}
           setTaskFields={this.setTaskFields}
+          setTaskDate={this.setTaskDate}
           deleteTask={() => this.setState(this.deleteTask)}
           taskCreation={taskCreation}
           cancelCreation={this.cancelCreation}

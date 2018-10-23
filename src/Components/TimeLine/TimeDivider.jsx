@@ -1,6 +1,7 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { Transition } from 'react-transition-group'
+import Typography from '@material-ui/core/Typography'
 
 const styles = (theme) => ({
   timeSeparator: {
@@ -21,7 +22,6 @@ const styles = (theme) => ({
     right: '25px',
     fontSize: '14px',
     transform: 'rotate(180deg)',
-    color: theme.palette.secondary.main,
     lineHeight: '2',
     fontSize: '13px',
     willChange: 'opacity'
@@ -59,7 +59,12 @@ const TimeDivider = ({ classes, fadeIn, mode, date }) => (
         style={{ opacity: `${state === "entered" ? 1 : 0}`  }} 
         className={classes.timeSeparator}
       >
-        <span className={classes.time}>{state === "entered" && convertDate(mode, date) }</span>
+        <Typography 
+          color='secondary' 
+          className={classes.time}
+        >
+          {state === "entered" && convertDate(mode, date) }
+        </Typography>
       </div>}
   </Transition>
 )

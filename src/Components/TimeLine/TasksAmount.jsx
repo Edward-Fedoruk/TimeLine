@@ -1,14 +1,13 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { Transition } from 'react-transition-group'
+import Typography from '@material-ui/core/Typography'
 
 const styles = () => ({
   tasksIn: {
-    fontSize: '1rem',
     position: 'absolute',
     right: '300%',
     width: 'max-content',
-    color: '#fff',
     margin: '0'
   },
 
@@ -28,9 +27,13 @@ const TasksAmount = ({ classes, fadeIn, mode, tasks }) => (
   >
     {state => 
       <div style={{ opacity: `${state === 'entered' ? 1 : 0}`  }} className={classes.wrap}>
-        <p className={classes.tasksIn}>
+        <Typography 
+          className={classes.tasksIn}
+          variant='subheading'
+          color='secondary'
+        >
           {state === 'entered' ? `${tasks} tasks in this ${modes[mode]}` : '' } 
-        </p>
+        </Typography>
       </div>}
   </Transition>
 )

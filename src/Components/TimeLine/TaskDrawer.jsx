@@ -6,9 +6,12 @@ import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 import Drawer from '@material-ui/core/Drawer'
 import Button from '@material-ui/core/Button'
 import Switch from '@material-ui/core/Switch'
-import DateTimePicker from 'react-datetime-picker'
 import Cached from '@material-ui/icons/Cached'
-import classNames from 'classnames';
+import ArrowBackIos from '@material-ui/icons/ArrowBackIos'
+import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos'
+import CalendarToday from '@material-ui/icons/CalendarToday'
+import AccessTime from '@material-ui/icons/AccessTime'
+import DateTimePicker from 'material-ui-pickers/DateTimePicker'
 
 const styles = ({ palette }) => ({
   drawerWrap: {
@@ -20,24 +23,20 @@ const styles = ({ palette }) => ({
   },
 
   date: {
-    width: '50%'
-  },
-
-  pickDate: {
-    width: '50%'
+    width: '70%',
   },
 
   datePicker: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'baseline',
-    marginTop: '20px',
+    alignItems: 'center',
+    marginTop: '70px',
   },
 
   selectionsWrap: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'baseline',
+    alignItems: 'center',
     flexWrap: 'wrap',
     overflow: 'scroll'
   },
@@ -78,13 +77,14 @@ const styles = ({ palette }) => ({
   },
 
   drawer: {
-    width: '350px',
-    paddingTop: '26px',
+    width: '310px',
+    paddingTop: '10px',
     backgroundColor: palette.secondary.main,
     opacity: '.97',
   },
 
   dateInput: {
+    borderBottom: '1px red',
     '& .react-datetime-picker__wrapper': {
       border: 'none',
     }
@@ -98,18 +98,8 @@ const styles = ({ palette }) => ({
 })
 
 class TaskDrawer extends React.Component {
- 
-  formatDate = taskDate => {
-    const date = new Date(taskDate)
-    const editDate = x => x < 10 ? '0' + x : x
-
-    const year = date.getFullYear()
-    const month = editDate(1 + date.getMonth())
-    const day = editDate(date.getDate())
-    const hours = editDate(date.getHours())
-    const minutes = editDate(date.getMinutes())
-
-    return `${year}-${month}-${day}T${hours}:${minutes}`
+  state = {
+    invalidDate: false
   }
 
   componentDidMount() {
@@ -117,10 +107,18 @@ class TaskDrawer extends React.Component {
     ValidatorForm.addValidationRule('badDateFormat', date => !isNaN(Date.parse(`${date}`)))
   }
 
+  // submitTask = () => {
+  //   console.log('test', Date.parse(new Date(this.props.taskInfo.date)), new Date(this.props.taskInfo.date), this.props.taskInfo.date)
+  //   // console.log(isNaN(Date.parse(new Date(this.props.taskInfo.date))))
+  //   isNaN(Date.parse(`${this.props.taskInfo.date}`))
+  //     ? this.setState({ invalidDate: true })  
+  //     : this.props.submitTask()
+  // }
+
   render() {
     const { 
       classes, taskDrawer, submitTask, 
-      taskHeader, taskDescr, taskDate,
+      taskInfo, setTaskDate,
       setTaskFields, deleteTask, taskCreation,
       cancelCreation
     } = this.props
@@ -137,9 +135,9 @@ class TaskDrawer extends React.Component {
               margin="normal" 
               label="Task Name"
               fullWidth
-              onChange={setTaskFields("taskHeader")} 
-              name="taskHeader" 
-              value={taskHeader}
+              onChange={setTaskFields("header")} 
+              name="header" 
+              value={taskInfo.header}
               multiline 
               validators={['required', 'isOnlySpaces', 'minStringLength:1', 'maxStringLength:50']}
               errorMessages={['this field is required', 'must consist not only from spaces', 'must contain at least 1 characters', 'password must contain no more then 50 characters']}
@@ -152,34 +150,30 @@ class TaskDrawer extends React.Component {
               label="Task Description"
               multiline 
               inputProps={{maxLength: "150"}}
-              onChange={setTaskFields("taskDescr")}
-              value={taskDescr}
+              onChange={setTaskFields("desc")}
+              value={taskInfo.desc}
             />            
 
             <div className={classes.datePicker}>
               <Typography className={classes.pickDate} variant='subheading'>
-                Pick Day / Time
+                Pick Date
               </Typography>
+
               <DateTimePicker
-                value={taskDate}
-                isCalendarOpen={false}
-                disableClock={true}
-                calendarIcon={null}
-                clearIcon={null}
-                view={null}
-                className={classes.dateInput}
-              />
-              {/* <TextValidator 
                 className={classes.date}
-                fullWidth
-                name="date" 
-                margin="normal" 
-                validators={['badDateFormat']}
-                errorMessages={['bad date format']}
-                type="datetime-local" 
-                value={this.formatDate(taskDate)}              
-                onChange={setTaskFields("taskDate")}
-              /> */}
+                leftArrowIcon={<ArrowBackIos/>}
+                rightArrowIcon={<ArrowForwardIos/>}
+                dateRangeIcon={<CalendarToday/>}
+                timeIcon={<AccessTime/>}
+                autoOk
+                minDateMessage={false}
+                showTodayButton
+                animateYearScrolling
+                invalidLabel={'invalid date'}
+                disablePast
+                value={taskInfo.date}
+                onChange={setTaskDate}
+              />
             </div>
             
             <div className={classes.selectionsWrap}>
@@ -211,7 +205,7 @@ class TaskDrawer extends React.Component {
                 variant="contained" 
                 color="primary" 
                 type="submit"
-                disabled={false}
+                disabled={taskInfo.header === ""}
                 size="medium"
               >
                 OK

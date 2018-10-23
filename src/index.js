@@ -8,6 +8,8 @@ import registerServiceWorker from './registerServiceWorker'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
+import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils'
 
 const theme = createMuiTheme({
   palette: {
@@ -51,17 +53,17 @@ const root = document.getElementById('root')
 const render = () => {
   return ReactDOM.render(
     <MuiThemeProvider theme={theme}>
-    
-      <CssBaseline />
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <CssBaseline />
 
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <Switch>
-          <Route path='/' exact component={signUp} />
-          <Route path='/app' exact component={App} />
-          <Route path='/login' exact component={LogIn} />
-        </Switch>
-      </BrowserRouter>
-      
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
+          <Switch>
+            <Route path='/' exact component={signUp} />
+            <Route path='/app' exact component={App} />
+            <Route path='/login' exact component={LogIn} />
+          </Switch>
+        </BrowserRouter>
+      </MuiPickersUtilsProvider>
     </MuiThemeProvider>,
     root
   )

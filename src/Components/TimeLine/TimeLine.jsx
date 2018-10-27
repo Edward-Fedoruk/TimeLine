@@ -155,6 +155,9 @@ class TimeLine extends React.Component {
       header: '',
       desc: '',
       date: new Date(),
+      remind: false,
+      repeat: false,
+      priority: 0
     },
     taskPrevDate: '',
     updTasks: false,
@@ -165,31 +168,44 @@ class TimeLine extends React.Component {
   /*check if date attribute exist.
     If it exist then user clicked on 
     lineBlock and right drawer will appear.*/ 
+
+  setInfoToDrawer = (taskPos) => {   
+    const taskCoordinates = taskPos.split(' ').map(numb => parseInt(numb)) 
+    const [ year, month, day, task ] = taskCoordinates
+
+    const selectedTask = this.state.allTasks[year][month][day][task]
+
+    this.setState({ 
+      taskInfo: {
+        header:   selectedTask.header,
+        desc:     selectedTask.description,
+        date:     selectedTask.date,
+        remind:   selectedTask.remind,
+        repeat:   selectedTask.repeat,
+        priority: selectedTask.priority
+      },
+      taskPrevDate: selectedTask.date, 
+      taskDrawer:   true,
+      currentIndex: taskCoordinates,
+      updTasks:     !this.state.updTasks,
+      taskCreation: false
+    })
+    
+  }
+
   openTaskMenu = e => {
     const clickedOnLine = e.target.dataset.timeblock
     const taskPos = e.target.dataset.task
 
-    if(clickedOnLine)
-      this.setState({ taskDrawer: true, taskInfo: { date: new Date(), header: '', desc: '' }, taskCreation: true }) 
-
-    else if(taskPos) { 
-      const taskCoordinates = taskPos.split(' ').map(numb => parseInt(numb))
-      const [ year, month, day, task ] = taskCoordinates
-
-      const selectedTask = this.state.allTasks[year][month][day][task]
-
+    if(clickedOnLine) {
       this.setState({ 
-        taskInfo: {
-          header: selectedTask.header,
-          desc:   selectedTask.description,
-          date:   selectedTask.date,
-        },
-        taskPrevDate: selectedTask.date, 
-        taskDrawer:   true,
-        currentIndex: taskCoordinates,
-        updTasks:     !this.state.updTasks,
-        taskCreation: false
-      })
+        taskDrawer: true, 
+        taskInfo: { date: new Date(), header: '', desc: '' }, 
+        taskCreation: true 
+      }) 
+    }
+    else if(taskPos) {// if clicked on the task then 
+      this.setInfoToDrawer(taskPos)
     }
   }
   
@@ -319,6 +335,8 @@ class TimeLine extends React.Component {
     selectedTask.date = state.taskInfo.date
     selectedTask.header = state.taskInfo.header
     selectedTask.description = state.taskInfo.desc
+    selectedTask.remind = state.taskInfo.remind
+    selectedTask.repeat = state.taskInfo.repeat
 
     return { 
       taskDrawer: false,
@@ -327,6 +345,8 @@ class TimeLine extends React.Component {
         header: '',
         desc: '',
         date: new Date(),
+        remind: false,
+        repeat: false
       },
       updTasks: !state.updTasks
     }
@@ -345,15 +365,19 @@ class TimeLine extends React.Component {
     else this.setState(this.changeTaskFields)
   }
 
-  setTaskFields = field => e => {
+  setTaskTextFields = field => e => {
     const fieldValue = e.target.value
     this.setState(({ taskInfo }) =>  {
       taskInfo[field] = fieldValue 
       return { taskInfo }
     })
   }
+  
+  setTaskSettings = (field, val) => 
+    this.setState(({ taskInfo }) => taskInfo[field] = val)
 
-  setTaskDate = date => this.setState(({ taskInfo }) => taskInfo.date = date)
+  setTaskDate = date => 
+    this.setState(({ taskInfo }) => taskInfo.date = date)
 
   componentDidMount() {
     // fetch date and set in state and global var
@@ -395,11 +419,12 @@ class TimeLine extends React.Component {
           taskDrawer={taskDrawer}
           submitTask={this.submitTask}
           taskInfo={taskInfo}
-          setTaskFields={this.setTaskFields}
+          setTaskTextFields={this.setTaskTextFields}
           setTaskDate={this.setTaskDate}
           deleteTask={() => this.setState(this.deleteTask)}
           taskCreation={taskCreation}
           cancelCreation={this.cancelCreation}
+          setTaskSettings={this.setTaskSettings}
         />
       </div>
     )

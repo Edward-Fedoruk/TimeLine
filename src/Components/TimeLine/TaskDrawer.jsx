@@ -104,23 +104,15 @@ class TaskDrawer extends React.Component {
 
   componentDidMount() {
     ValidatorForm.addValidationRule('isOnlySpaces', value => /\S/.test(value))
-    ValidatorForm.addValidationRule('badDateFormat', date => !isNaN(Date.parse(`${date}`)))
+    // ValidatorForm.addValidationRule('badDateFormat', date => !isNaN(Date.parse(`${date}`)))
   }
-
-  // submitTask = () => {
-  //   console.log('test', Date.parse(new Date(this.props.taskInfo.date)), new Date(this.props.taskInfo.date), this.props.taskInfo.date)
-  //   // console.log(isNaN(Date.parse(new Date(this.props.taskInfo.date))))
-  //   isNaN(Date.parse(`${this.props.taskInfo.date}`))
-  //     ? this.setState({ invalidDate: true })  
-  //     : this.props.submitTask()
-  // }
 
   render() {
     const { 
       classes, taskDrawer, submitTask, 
-      taskInfo, setTaskDate,
-      setTaskFields, deleteTask, taskCreation,
-      cancelCreation
+      taskInfo, setTaskDate, theme,
+      setTaskTextFields, deleteTask, taskCreation,
+      cancelCreation, setTaskSettings
     } = this.props
 
     return (
@@ -135,7 +127,7 @@ class TaskDrawer extends React.Component {
               margin="normal" 
               label="Task Name"
               fullWidth
-              onChange={setTaskFields("header")} 
+              onChange={setTaskTextFields("header")} 
               name="header" 
               value={taskInfo.header}
               multiline 
@@ -150,7 +142,7 @@ class TaskDrawer extends React.Component {
               label="Task Description"
               multiline 
               inputProps={{maxLength: "150"}}
-              onChange={setTaskFields("desc")}
+              onChange={setTaskTextFields("desc")}
               value={taskInfo.desc}
             />            
 
@@ -180,16 +172,19 @@ class TaskDrawer extends React.Component {
               <div className={classes.selectWrap}>
                 <Typography variant='subheading'>Remind me</Typography>
                 <Switch
-                  // checked={this.state.checkedA}
-                  // onChange={this.handleChange('checkedA')}
-                  value="checkedA"
+                  checked={taskInfo.remind}
+                  onChange={() => setTaskSettings('remind', !taskInfo.remind)}
                   color="primary"
                 />
               </div>
 
               <div className={classes.selectWrap}>
                 <Typography variant='subheading' className={classes.repeat}>Repeat Task</Typography>
-                <Cached className={classes.repeatIcon}/>
+                <Cached 
+                  style={{ color: `${taskInfo.repeat ? theme.palette.primary.main : 'gray'}` }} 
+                  onClick={() => setTaskSettings('repeat', !taskInfo.repeat)}
+                  className={classes.repeatIcon}
+                />
               </div>
 
               <div className={classes.selectWrap}>
@@ -236,4 +231,4 @@ class TaskDrawer extends React.Component {
 
 } 
 
-export default withStyles(styles)(TaskDrawer)
+export default withStyles(styles, { withTheme: true })(TaskDrawer)

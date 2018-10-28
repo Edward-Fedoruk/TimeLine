@@ -1,7 +1,7 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Year from './Year'
-import TaskDrawer from './TaskDrawer'
+import TaskDrawer from './TaskDrawer/TaskDrawer'
 import mountains from '../../assets/mountains.png'
 
 const tasks = 

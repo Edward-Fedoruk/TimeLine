@@ -182,7 +182,7 @@ class TimeLine extends React.Component {
         date:     selectedTask.date,
         remind:   selectedTask.remind,
         repeat:   selectedTask.repeat,
-        priority: selectedTask.priority
+        priority: 0
       },
       taskPrevDate: selectedTask.date, 
       taskDrawer:   true,
@@ -197,16 +197,16 @@ class TimeLine extends React.Component {
     const clickedOnLine = e.target.dataset.timeblock
     const taskPos = e.target.dataset.task
 
-    if(clickedOnLine) {
+    if(clickedOnLine) 
       this.setState({ 
         taskDrawer: true, 
         taskInfo: { date: new Date(), header: '', desc: '' }, 
         taskCreation: true 
       }) 
-    }
-    else if(taskPos) {// if clicked on the task then 
+    
+    else if(taskPos) // if clicked on the task then 
       this.setInfoToDrawer(taskPos)
-    }
+    
   }
   
   cancelCreation = () => this.setState({ taskDrawer: false })
@@ -346,7 +346,8 @@ class TimeLine extends React.Component {
         desc: '',
         date: new Date(),
         remind: false,
-        repeat: false
+        repeat: false,
+        priority: 0
       },
       updTasks: !state.updTasks
     }

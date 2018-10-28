@@ -189,8 +189,8 @@ class TaskDrawer extends React.Component {
 
               <div className={classes.selectWrap}>
                 <Typography variant='subheading'>Priority</Typography>
-                <div className={classes.grey}></div>
-                <div className={classes.yellow}></div>
+                <div style={{ border: `${taskInfo.priority === 0 && `2px solid ${theme.palette.primary.main}` }` }} className={classes.grey}></div>
+                <div style={{ border: `${taskInfo.priority === 0 && `2px solid ${theme.palette.primary.main}` }` }} className={classes.yellow}></div>
               </div>
             </div>
             

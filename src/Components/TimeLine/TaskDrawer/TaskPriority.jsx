@@ -20,30 +20,53 @@ const styles = theme => ({
   },
 
   grey: { 
+    backgroundColor: '#E5E5E5',
+  },
+
+  circle: {
     width: '24px',
     height: '24px',
-    backgroundColor: '#E5E5E5',
     borderRadius: '50%',
-    marginLeft: '42px' 
+    marginLeft: '42px',
+    transition: 'border .2s linear',
+    cursor: 'pointer'
   },
 
   yellow: {
-    width: '24px',
-    height: '24px',
     backgroundColor: '#FCFC2E',
-    borderRadius: '50%',
-    marginLeft: '42px' 
   },
+
+  chosenTask: {
+    border: `2px solid ${theme.palette.primary.main}`
+  }
 })
 
-const TaskPriority = ({ classes, priority, theme }) => (
+
+const TaskPriority = ({ classes, priority, setTaskSettings }) => (
   <div className={classes.selectionsWrap}>
     <div className={classes.selectWrap}>
       <Typography variant='subheading'>Priority</Typography>
-      <div style={{ border: `${priority === 0 && `2px solid ${theme.palette.primary.main}` }` }} className={classes.grey}></div>
-      <div style={{ border: `${priority === 0 && `2px solid ${theme.palette.primary.main}` }` }} className={classes.yellow}></div>
+
+      <div 
+        onClick={() => setTaskSettings("priority", 0)} 
+        className={`
+          ${classes.circle} 
+          ${classes.grey} 
+          ${priority === 0 && classes.chosenTask}
+        `}
+      />
+      
+      <div 
+        onClick={() => setTaskSettings("priority", 1)} 
+        className={`
+          ${classes.circle} 
+          ${classes.yellow}
+          ${priority === 1 && classes.chosenTask}
+        `}
+      />
+
     </div>
   </div>
 )
 
-export default withStyles(styles, { withTheme: true })(TaskPriority)
+export default withStyles(styles)(TaskPriority)

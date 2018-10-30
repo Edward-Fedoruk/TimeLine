@@ -182,7 +182,7 @@ class TimeLine extends React.Component {
         date:     selectedTask.date,
         remind:   selectedTask.remind,
         repeat:   selectedTask.repeat,
-        priority: 0
+        priority: selectedTask.priority
       },
       taskPrevDate: selectedTask.date, 
       taskDrawer:   true,
@@ -200,7 +200,14 @@ class TimeLine extends React.Component {
     if(clickedOnLine) 
       this.setState({ 
         taskDrawer: true, 
-        taskInfo: { date: new Date(), header: '', desc: '' }, 
+        taskInfo: { 
+          date: new Date(),
+          header: '', 
+          desc: '',
+          priority: 0,
+          remind: false,
+          repeat: false
+        }, 
         taskCreation: true 
       }) 
     
@@ -221,7 +228,10 @@ class TimeLine extends React.Component {
     const task = {
       date:        `${date}`,
       header:      `${taskInfo.header}`,
-      description: `${taskInfo.desc}`
+      description: `${taskInfo.desc}`,
+      remind:   taskInfo.remind,
+      repeat:   taskInfo.repeat,
+      priority: taskInfo.priority
     }
 
     // simple date pickers for 4d array
@@ -337,6 +347,7 @@ class TimeLine extends React.Component {
     selectedTask.description = state.taskInfo.desc
     selectedTask.remind = state.taskInfo.remind
     selectedTask.repeat = state.taskInfo.repeat
+    selectedTask.priority = state.taskInfo.priority
 
     return { 
       taskDrawer: false,
@@ -374,11 +385,15 @@ class TimeLine extends React.Component {
     })
   }
   
-  setTaskSettings = (field, val) => 
-    this.setState(({ taskInfo }) => taskInfo[field] = val)
+  setTaskSettings = (field, val) => this.setState(({ taskInfo }) => {
+      taskInfo[field] = val
+      return { taskInfo }
+  })
 
-  setTaskDate = date => 
-    this.setState(({ taskInfo }) => taskInfo.date = date)
+  setTaskDate = date => this.setState(({ taskInfo }) => { 
+    taskInfo.date = date 
+    return { taskInfo }
+  })
 
   componentDidMount() {
     // fetch date and set in state and global var

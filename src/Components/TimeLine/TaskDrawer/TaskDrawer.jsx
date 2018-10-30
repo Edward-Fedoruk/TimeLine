@@ -1,6 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core'
-import { ValidatorForm} from 'react-material-ui-form-validator'
+import { ValidatorForm } from 'react-material-ui-form-validator'
 import Drawer from '@material-ui/core/Drawer'
 import Button from '@material-ui/core/Button'
 import DatePicker from './DatePicker'
@@ -76,6 +76,7 @@ class TaskDrawer extends React.Component {
 
             <TaskPriority
               priority={taskInfo.priority}
+              setTaskSettings={setTaskSettings}
             />
                           
             <div className={classes.buttonsWrap}>

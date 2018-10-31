@@ -13,11 +13,10 @@ import Timeline from '@material-ui/icons/Timeline'
 
 import { withStyles } from '@material-ui/core'
 
-import Notes from './Components/Notes'
+import TimeModePicker from './Components/TimeModePicker'
 import TimeLine from './Components/TimeLine/TimeLine'
 
 const styles = ({ zIndex, palette}) => {
-  console.log()
   return {
   toolBar: {
     display: 'flex',
@@ -50,13 +49,14 @@ const styles = ({ zIndex, palette}) => {
 class App extends React.Component {
   state = {
     appDrawer: false,
+    testState: false
   }
 
   toggleAppMenu = () => this.setState({appDrawer: !this.state.appDrawer})
 
   render() {
     const { classes } = this.props
-    const { appDrawer } = this.state
+    const { appDrawer, testState } = this.state
     return (
       <React.Fragment>
         <AppBar className={classes.appBar} position="fixed">
@@ -85,11 +85,12 @@ class App extends React.Component {
         >
           <List component="nav">
 
-            <ListItem button>
+            <ListItem onClick={() => this.setState({ testState: !testState })} style={{position: 'relative'}} button>
               <ListItemIcon>
                 <Timeline />
               </ListItemIcon>
               <ListItemText inset primary="TimeLine" />
+              <TimeModePicker testState={testState} />
             </ListItem>
             
           </List>

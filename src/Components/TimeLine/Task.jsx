@@ -58,7 +58,7 @@ const Task = ({
       }} 
       className={classes.task}
       data-task={`${yearIndex} ${monthIndex} ${dayIndex} ${taskIndex}`}
-    >{console.log(task)}
+    >
       <Transition
         mountOnEnter
         unmountOnExit

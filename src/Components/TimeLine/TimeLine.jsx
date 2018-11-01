@@ -405,9 +405,9 @@ class TimeLine extends React.Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, mode } = this.props
     const { 
-      allTasks, mode, taskDrawer,
+      allTasks, taskDrawer,
       taskInfo, updTasks, taskCreation
     } = this.state
 

@@ -10,6 +10,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Timeline from '@material-ui/icons/Timeline'
+import { Transition } from 'react-transition-group'
 
 import { withStyles } from '@material-ui/core'
 
@@ -49,14 +50,19 @@ const styles = ({ zIndex, palette}) => {
 class App extends React.Component {
   state = {
     appDrawer: false,
-    testState: false
+    modeList: false,
+    mode: 0
   }
 
-  toggleAppMenu = () => this.setState({appDrawer: !this.state.appDrawer})
+  switchMode = mode => () => this.setState({ mode })
+
+  toggleAppMenu = () => this.setState({ appDrawer: !this.state.appDrawer })
+
+  expandTimeList = () => this.setState({ modeList: !this.state.modeList })
 
   render() {
     const { classes } = this.props
-    const { appDrawer, testState } = this.state
+    const { appDrawer, modeList, mode } = this.state
     return (
       <React.Fragment>
         <AppBar className={classes.appBar} position="fixed">
@@ -66,7 +72,10 @@ class App extends React.Component {
               <MenuIcon />
             </IconButton>
 
-            <Typography variant="title" color="inherit">
+            <Typography 
+              variant="title" 
+              color="inherit"
+            >
               TimeLine
             </Typography>
 
@@ -85,18 +94,26 @@ class App extends React.Component {
         >
           <List component="nav">
 
-            <ListItem onClick={() => this.setState({ testState: !testState })} style={{position: 'relative'}} button>
+            <ListItem             
+              onClick={this.expandTimeList} style={{position: 'relative'}} button>
+            
               <ListItemIcon>
                 <Timeline />
               </ListItemIcon>
+
               <ListItemText inset primary="TimeLine" />
-              <TimeModePicker testState={testState} />
+
             </ListItem>
-            
+
+            <TimeModePicker 
+              modeList={modeList} 
+              switchMode={this.switchMode}
+            />
+
           </List>
         </Drawer>
 
-        <TimeLine />
+        <TimeLine mode={mode} />
       
       </React.Fragment>
     )

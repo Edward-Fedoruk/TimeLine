@@ -28,7 +28,7 @@ const Months = ({
   return (
     <div 
       style={{ 
-        top: `${ mode > 2 ? -monthIndex * theme.timeLineSpaces.taskWithSpace : 0 }px`, 
+        transform: `translateY(${ mode > 2 ? -monthIndex * theme.timeLineSpaces.taskWithSpace : 0 }px)`, 
         height: `${setHeight(mode, days, theme)}`,
       }}
       data-timeblock="true"

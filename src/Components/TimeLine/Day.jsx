@@ -7,42 +7,10 @@ import TasksAmount from './TasksAmount'
 import TaskTime from './TaskTime'
 
 const dayStyles = (theme) =>({
-  TimeDivider: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100vw',
-    height: '2px',
-    background: '#000',
-    right: '-60vw',
-  },
-
-  time: {
-    position: 'absolute',
-    right: '10px',
-    fontSize: '14px',
-    transform: 'rotate(180deg)'
-  },
-
-  tasks: {
-    fontSize: '12px',
-    position: 'absolute',
-    left: '200%',
-    transform: 'rotate(180deg)',
-    width: 'max-content'
-  },
+ 
 
   ...styles()
 })
-
-const checkCurrentTask = (tasks, i) => {
-  if(i === 0) return false 
-
-  console.log(
-    Date.parse(tasks[i].date) > Date.parse(new Date())
-      , Date.parse(tasks[i-1].date) < Date.parse(new Date()), tasks[i].date, i)
-
-  return Date.parse(tasks[i].date) > Date.parse(new Date()) && Date.parse(tasks[i-1].date) < Date.parse(new Date())
-}
 
 const Day = ({ 
   tasks, monthIndex, classes, 
@@ -54,7 +22,7 @@ const Day = ({
       className={classes.timeBlock} 
       data-timeblock="true"
       style={{
-        top:    `${ mode > 1 ? -dayIndex * theme.timeLineSpaces.taskWithSpace : 0 }px`, 
+        transform: `translateY(${ mode > 1 ? -dayIndex * theme.timeLineSpaces.taskWithSpace : 0 }px)`, 
         height: `${ mode > 0 ? theme.timeLineSpaces.taskSize : theme.timeLineSpaces.taskWithSpace * tasks.length }px`
       }}
     >

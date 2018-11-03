@@ -8,7 +8,6 @@ import Timeline from '@material-ui/icons/Timeline'
 import TimeModePicker from './TimeModePicker'
 import { withStyles } from '@material-ui/core'
 
-
 const styles = ({ palette }) => ({
   drawerPaper: {
     height: 'calc(100vh - 48px)',
@@ -16,12 +15,16 @@ const styles = ({ palette }) => ({
     bottom: '0',
     top: 'unset',
     width: '229px',
-    paddingTop: '36px',
     backgroundColor: palette.secondary.main,
     opacity: '.97'
   },
 
-  drawer: { zIndex: '1' }
+  drawer: { zIndex: '1' },
+
+  timeline: {
+    position: 'relative',
+    marginTop: '50px'
+  }
 
 })
 
@@ -54,22 +57,21 @@ class AppDrawer extends React.PureComponent {
           <ListItem             
             button
             onClick={this.expandTimeList} 
-            style={{position: 'relative'}} 
+            className={classes.timeline} 
           >
           
             <ListItemIcon>
               <Timeline />
             </ListItemIcon>
 
-            <ListItemText inset primary="TimeLine" />
-
+            <ListItemText inset primary="TimeLine" />        
+           
           </ListItem>
-
           <TimeModePicker 
             modeList={modeList} 
             switchMode={switchMode}            
           />
-
+              
         </List>
       </Drawer>
     )

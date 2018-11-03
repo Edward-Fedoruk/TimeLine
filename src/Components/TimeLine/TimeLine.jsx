@@ -21,8 +21,8 @@ const styles = () => ({
     '&::before': {
       content: "''",
       position: 'fixed',
-      width: '100%',
-      height: '100%',
+      width: '100vw',
+      height: '100vh',
       display: 'block',
       opacity: '0.84',
       background: 'radial-gradient(93.13rem at 100% 100%, #361BB2 0%, #C567D8 100%)'
@@ -297,6 +297,7 @@ class TimeLine extends React.Component {
   componentDidMount() {
     // fetch date and set in state and global var
     this.setState({ allTasks: tasks })
+    this.forceUpdate()
   }
 
   render() {

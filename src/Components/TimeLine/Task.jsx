@@ -1,7 +1,5 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import { Transition } from 'react-transition-group'
-import CurrentDateLine from './CurrentDateLine'
 import Typography from '@material-ui/core/Typography'
 
 
@@ -14,10 +12,10 @@ const styles = ({ timeLineSpaces }) => ({
     position: 'relative',
     left: '50%',
     zIndex: '200',
-    transform: 'translateX(-50%) rotate(180deg)',
-    transition: 'top 2s ease-in-out',
+    transition: 'transform 2s ease-in-out',
     marginBottom: `${timeLineSpaces.taskOffset}px`,
     cursor: 'pointer',
+    willChange: 'transform'
   },
 
   header: {
@@ -25,8 +23,9 @@ const styles = ({ timeLineSpaces }) => ({
     left: '180%',
     transform: 'rotate(180deg)',
     width: 'max-content',
-    transition: 'all 1s linear',
-    margin: '0'
+    transition: 'opacity 2s linear',
+    margin: '0',
+    willChange: 'opacity'
   },
   
   time: {
@@ -35,8 +34,9 @@ const styles = ({ timeLineSpaces }) => ({
     right: '180%',
     transform: 'rotate(180deg)',
     width: 'max-content',
-    transition: 'opacity 1s linear',
+    transition: 'opacity 2s linear',
     margin: '0',
+    willChange: 'opacity'
   },
 
 })
@@ -54,38 +54,32 @@ const Task = ({
   return (
     <div 
       style={{ 
-        top: `${ mode === 0 ? 0 : -taskIndex * theme.timeLineSpaces.taskWithSpace }px`,          
+        transform: `
+          translateX(-50%) 
+          rotate(180deg) 
+          translateY(${ mode === 0 ? 0 : taskIndex * theme.timeLineSpaces.taskWithSpace }px)
+        `
       }} 
       className={classes.task}
       data-task={`${yearIndex} ${monthIndex} ${dayIndex} ${taskIndex}`}
     >
-      <Transition
-        mountOnEnter
-        unmountOnExit
-        in={mode === 0}
-        timeout={1000}
-      >
-        {state => 
-          <React.Fragment>
-            <Typography 
-              variant='subheading'
-              color='secondary'
-              className={classes.header}
-              style={{ opacity: `${state === 'entered' ? 1 : 0}` }}  
-            > 
-              {task.header} 
-            </Typography>
-            
-            <Typography 
-              color='secondary'
-              noWrap
-              className={classes.time}
-              style={{ opacity: `${state === 'entered' ? 1 : 0}` }}  
-            > 
-              {newDate} 
-            </Typography>       
-          </React.Fragment>}
-      </Transition>
+      <Typography 
+        variant='subheading'
+        color='secondary'
+        className={classes.header}
+        style={{ opacity: `${mode === 0 ? 1 : 0}` }}  
+      > 
+        {task.header} 
+      </Typography>
+      
+      <Typography 
+        color='secondary'
+        noWrap
+        className={classes.time}
+        style={{ opacity: `${mode === 0 ? 1 : 0}` }}  
+      > 
+        {newDate} 
+      </Typography>       
     </div>
   )
 }

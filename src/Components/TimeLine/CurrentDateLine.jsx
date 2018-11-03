@@ -1,6 +1,5 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import { Transition } from 'react-transition-group'
 
 const styles = theme => ({
   line: {
@@ -21,15 +20,7 @@ class CurrentDateLine extends React.Component {
   render() {
     const { classes, fadeIn } = this.props
     return (
-      <Transition
-        mountOnEnter
-        unmountOnExit
-        in={fadeIn}
-        timeout={1500}
-      >
-        {state => 
-          <div className={classes.line}></div>}
-      </Transition>
+      <div className={classes.line}></div>
     )
   }
 }

@@ -20,28 +20,34 @@ const styles = theme => ({
   },
 })
 
-const DatePicker = ({ classes, setTaskDate, date }) => (
-  <div className={classes.datePicker}>
-    <Typography variant='subheading'>
-      Pick Date
-    </Typography>
+class DatePicker extends React.PureComponent {
+  render() {
+    const { classes, setTaskDate, date } = this.props
+    
+    return (
+      <div className={classes.datePicker}>
+        <Typography variant='subheading'>
+          Pick Date
+        </Typography>
 
-    <DateTimePicker
-      className={classes.date}
-      leftArrowIcon={<ArrowBackIos/>}
-      rightArrowIcon={<ArrowForwardIos/>}
-      dateRangeIcon={<CalendarToday/>}
-      timeIcon={<AccessTime/>}
-      autoOk
-      minDateMessage={false}
-      showTodayButton
-      animateYearScrolling
-      invalidLabel={'invalid date'}
-      disablePast
-      value={date}
-      onChange={setTaskDate}
-    />
-  </div>
-)
+        <DateTimePicker
+          className={classes.date}
+          leftArrowIcon={<ArrowBackIos/>}
+          rightArrowIcon={<ArrowForwardIos/>}
+          dateRangeIcon={<CalendarToday/>}
+          timeIcon={<AccessTime/>}
+          autoOk
+          minDateMessage={false}
+          showTodayButton
+          animateYearScrolling
+          invalidLabel={'invalid date'}
+          disablePast
+          value={date}
+          onChange={setTaskDate}
+        />
+      </div>
+    )
+  }
+}
 
 export default withStyles(styles)(DatePicker)

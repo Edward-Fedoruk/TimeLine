@@ -32,6 +32,7 @@ const TimeModePicker = ({ classes, modeList, switchMode }) => (
         transitionDelay: '.3s' 
       }}
     />
+    
     <ModeMenuItem 
       mode={"Years"}
       trsDelay={".15s"}

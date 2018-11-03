@@ -3,109 +3,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Year from './Year'
 import TaskDrawer from './TaskDrawer/TaskDrawer'
 import mountains from '../../assets/mountains.png'
-
-const tasks = 
-[
-  [ 
-    [
-      [
-        {
-          date: '2018-10-26T16:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-10-26T14:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        }
-      ]
-    ],
-
-    [
-      [
-        {
-          date: '2018-09-25T19:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-25T16:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-25T14:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        }
-      ],
-
-      [
-        {
-          date: '2018-09-24T18:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-24T14:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-24T12:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        }
-      ],
-
-      [
-        {
-          date: '2018-09-18T18:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-18T17:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        }
-      ],
-
-      [
-        {
-          date: '2018-09-17T15:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-17T14:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        }
-      ],
-    ],
-  ],
-
-  [
-    [
-      [
-        {
-          date: '2019-09-17T14:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        }
-      ]
-    ]
-  ]
-]
+import tasks from '../userData'
 
 const styles = () => ({
   lineWrap: {
@@ -149,7 +47,6 @@ const styles = () => ({
 class TimeLine extends React.Component {
   state = {
     allTasks: [],
-    mode: 0,
     taskDrawer: false,
     taskInfo: {
       header: '',
@@ -168,7 +65,6 @@ class TimeLine extends React.Component {
   /*check if date attribute exist.
     If it exist then user clicked on 
     lineBlock and right drawer will appear.*/ 
-
   setInfoToDrawer = (taskPos) => {   
     const taskCoordinates = taskPos.split(' ').map(numb => parseInt(numb)) 
     const [ year, month, day, task ] = taskCoordinates
@@ -187,7 +83,6 @@ class TimeLine extends React.Component {
       taskPrevDate: selectedTask.date, 
       taskDrawer:   true,
       currentIndex: taskCoordinates,
-      updTasks:     !this.state.updTasks,
       taskCreation: false
     })
     
@@ -380,28 +275,28 @@ class TimeLine extends React.Component {
   setTaskTextFields = field => e => {
     const fieldValue = e.target.value
     this.setState(({ taskInfo }) =>  {
-      taskInfo[field] = fieldValue 
-      return { taskInfo }
+      // taskInfo[field] = fieldValue 
+      const taskInfoCopy = { ...taskInfo }
+      taskInfoCopy[field] = fieldValue
+      return { taskInfo: taskInfoCopy  }
     })
   }
   
-  setTaskSettings = (field, val) => this.setState(({ taskInfo }) => {
-      taskInfo[field] = val
-      return { taskInfo }
+  setTaskSettings = field => val => this.setState(({ taskInfo }) => {
+    const taskInfoCopy = { ...taskInfo }
+    taskInfoCopy[field] = val
+    return { taskInfo: taskInfoCopy }
   })
 
-  setTaskDate = date => this.setState(({ taskInfo }) => { 
-    taskInfo.date = date 
-    return { taskInfo }
-  })
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.mode !== this.props.mode 
+           || nextState.taskDrawer !== this.state.taskDrawer
+           || JSON.stringify(nextState.taskInfo) !== JSON.stringify(this.state.taskInfo)
+  }
 
   componentDidMount() {
     // fetch date and set in state and global var
     this.setState({ allTasks: tasks })
-  }
-
-  componentDidUpdate() {
-    // console.log('timeLine upd')
   }
 
   render() {
@@ -436,7 +331,6 @@ class TimeLine extends React.Component {
           submitTask={this.submitTask}
           taskInfo={taskInfo}
           setTaskTextFields={this.setTaskTextFields}
-          setTaskDate={this.setTaskDate}
           deleteTask={() => this.setState(this.deleteTask)}
           taskCreation={taskCreation}
           cancelCreation={this.cancelCreation}

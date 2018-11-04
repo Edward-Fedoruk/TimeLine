@@ -67,6 +67,7 @@ class AppDrawer extends React.PureComponent {
             <ListItemText inset primary="TimeLine" />        
            
           </ListItem>
+          
           <TimeModePicker 
             modeList={modeList} 
             switchMode={switchMode}            

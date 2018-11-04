@@ -22,8 +22,10 @@ const styles = ({ zIndex }) => ({
 })
 
 class TopBar extends React.PureComponent {
+  modes = ["Day", "Month", "Year", "Years"]
+  
   render() {
-    const { toggleAppMenu, classes } = this.props
+    const { toggleAppMenu, classes, currentModeIndex } = this.props
     return (
       <AppBar className={classes.appBar} position="fixed">
         <Toolbar className={classes.toolBar} variant="regular">
@@ -36,7 +38,7 @@ class TopBar extends React.PureComponent {
             variant="title" 
             color="inherit"
           >
-            TimeLine
+            TimeLine ({this.modes[currentModeIndex]})
           </Typography>
 
         </Toolbar>

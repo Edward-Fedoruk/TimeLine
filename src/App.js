@@ -20,6 +20,7 @@ class App extends React.Component {
         
         <TopBar 
           toggleAppMenu={this.toggleAppMenu}
+          currentModeIndex={mode}
         />
           
         <AppDrawer 

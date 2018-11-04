@@ -8,6 +8,7 @@ import tasks from '../userData'
 const styles = () => ({
   lineWrap: {
     height: 'calc(100vh - 48px)',
+    marginTop: 'calc(100vh - 48px)',
     overflowY: 'scroll',
     overflowX: 'hidden',
     width: '100vw',

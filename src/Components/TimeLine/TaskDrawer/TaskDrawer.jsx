@@ -46,6 +46,7 @@ class TaskDrawer extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     return JSON.stringify(nextProps.taskInfo) !== JSON.stringify(this.props.taskInfo)
+           || nextProps.taskDrawer !== this.props.taskDrawer
   }
 
   render() {

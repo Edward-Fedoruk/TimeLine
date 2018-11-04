@@ -11,7 +11,6 @@ const styles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
-    overflow: 'scroll'
   },
 
   selectWrap: {

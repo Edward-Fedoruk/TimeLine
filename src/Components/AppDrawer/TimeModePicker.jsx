@@ -6,9 +6,9 @@ import { Transition } from 'react-transition-group';
 
 const styles = (theme) => ({
   wrapper: {
-    display: 'flex',
+    // display: 'flex',
     position: 'absolute',
-    flexWrap: 'wrap',
+    // flexWrap: 'wrap',
     height: '0px',
     top: '0',
     left: '50%',

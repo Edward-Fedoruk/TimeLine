@@ -10,7 +10,7 @@ import { withStyles } from '@material-ui/core'
 
 const styles = ({ palette }) => ({
   drawerPaper: {
-    height: 'calc(100vh - 48px)',
+    // height: 'calc(100vh - 48px)',
     position: 'absolute',
     bottom: '0',
     top: 'unset',
@@ -24,7 +24,9 @@ const styles = ({ palette }) => ({
   timeline: {
     position: 'relative',
     marginTop: '50px'
-  }
+  },
+
+  list: { paddingTop: '48px' }
 
 })
 
@@ -52,7 +54,7 @@ class AppDrawer extends React.PureComponent {
         onClose={toggleAppMenu}
         ModalProps={{ BackdropProps: { invisible: true } }}
       >
-        <List component="nav">
+        <List className={classes.list} component="nav">
 
           <ListItem             
             button

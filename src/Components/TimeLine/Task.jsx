@@ -24,7 +24,12 @@ const styles = ({ timeLineSpaces }) => ({
     width: 'max-content',
     transition: 'opacity 2s linear',
     margin: '0',
-    willChange: 'opacity'
+    willChange: 'opacity',
+    width: '65vw',
+    textAlign: 'end',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
   },
   
   time: {

@@ -17,7 +17,7 @@ const styles = ({ zIndex }) => ({
     height: '48px',
     display: 'flex',
     justifyContent: 'center',
-    zIndex: zIndex.drawer + 1
+    zIndex: zIndex.drawer + 1,
   }
 })
 

@@ -7,8 +7,7 @@ import tasks from '../userData'
 
 const styles = () => ({
   lineWrap: {
-    height: '100vh',
-    paddingTop: '48px',
+    height: 'calc(100% - 48px)',
     overflowY: 'scroll',
     overflowX: 'hidden',
     width: '100vw',
@@ -19,15 +18,6 @@ const styles = () => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
-    '&::before': {
-      content: "''",
-      position: 'fixed',
-      width: '100vw',
-      height: '100vh',
-      display: 'block',
-      opacity: '0.84',
-      background: 'radial-gradient(93.13rem at 100% 100%, #361BB2 0%, #C567D8 100%)'
-    }
   },
 
   line: {
@@ -36,6 +26,7 @@ const styles = () => ({
     left: '75%',
     minHeight: '100vh',
     backgroundColor: 'rgba(238, 238, 238, 0.5)',
+    // marginTop: '2px'
     // transform: 'rotate(180deg)'
   },
 

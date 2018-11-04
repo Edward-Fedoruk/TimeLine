@@ -1,5 +1,5 @@
 import React from 'react'
-import { withStyles, withTheme } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 import Month from './Month'
 import styles from './timeBlockStyles'
 import TimeDivider from './TimeDivider'
@@ -27,17 +27,17 @@ class Years extends React.Component {
 
     else if(mode === 0) {
       const sum = months.reduce((acum, day) => 
-        acum + day.reduce((ac, cur) => ac + (cur.length * theme.timeLineSpaces.taskWithSpace) + theme.timeLineSpaces.taskOffset, 0), 
+        acum + day.reduce((ac, cur) => 
+          ac + (cur.length * theme.timeLineSpaces.taskWithSpace) + theme.timeLineSpaces.taskOffset, 0), 
       0)
-        // console.log(sum)
+
       return `${sum - theme.timeLineSpaces.taskOffset}px`
     }
   }
   
-  shouldComponentUpdate(nextProps, nextState) {
-    if(nextProps.updTasks !== this.props.updTasks
-      || nextProps.mode !== this.props.mode) return true
-    else return false
+  shouldComponentUpdate(nextProps) {
+    return nextProps.updTasks !== this.props.updTasks
+           || nextProps.mode !== this.props.mode
   }
 
   componentDidUpdate() {
@@ -46,20 +46,19 @@ class Years extends React.Component {
 
   render() {
     const { classes, months, mode, yearIndex } = this.props
-    const lastTaskDate = months[0][0][0].date
 
     return (
       <div 
         className={classes.timeBlock} 
         style={{ 
           height: `${this.setHeight(mode)}`,
-          transform: 'inherit'
+          transform: 'rotate(0deg)'
         }}
         data-timeblock="true"
       > 
         <TimeDivider 
           mode={mode} 
-          date={lastTaskDate} 
+          date={months[0][0][0].date} 
           fadeIn={mode === 2}
         />
 
@@ -70,14 +69,16 @@ class Years extends React.Component {
         />
 
         <TaskTime
-          date={lastTaskDate}
+          date={months[0][0][0].date}
           fadeIn={mode === 3}
           mode={mode}
         /> 
 
-        {months.map((days, i) =>
-          <Month yearIndex={yearIndex} monthIndex={i} key={i} mode={mode} days={days} />
-        )}
+        {
+          months.map((days, i) =>
+            <Month yearIndex={yearIndex} monthIndex={i} key={i} mode={mode} days={days} />
+          )
+        }
       </div>
     )
   }

@@ -11,20 +11,20 @@ const styles = (theme) => ({
     height: '1px',
     background: 'rgba(238, 238, 238, .4)',
     left: '-75vw',
-    transition: 'opacity 1s',
+    transition: 'opacity 2s',
     opacity: '0',
-    transform: 'rotate(180deg)',
+    // transform: 'rotate(180deg)',
     willChange: 'opacity'
   },
 
   time: {
     position: 'absolute',
-    right: '25px',
+    left: '25px',
     fontSize: '14px',
-    transform: 'rotate(180deg)',
+    // transform: 'rotate(180deg)',
     lineHeight: '2',
     fontSize: '13px',
-    willChange: 'opacity'
+    transform: 'translateY(-100%)'
   },
 })
 
@@ -48,25 +48,17 @@ const convertDate = (mode, date) => {
 }
 
 const TimeDivider = ({ classes, fadeIn, mode, date }) => (
-  <Transition
-    mountOnEnter
-    unmountOnExit
-    in={fadeIn}
-    timeout={1500}
+  <div 
+    style={{ opacity: `${fadeIn ? 1 : 0}`  }} 
+    className={classes.timeSeparator}
   >
-    {state => 
-      <div 
-        style={{ opacity: `${state === "entered" ? 1 : 0}`  }} 
-        className={classes.timeSeparator}
-      >
-        <Typography 
-          color='secondary' 
-          className={classes.time}
-        >
-          {state === "entered" && convertDate(mode, date) }
-        </Typography>
-      </div>}
-  </Transition>
+    <Typography 
+      color='secondary' 
+      className={classes.time}
+    >
+      {fadeIn && convertDate(mode, date)}
+    </Typography>
+  </div> 
 )
 
 

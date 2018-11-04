@@ -8,7 +8,6 @@ const styles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
-    overflow: 'scroll'
   },
 
   selectWrap: {
@@ -48,7 +47,7 @@ const TaskPriority = ({ classes, priority, setTaskSettings }) => (
       <Typography variant='subheading'>Priority</Typography>
 
       <div 
-        onClick={() => setTaskSettings("priority", 0)} 
+        onClick={() => setTaskSettings("priority")(0)} 
         className={`
           ${classes.circle} 
           ${classes.grey} 
@@ -57,7 +56,7 @@ const TaskPriority = ({ classes, priority, setTaskSettings }) => (
       />
       
       <div 
-        onClick={() => setTaskSettings("priority", 1)} 
+        onClick={() => setTaskSettings("priority")(1)} 
         className={`
           ${classes.circle} 
           ${classes.yellow}

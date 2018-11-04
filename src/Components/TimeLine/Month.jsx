@@ -22,38 +22,37 @@ const setHeight = (mode, days, theme) => {
 
 const Months = ({ 
   days, classes, yearIndex, 
-  mode, monthIndex, theme 
-}) => {
-  const lastTaskDate = days[0][0].date    
-  return (
-    <div 
-      style={{ 
-        transform: `translateY(${ mode > 2 ? -monthIndex * theme.timeLineSpaces.taskWithSpace : 0 }px)`, 
-        height: `${setHeight(mode, days, theme)}`,
-      }}
-      data-timeblock="true"
-      className={classes.timeBlock}
-    >
-      <TimeDivider 
-        mode={mode} 
-        date={lastTaskDate} 
-        fadeIn={mode === 1}
-      />
+  mode, monthIndex, theme
+}) => (
+  <div 
+    style={{ 
+      transform: `rotate(0deg) translateY(${mode > 2 ? -monthIndex * theme.timeLineSpaces.taskWithSpace : 0 }px)`, 
+      height: `${setHeight(mode, days, theme)}`,
+    }}
+    data-timeblock="true"
+    className={classes.timeBlock}
+  >
+    <TimeDivider 
+      mode={mode} 
+      date={days[0][0].date} 
+      fadeIn={mode === 1}
+    />
 
-      <TasksAmount
-        fadeIn={mode === 2}
-        mode={mode}
-        tasks={getTasksInMonth(days)}
-      />
+    <TasksAmount
+      fadeIn={mode === 2}
+      mode={mode}
+      tasks={getTasksInMonth(days)}
+    />
 
-      <TaskTime
-        date={lastTaskDate}
-        fadeIn={mode === 2}
-        mode={mode}
-      /> 
+    <TaskTime
+      date={days[0][0].date}
+      fadeIn={mode === 2}
+      mode={mode}
+    /> 
 
-      {days.map((tasks, i) =>
-        <Day 
+    {
+      days.map((tasks, i) =>{
+        return <Day 
           mode={mode} 
           key={i} 
           yearIndex={yearIndex} 
@@ -61,9 +60,9 @@ const Months = ({
           dayIndex={i} 
           tasks={tasks} 
         /> 
-      )}
-    </div>
-  )
-}
+      })
+    }
+  </div>
+)
 
 export default withStyles(styles, { withTheme: true })(Months)

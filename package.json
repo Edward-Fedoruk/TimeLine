@@ -10,6 +10,7 @@
     "date-fns": "^2.0.0-alpha.16",
     "material-ui-pickers": "^1.0.0-rc.17",
     "react": "^16.4.2",
+    "react-custom-scrollbars": "^4.2.1",
     "react-datetime-picker": "^2.0.0",
     "react-dom": "^16.4.2",
     "react-material-ui-form-validator": "^2.0.1",

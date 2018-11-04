@@ -6,12 +6,6 @@ import TimeDivider from './TimeDivider'
 import TasksAmount from './TasksAmount'
 import TaskTime from './TaskTime'
 
-const dayStyles = (theme) =>({
- 
-
-  ...styles()
-})
-
 const Day = ({ 
   tasks, monthIndex, classes, 
   mode, yearIndex, dayIndex, theme 
@@ -22,7 +16,7 @@ const Day = ({
       className={classes.timeBlock} 
       data-timeblock="true"
       style={{
-        transform: `translateY(${ mode > 1 ? -dayIndex * theme.timeLineSpaces.taskWithSpace : 0 }px)`, 
+        transform: `rotate(0deg) translateY(${ mode > 1 ? -dayIndex * theme.timeLineSpaces.taskWithSpace : 0 }px)`, 
         height: `${ mode > 0 ? theme.timeLineSpaces.taskSize : theme.timeLineSpaces.taskWithSpace * tasks.length }px`
       }}
     >
@@ -45,19 +39,21 @@ const Day = ({
         mode={mode}
       />
 
-      {tasks.map((task, i) =>
-        <Task 
-          task={task}
-          mode={mode} 
-          key={i} 
-          yearIndex={yearIndex} 
-          monthIndex={monthIndex} 
-          dayIndex={dayIndex} 
-          taskIndex={i}
-        />
-      )}
+      {
+        tasks.map((task, i) =>
+            <Task 
+              task={task}
+              mode={mode} 
+              key={i} 
+              yearIndex={yearIndex} 
+              monthIndex={monthIndex} 
+              dayIndex={dayIndex} 
+              taskIndex={i}
+            />
+          )
+      }
     </div>
   )
 }
 
-export default withStyles(dayStyles, { withTheme: true })(Day)
+export default withStyles(styles, { withTheme: true })(Day)

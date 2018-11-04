@@ -38,7 +38,15 @@ class TaskDrawer extends React.Component {
 
   componentDidMount() {
     ValidatorForm.addValidationRule('isOnlySpaces', value => /\S/.test(value))
-    // ValidatorForm.addValidationRule('badDateFormat', date => !isNaN(Date.parse(`${date}`)))
+  }
+
+  componentDidUpdate() {
+    console.log("draw")
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return JSON.stringify(nextProps.taskInfo) !== JSON.stringify(this.props.taskInfo)
+           || nextProps.taskDrawer !== this.props.taskDrawer
   }
 
   render() {
@@ -65,7 +73,7 @@ class TaskDrawer extends React.Component {
 
             <DatePicker
               date={taskInfo.date}
-              setTaskDate={setTaskDate}
+              setTaskDate={setTaskSettings("date")}
             />          
             
             <TaskSettings

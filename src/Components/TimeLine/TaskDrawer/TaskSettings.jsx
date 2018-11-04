@@ -11,7 +11,6 @@ const styles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
-    overflow: 'scroll'
   },
 
   selectWrap: {
@@ -40,7 +39,7 @@ const TaskSettings = ({ classes, remind, repeat, setTaskSettings, theme }) => (
       <Typography variant='subheading'>Remind me</Typography>
       <Switch
         checked={remind}
-        onChange={() => setTaskSettings('remind', !remind)}
+        onChange={() => setTaskSettings('remind')(!remind)}
         color="primary"
       />
     </div>
@@ -49,7 +48,7 @@ const TaskSettings = ({ classes, remind, repeat, setTaskSettings, theme }) => (
       <Typography variant='subheading' className={classes.repeat}>Repeat Task</Typography>
       <Cached 
         style={{ color: `${repeat ? theme.palette.primary.main : 'gray'}` }} 
-        onClick={() => setTaskSettings('repeat', !repeat)}
+        onClick={() => setTaskSettings('repeat')(!repeat)}
         className={classes.repeatIcon}
       />
     </div>

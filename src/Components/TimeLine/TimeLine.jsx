@@ -3,114 +3,13 @@ import { withStyles } from '@material-ui/core/styles'
 import Year from './Year'
 import TaskDrawer from './TaskDrawer/TaskDrawer'
 import mountains from '../../assets/mountains.png'
-
-const tasks = 
-[
-  [ 
-    [
-      [
-        {
-          date: '2018-10-26T16:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-10-26T14:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        }
-      ]
-    ],
-
-    [
-      [
-        {
-          date: '2018-09-25T19:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-25T16:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-25T14:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        }
-      ],
-
-      [
-        {
-          date: '2018-09-24T18:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-24T14:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-24T12:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        }
-      ],
-
-      [
-        {
-          date: '2018-09-18T18:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-18T17:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        }
-      ],
-
-      [
-        {
-          date: '2018-09-17T15:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        },
-
-        {
-          date: '2018-09-17T14:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        }
-      ],
-    ],
-  ],
-
-  [
-    [
-      [
-        {
-          date: '2019-09-17T14:41:00Z',
-          header: 'important task',
-          description: 'a lot of text'
-        }
-      ]
-    ]
-  ]
-]
+import tasks from '../userData'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 const styles = () => ({
   lineWrap: {
-    height: 'calc(100vh - 48px)',
-    overflowY: 'scroll',
+    height: 'calc(100% - 48px)',
+    // overflowY: 'scroll',
     overflowX: 'hidden',
     width: '100vw',
     position: 'absolute',
@@ -120,15 +19,6 @@ const styles = () => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
-    '&::before': {
-      content: "''",
-      position: 'fixed',
-      width: '100%',
-      height: '100%',
-      display: 'block',
-      opacity: '0.84',
-      background: 'radial-gradient(93.13rem at 100% 100%, #361BB2 0%, #C567D8 100%)'
-    }
   },
 
   line: {
@@ -137,7 +27,8 @@ const styles = () => ({
     left: '75%',
     minHeight: '100vh',
     backgroundColor: 'rgba(238, 238, 238, 0.5)',
-    transform: 'rotate(180deg)'
+    // marginTop: '2px'
+    // transform: 'rotate(180deg)'
   },
 
   overlay: {
@@ -149,7 +40,6 @@ const styles = () => ({
 class TimeLine extends React.Component {
   state = {
     allTasks: [],
-    mode: 0,
     taskDrawer: false,
     taskInfo: {
       header: '',
@@ -168,7 +58,6 @@ class TimeLine extends React.Component {
   /*check if date attribute exist.
     If it exist then user clicked on 
     lineBlock and right drawer will appear.*/ 
-
   setInfoToDrawer = (taskPos) => {   
     const taskCoordinates = taskPos.split(' ').map(numb => parseInt(numb)) 
     const [ year, month, day, task ] = taskCoordinates
@@ -187,7 +76,6 @@ class TimeLine extends React.Component {
       taskPrevDate: selectedTask.date, 
       taskDrawer:   true,
       currentIndex: taskCoordinates,
-      updTasks:     !this.state.updTasks,
       taskCreation: false
     })
     
@@ -257,7 +145,7 @@ class TimeLine extends React.Component {
         case 0:         
           if(allTasks.length === year) {
             insetIn(allTasks, [[[task]]])
-            sort(allTasks, withDateFunc(getYear, true))
+            sort(allTasks, withDateFunc(getYear, false))
           }
 
           else if(new Date(allTasks[year][month][day][0].date).getFullYear() === yearOfNewTask) 
@@ -380,28 +268,29 @@ class TimeLine extends React.Component {
   setTaskTextFields = field => e => {
     const fieldValue = e.target.value
     this.setState(({ taskInfo }) =>  {
-      taskInfo[field] = fieldValue 
-      return { taskInfo }
+      // taskInfo[field] = fieldValue 
+      const taskInfoCopy = { ...taskInfo }
+      taskInfoCopy[field] = fieldValue
+      return { taskInfo: taskInfoCopy  }
     })
   }
   
-  setTaskSettings = (field, val) => this.setState(({ taskInfo }) => {
-      taskInfo[field] = val
-      return { taskInfo }
+  setTaskSettings = field => val => this.setState(({ taskInfo }) => {
+    const taskInfoCopy = { ...taskInfo }
+    taskInfoCopy[field] = val
+    return { taskInfo: taskInfoCopy }
   })
 
-  setTaskDate = date => this.setState(({ taskInfo }) => { 
-    taskInfo.date = date 
-    return { taskInfo }
-  })
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.mode !== this.props.mode 
+           || nextState.taskDrawer !== this.state.taskDrawer
+           || JSON.stringify(nextState.taskInfo) !== JSON.stringify(this.state.taskInfo)
+  }
 
   componentDidMount() {
     // fetch date and set in state and global var
     this.setState({ allTasks: tasks })
-  }
-
-  componentDidUpdate() {
-    // console.log('timeLine upd')
+    this.forceUpdate()
   }
 
   render() {
@@ -413,35 +302,39 @@ class TimeLine extends React.Component {
 
     return (
       <div className={classes.lineWrap}>
-
-        <div 
-          className={classes.line}
-          onClick={this.openTaskMenu}
-          data-timeblock="true"
+        <Scrollbars
+          autoHide
+          autoHideTimeout={1000}
+          autoHideDuration={200}
         >
-          {allTasks.map((months, i) =>
-            <Year 
-              mode={mode} 
-              months={months} 
-              updTasks={updTasks} 
-              key={i} 
-              yearIndex={i}
-            />
-          )}
-        </div> 
+          <div 
+            className={classes.line}
+            onClick={this.openTaskMenu}
+            data-timeblock="true"
+          >
+            {allTasks.map((months, i) =>
+              <Year 
+                mode={mode} 
+                months={months} 
+                updTasks={updTasks} 
+                key={i} 
+                yearIndex={i}
+              />
+            )}
+          </div> 
 
-        <TaskDrawer 
-          closeTaskDrawer={this.closeTaskDrawer}
-          taskDrawer={taskDrawer}
-          submitTask={this.submitTask}
-          taskInfo={taskInfo}
-          setTaskTextFields={this.setTaskTextFields}
-          setTaskDate={this.setTaskDate}
-          deleteTask={() => this.setState(this.deleteTask)}
-          taskCreation={taskCreation}
-          cancelCreation={this.cancelCreation}
-          setTaskSettings={this.setTaskSettings}
-        />
+          <TaskDrawer 
+            closeTaskDrawer={this.closeTaskDrawer}
+            taskDrawer={taskDrawer}
+            submitTask={this.submitTask}
+            taskInfo={taskInfo}
+            setTaskTextFields={this.setTaskTextFields}
+            deleteTask={() => this.setState(this.deleteTask)}
+            taskCreation={taskCreation}
+            cancelCreation={this.cancelCreation}
+            setTaskSettings={this.setTaskSettings}
+          />
+        </Scrollbars>
       </div>
     )
   }

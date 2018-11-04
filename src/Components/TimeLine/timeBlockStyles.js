@@ -6,7 +6,7 @@ const styles = () => ({
     transition: 'all 2s linear',
     width: '100%',
     margin: '50px 0',
-    willChange: 'height, transform'
+    transform: 'rotate(180deg)'
   }
 })
 

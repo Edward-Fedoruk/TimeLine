@@ -13,17 +13,18 @@ const styles = (theme) => ({
     left: '-75vw',
     transition: 'opacity 2s',
     opacity: '0',
-    transform: 'rotate(180deg)',
+    // transform: 'rotate(180deg)',
     willChange: 'opacity'
   },
 
   time: {
     position: 'absolute',
-    right: '25px',
+    left: '25px',
     fontSize: '14px',
-    transform: 'rotate(180deg)',
+    // transform: 'rotate(180deg)',
     lineHeight: '2',
     fontSize: '13px',
+    transform: 'translateY(-100%)'
   },
 })
 

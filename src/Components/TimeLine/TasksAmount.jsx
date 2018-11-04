@@ -7,12 +7,13 @@ const styles = () => ({
     position: 'absolute',
     right: '300%',
     width: 'max-content',
-    margin: '0'
+    margin: '0',
   },
 
   wrap: {
     transition: 'opacity 1s',
-    willChange: 'opacity'
+    willChange: 'opacity',
+    // transform: 'rotate(180deg)'
   }
 })
 

@@ -35,7 +35,8 @@ const styles = ({ timeLineSpaces }) => ({
     width: 'max-content',
     transition: 'opacity 2s linear',
     margin: '0',
-    willChange: 'opacity'
+    willChange: 'opacity',
+    bottom: '0'
   },
 
 })

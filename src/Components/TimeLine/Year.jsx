@@ -1,5 +1,5 @@
 import React from 'react'
-import { withStyles, withTheme } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 import Month from './Month'
 import styles from './timeBlockStyles'
 import TimeDivider from './TimeDivider'
@@ -52,7 +52,7 @@ class Years extends React.Component {
         className={classes.timeBlock} 
         style={{ 
           height: `${this.setHeight(mode)}`,
-          transform: 'inherit'
+          transform: 'rotate(0deg)'
         }}
         data-timeblock="true"
       > 

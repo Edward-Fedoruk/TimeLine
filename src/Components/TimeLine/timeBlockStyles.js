@@ -5,7 +5,8 @@ const styles = () => ({
     position: 'relative',
     transition: 'all 2s ease-in-out',
     width: '100%',
-    margin: '50px 0'
+    margin: '50px 0',
+    transform: 'rotate(180deg)'
   }
 })
 

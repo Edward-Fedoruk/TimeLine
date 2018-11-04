@@ -16,7 +16,7 @@ const Day = ({
       className={classes.timeBlock} 
       data-timeblock="true"
       style={{
-        transform: `translateY(${ mode > 1 ? -dayIndex * theme.timeLineSpaces.taskWithSpace : 0 }px)`, 
+        transform: `rotate(0deg) translateY(${ mode > 1 ? -dayIndex * theme.timeLineSpaces.taskWithSpace : 0 }px)`, 
         height: `${ mode > 0 ? theme.timeLineSpaces.taskSize : theme.timeLineSpaces.taskWithSpace * tasks.length }px`
       }}
     >

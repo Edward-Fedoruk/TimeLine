@@ -11,7 +11,9 @@ const styles = () => ({
     transition: 'opacity 2s linear',
     color: '#fff',
     margin: '0',
-    willChange: 'opacity'
+    willChange: 'opacity',
+    // transform: 'rotate(180deg)',
+    top: '0'
   },
 })
 

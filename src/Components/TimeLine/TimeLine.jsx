@@ -7,8 +7,8 @@ import tasks from '../userData'
 
 const styles = () => ({
   lineWrap: {
-    height: 'calc(100vh - 48px)',
-    marginTop: 'calc(100vh - 48px)',
+    height: '100vh',
+    paddingTop: '48px',
     overflowY: 'scroll',
     overflowX: 'hidden',
     width: '100vw',
@@ -36,7 +36,7 @@ const styles = () => ({
     left: '75%',
     minHeight: '100vh',
     backgroundColor: 'rgba(238, 238, 238, 0.5)',
-    transform: 'rotate(180deg)'
+    // transform: 'rotate(180deg)'
   },
 
   overlay: {
@@ -153,7 +153,7 @@ class TimeLine extends React.Component {
         case 0:         
           if(allTasks.length === year) {
             insetIn(allTasks, [[[task]]])
-            sort(allTasks, withDateFunc(getYear, true))
+            sort(allTasks, withDateFunc(getYear, false))
           }
 
           else if(new Date(allTasks[year][month][day][0].date).getFullYear() === yearOfNewTask) 

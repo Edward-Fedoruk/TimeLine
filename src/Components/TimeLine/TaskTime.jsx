@@ -12,8 +12,8 @@ const styles = () => ({
     color: '#fff',
     margin: '0',
     willChange: 'opacity',
-    // transform: 'rotate(180deg)',
-    top: '0'
+    bottom: '1px',
+    cursor: 'default',
   },
 })
 

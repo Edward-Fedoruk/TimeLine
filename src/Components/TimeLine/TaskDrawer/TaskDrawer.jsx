@@ -7,6 +7,7 @@ import DatePicker from './DatePicker'
 import TextFields from './TextFields'
 import TaskSettings from './TaskSettings'
 import TaskPriority from './TaskPriority'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 const styles = ({ palette }) => ({
   drawerWrap: {
@@ -28,7 +29,7 @@ const styles = ({ palette }) => ({
     display: 'flex',
     justifyContent: 'space-around',
     marginTop: '70px'
-  }
+  },
 })
 
 class TaskDrawer extends React.Component {
@@ -52,8 +53,8 @@ class TaskDrawer extends React.Component {
   render() {
     const { 
       classes, taskDrawer, submitTask, 
-      taskInfo, setTaskDate,
-      setTaskTextFields, deleteTask, taskCreation,
+      taskInfo,setTaskTextFields, 
+      deleteTask, taskCreation,
       cancelCreation, setTaskSettings
     } = this.props
 
@@ -63,6 +64,7 @@ class TaskDrawer extends React.Component {
        anchor="right"
        classes={{paper: classes.drawer}}
       > 
+      <Scrollbars>
         <div className={classes.drawerWrap}>
           <ValidatorForm onSubmit={submitTask}>    
             <TextFields 
@@ -118,6 +120,7 @@ class TaskDrawer extends React.Component {
             </div>
           </ValidatorForm>
         </div>
+        </Scrollbars>
       </Drawer>
     )
   }

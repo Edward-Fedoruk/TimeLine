@@ -6,10 +6,10 @@ import mountains from '../../assets/mountains.png'
 import tasks from '../userData'
 import { Scrollbars } from 'react-custom-scrollbars'
 
-const styles = () => ({
+const styles = ({ breakpoints }) => ({
   lineWrap: {
     height: 'calc(100% - 48px)',
-    // overflowY: 'scroll',
+    // overflowY: 'hidden',
     overflowX: 'hidden',
     width: '100vw',
     position: 'absolute',
@@ -27,8 +27,12 @@ const styles = () => ({
     left: '75%',
     minHeight: '100vh',
     backgroundColor: 'rgba(238, 238, 238, 0.5)',
-    // marginTop: '2px'
-    // transform: 'rotate(180deg)'
+    [breakpoints.up("xs")]: {
+      left: '68%'
+    },
+    [breakpoints.up("sm")]: {
+      left: '75%'
+    }
   },
 
   overlay: {

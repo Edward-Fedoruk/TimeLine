@@ -4,11 +4,12 @@ import Year from './Year'
 import TaskDrawer from './TaskDrawer/TaskDrawer'
 import mountains from '../../assets/mountains.png'
 import tasks from '../userData'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 const styles = () => ({
   lineWrap: {
     height: 'calc(100% - 48px)',
-    overflowY: 'scroll',
+    // overflowY: 'scroll',
     overflowX: 'hidden',
     width: '100vw',
     position: 'absolute',
@@ -301,34 +302,39 @@ class TimeLine extends React.Component {
 
     return (
       <div className={classes.lineWrap}>
-
-        <div 
-          className={classes.line}
-          onClick={this.openTaskMenu}
-          data-timeblock="true"
+        <Scrollbars
+          autoHide
+          autoHideTimeout={1000}
+          autoHideDuration={200}
         >
-          {allTasks.map((months, i) =>
-            <Year 
-              mode={mode} 
-              months={months} 
-              updTasks={updTasks} 
-              key={i} 
-              yearIndex={i}
-            />
-          )}
-        </div> 
+          <div 
+            className={classes.line}
+            onClick={this.openTaskMenu}
+            data-timeblock="true"
+          >
+            {allTasks.map((months, i) =>
+              <Year 
+                mode={mode} 
+                months={months} 
+                updTasks={updTasks} 
+                key={i} 
+                yearIndex={i}
+              />
+            )}
+          </div> 
 
-        <TaskDrawer 
-          closeTaskDrawer={this.closeTaskDrawer}
-          taskDrawer={taskDrawer}
-          submitTask={this.submitTask}
-          taskInfo={taskInfo}
-          setTaskTextFields={this.setTaskTextFields}
-          deleteTask={() => this.setState(this.deleteTask)}
-          taskCreation={taskCreation}
-          cancelCreation={this.cancelCreation}
-          setTaskSettings={this.setTaskSettings}
-        />
+          <TaskDrawer 
+            closeTaskDrawer={this.closeTaskDrawer}
+            taskDrawer={taskDrawer}
+            submitTask={this.submitTask}
+            taskInfo={taskInfo}
+            setTaskTextFields={this.setTaskTextFields}
+            deleteTask={() => this.setState(this.deleteTask)}
+            taskCreation={taskCreation}
+            cancelCreation={this.cancelCreation}
+            setTaskSettings={this.setTaskSettings}
+          />
+        </Scrollbars>
       </div>
     )
   }

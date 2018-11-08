@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { Transition } from 'react-transition-group'
 import Typography from '@material-ui/core/Typography'
 
-const styles = (theme) => ({
+const styles = ({ breakpoints }) => ({
   timeSeparator: {
     position: 'absolute',
     bottom: 0,
@@ -13,15 +13,19 @@ const styles = (theme) => ({
     left: '-75vw',
     transition: 'opacity 2s',
     opacity: '0',
-    // transform: 'rotate(180deg)',
-    willChange: 'opacity'
+    [breakpoints.up("xs")]: {
+      left: '-68vw'
+    },
+
+    [breakpoints.up("sm")]: {
+      left: '-75vw',
+    }
   },
 
   time: {
     position: 'absolute',
     left: '25px',
     fontSize: '14px',
-    // transform: 'rotate(180deg)',
     lineHeight: '2',
     fontSize: '13px',
     transform: 'translateY(-100%)'

@@ -2,7 +2,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 
-const styles = () => ({
+const styles = ({ breakpoints }) => ({
   tasksIn: {
     position: 'absolute',
     right: '300%',
@@ -12,8 +12,6 @@ const styles = () => ({
 
   wrap: {
     transition: 'opacity 1s',
-    willChange: 'opacity',
-    // transform: 'rotate(180deg)'
   }
 })
 

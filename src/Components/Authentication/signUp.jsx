@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button'
 import { Link } from 'react-router-dom'
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 
-
 class signUp extends React.Component {
   state = {
     name: '',

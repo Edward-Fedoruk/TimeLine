@@ -2,7 +2,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 
-const styles = ({ timeLineSpaces }) => ({
+const styles = ({ timeLineSpaces, breakpoints }) => ({
   task: {
     width: `${timeLineSpaces.taskSize}px`,
     height: `${timeLineSpaces.taskSize}px`,
@@ -14,7 +14,6 @@ const styles = ({ timeLineSpaces }) => ({
     transition: 'transform 2s ease-in-out',
     marginBottom: `${timeLineSpaces.taskOffset}px`,
     cursor: 'pointer',
-    willChange: 'transform'
   },
 
   header: {
@@ -22,14 +21,26 @@ const styles = ({ timeLineSpaces }) => ({
     left: '180%',
     transform: 'rotate(180deg)',
     width: 'max-content',
-    transition: 'opacity 2s linear',
+    transition: 'opacity 2s ease-in-out',
     margin: '0',
     willChange: 'opacity',
-    width: '65vw',
+    width: '60vw',
     textAlign: 'end',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
+    cursor: 'default',
+    [breakpoints.up("0")]: {
+      width: '57vw'
+    },
+
+    [breakpoints.up("375")]: {
+      width: '60vw',
+    },
+
+    [breakpoints.up("600")]: {
+      width: '65vw',
+    }
   },
   
   time: {
@@ -38,10 +49,10 @@ const styles = ({ timeLineSpaces }) => ({
     right: '180%',
     transform: 'rotate(180deg)',
     width: 'max-content',
-    transition: 'opacity 2s linear',
+    transition: 'opacity 2s ease-in-out',
     margin: '0',
-    willChange: 'opacity',
-    bottom: '0'
+    top: '2px',
+    cursor: 'default',
   },
 
 })

@@ -10,7 +10,6 @@ import { withStyles } from '@material-ui/core'
 
 const styles = ({ palette }) => ({
   drawerPaper: {
-    // height: 'calc(100vh - 48px)',
     position: 'absolute',
     bottom: '0',
     top: 'unset',

@@ -18,7 +18,7 @@ const styles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     fontSize: '13px',
-    marginTop: '70px'
+    marginTop: '60px'
   },
 
   repeat: {

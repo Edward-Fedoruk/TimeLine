@@ -1,15 +1,18 @@
-const formStyles = (theme) => ({
+const formStyles = ({ breakpoints }) => ({
   paper: {
-    width: '500px',
-    minHeight: 'fit-content',
-    top: '40%',
-    left: '50%',
-    position: 'absolute',
-    transform: 'translate(-50%, -50%)',
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    padding: '20px 20px 0 20px'
+    padding: '20px 20px 0 20px',
+    margin: "30px auto",
+
+    [breakpoints.up('xs')]: {
+      width: '90vw',      
+    },
+
+    [breakpoints.up('sm')]: {
+      width: '500px',      
+    }
   },
 
   textField: {

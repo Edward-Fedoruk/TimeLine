@@ -2,7 +2,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 
-const styles = () => ({
+const styles = ({ breakpoints }) => ({
   time: {
     fontSize: '12px',
     position: 'absolute',
@@ -11,7 +11,6 @@ const styles = () => ({
     transition: 'opacity 2s linear',
     color: '#fff',
     margin: '0',
-    willChange: 'opacity',
     bottom: '1px',
     cursor: 'default',
   },

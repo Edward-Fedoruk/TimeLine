@@ -14,7 +14,6 @@ const styles = ({ timeLineSpaces, breakpoints }) => ({
     transition: 'transform 2s ease-in-out',
     marginBottom: `${timeLineSpaces.taskOffset}px`,
     cursor: 'pointer',
-    willChange: 'transform'
   },
 
   header: {
@@ -22,7 +21,7 @@ const styles = ({ timeLineSpaces, breakpoints }) => ({
     left: '180%',
     transform: 'rotate(180deg)',
     width: 'max-content',
-    transition: 'opacity 2s linear',
+    transition: 'opacity 2s ease-in-out',
     margin: '0',
     willChange: 'opacity',
     width: '60vw',
@@ -50,9 +49,8 @@ const styles = ({ timeLineSpaces, breakpoints }) => ({
     right: '180%',
     transform: 'rotate(180deg)',
     width: 'max-content',
-    transition: 'opacity 2s linear',
+    transition: 'opacity 2s ease-in-out',
     margin: '0',
-    willChange: 'opacity',
     top: '2px',
     cursor: 'default',
   },

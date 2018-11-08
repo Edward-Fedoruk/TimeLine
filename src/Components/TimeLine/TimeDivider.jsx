@@ -13,13 +13,12 @@ const styles = ({ breakpoints }) => ({
     left: '-75vw',
     transition: 'opacity 2s',
     opacity: '0',
-    willChange: 'opacity',
     [breakpoints.up("xs")]: {
       left: '-68vw'
     },
-    
+
     [breakpoints.up("sm")]: {
-      left: '-75vw'
+      left: '-75vw',
     }
   },
 
@@ -27,7 +26,6 @@ const styles = ({ breakpoints }) => ({
     position: 'absolute',
     left: '25px',
     fontSize: '14px',
-    // transform: 'rotate(180deg)',
     lineHeight: '2',
     fontSize: '13px',
     transform: 'translateY(-100%)'

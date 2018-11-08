@@ -26,7 +26,8 @@ const styles = ({ breakpoints }) => ({
     position: 'absolute',
     left: '75%',
     minHeight: '100vh',
-    backgroundColor: 'rgba(238, 238, 238, 0.5)',
+    cursor: 'pointer',
+    backgroundColor: 'rgba(238, 238, 238, 0.3)',
     [breakpoints.up("xs")]: {
       left: '68%'
     },
@@ -306,11 +307,7 @@ class TimeLine extends React.Component {
 
     return (
       <div className={classes.lineWrap}>
-        <Scrollbars
-          autoHide
-          autoHideTimeout={1000}
-          autoHideDuration={200}
-        >
+        <Scrollbars>
           <div 
             className={classes.line}
             onClick={this.openTaskMenu}

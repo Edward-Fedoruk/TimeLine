@@ -14,6 +14,7 @@ const styles = ({ timeLineSpaces, breakpoints }) => ({
     transition: 'transform 2s ease-in-out',
     marginBottom: `${timeLineSpaces.taskOffset}px`,
     cursor: 'pointer',
+    boxShadow: '0px -4px 10px rgba(0, 0, 0, 0.25)'
   },
 
   header: {

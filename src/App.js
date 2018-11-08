@@ -27,6 +27,7 @@ class App extends React.Component {
           switchMode={this.switchMode}
           toggleAppMenu={this.toggleAppMenu}
           appDrawer={appDrawer}
+          mode={mode}
         />
 
         <TimeLine mode={mode} />

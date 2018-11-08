@@ -41,7 +41,7 @@ class AppDrawer extends React.PureComponent {
   render() {
     const { 
       toggleAppMenu, appDrawer,
-      switchMode, classes,  
+      switchMode, classes, mode
     } = this.props
 
     const { modeList } = this.state
@@ -71,7 +71,8 @@ class AppDrawer extends React.PureComponent {
           
           <TimeModePicker 
             modeList={modeList} 
-            switchMode={switchMode}            
+            switchMode={switchMode}        
+            mode={mode}
           />
               
         </List>

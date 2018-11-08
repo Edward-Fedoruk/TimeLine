@@ -21,9 +21,9 @@ const styles = (theme) => ({
 })
 
 const ModeMenuItem = ({ 
-  mode, trsOpacityDelay, modeList, 
+  modeName, trsOpacityDelay, modeList, 
   LeftLineWidth, trsLeftLineDelay, classes,
-  marginLeftLine, switchMode
+  marginLeftLine, switchMode, currentMode
 }) => (
   <div className={classes.timeMode} 
     style={{ 
@@ -32,15 +32,15 @@ const ModeMenuItem = ({
     }}
     onClick={switchMode}
   >
-    <div 
+    <div className={classes.offsetLine}
       style={{ 
         width: modeList ? `${LeftLineWidth}px` : '0px', 
         transitionDelay: trsLeftLineDelay,
         marginRight: `${marginLeftLine}px`
-      }} 
-      className={classes.offsetLine}
+      }}       
     />
-    <Button>{mode}</Button>
+    
+    <Button style={{ color: currentMode ? 'black' : 'gray' }}>{modeName}</Button>
   </div>
 )
 
